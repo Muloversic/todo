@@ -42,7 +42,6 @@ const createTodoTemplate = () => {
   return todoBody;
 };
 
-let activeTodos = 0;
 let todosArray = [];
 const processForm = (input, button) => {
   let todoName = '';
