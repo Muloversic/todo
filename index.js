@@ -229,11 +229,7 @@ const deleteTodo = (todoId, todoElement) => {
   changeTodoCounter(countActiveTodos(todosArray));
 
   // if array with todos is empty - delete container with them and info bar
-  if (todosArray.length === 0) {
-    todoContainer.innerHTML = '';
-    todoBody.removeChild(todoContainer);
-    todoBody.removeChild(todoInfoBar);
-  }
+  if (todosArray.length === 0) removeAllTodo();
 };
 
 app.append(todoBody);
