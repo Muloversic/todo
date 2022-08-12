@@ -148,7 +148,8 @@ const createTodoElement = (todo) => {
   const todoWrapper = createElement('div', 'todo__element-wrapper', '', [{ id: todo.id }]);
 
   // create input and its attrs
-  const todoItem = createElement('input', 'todo__element', '', [{ name: todo.name, disabled: true, value: todo.name }]);
+  const todoItem = createElement('input', 'todo__element', '', [{ name: todo.name, disabled: true }]);
+  todoItem.value = todo.name;
   if (!todo.active) {
     todoItem.classList.add('todo__element--done');
   }
@@ -167,11 +168,12 @@ const createTodoElement = (todo) => {
     if (todoItem.value !== '') {
       isEditing = !isEditing;
     }
+
     editTodo(editButton, todoItem, isEditing, todo.id);
 
     // flip isEditing state if esc was pressed
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
+    todoItem.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' || e.key === 'Enter') {
         isEditing = false;
       }
     });
@@ -207,25 +209,7 @@ const toggleTodoStatus = (target, todoId, isDisabled) => {
 };
 
 const editTodo = (button, todoItem, isEditing, todoId) => {
-  let initialTodoValue = todoItem.name;
-  document.addEventListener('keydown', (e) => {
-    // if escape was pressed set initial value to input.value and to arr with edited todo
-    // works only if input value is not empty
-    if (e.key === 'Escape' && todoItem.value !== '') {
-      todoItem.disabled = true;
-      button.innerHTML = '&#9998;';
-      todoItem.value = initialTodoValue;
-      todoItem.name = initialTodoValue;
-      todoItem.classList.remove('todo__element--err');
-    }
-  });
-
-  // make todo editable
-  todoItem.disabled = false;
-  button.innerHTML = '&#10004;';
-
-  // check if it's editing state and value is not empty save edited todo and disable input
-  if (!isEditing && todoItem.value !== '') {
+  const confirmTodoChanges = () => {
     todoItem.disabled = true;
     button.innerHTML = '&#9998;';
     todoItem.classList.remove('todo__element--err');
@@ -235,12 +219,40 @@ const editTodo = (button, todoItem, isEditing, todoId) => {
         todo.name = todoItem.value;
       }
     });
+  };
+
+  let initialTodoValue = todoItem.name;
+  todoItem.addEventListener('keydown', (e) => {
+    // if escape was pressed set initial value to input.value and to arr with edited todo
+    // works only if input value is not empty
+    if (e.key === 'Escape' && todoItem.value !== '') {
+      todoItem.disabled = true;
+      button.innerHTML = '&#9998;';
+      todoItem.value = initialTodoValue;
+      todoItem.name = initialTodoValue;
+      todoItem.classList.remove('todo__element--err');
+    }
+
+    if (e.key === 'Enter' && todoItem.value !== '') {
+      confirmTodoChanges();
+    }
+  });
+
+  // make todo editable
+  todoItem.disabled = false;
+  button.innerHTML = '&#10004;';
+
+  // check if it's editing state and value is not empty save edited todo and disable input
+  if (!isEditing && todoItem.value !== '') {
+    confirmTodoChanges();
   }
 
   // if input is empty make its border red
   if (todoItem.value === '') {
     todoItem.classList.add('todo__element--err');
   }
+
+  console.log(todosArray);
 };
 
 const deleteTodo = (todoId) => {
