@@ -130,6 +130,10 @@ input:focus-visible {
   text-decoration: line-through;
 }
 
+.todo__element--done:not(:disabled) {
+  text-decoration: none;
+}
+
 .todo__element--err {
   border: 1px solid rgb(197, 0, 0);
 }
