@@ -1,33 +1,48 @@
 const app = document.querySelector('#app');
 
+const createElement = (elName, elClass, elContent, attrArr) => {
+  const element = document.createElement(elName);
+  if (elClass) {
+    if (Array.isArray(elClass)) {
+      element.classList.add(...elClass);
+    } else {
+      element.classList.add(elClass);
+    }
+  }
+
+  if (elContent) {
+    element.textContent = elContent;
+  }
+
+  if (attrArr) {
+    attrArr.forEach((attrObj) => {
+      for (let attrName in attrObj) {
+        element.setAttribute(attrName, attrObj[attrName]);
+      }
+    });
+  }
+
+  return element;
+};
+
 const createTodoTemplate = () => {
   // _todo body
-  const todoBody = document.createElement('div');
-  todoBody.classList.add('todo');
+  const todoBody = createElement('div', 'todo');
 
   // _todo body-template-container
-  const todoBodyTemplate = document.createElement('div');
-  todoBodyTemplate.classList.add('todo__template');
+  const todoBodyTemplate = createElement('div', 'todo__template');
 
   // _todo heading
-  const todoHeading = document.createElement('h1');
-  todoHeading.classList.add('todo__heading');
-  todoHeading.textContent = 'todo list';
+  const todoHeading = createElement('h1', 'todo__heading', 'todo list');
 
   // _todo form
-  const form = document.createElement('form');
-  form.classList.add('todo__form');
+  const form = createElement('form', 'todo__form');
 
   // _todo-form-input
-  const formInput = document.createElement('input');
-  formInput.classList.add('todo__form-input');
-  formInput.setAttribute('placeholder', 'Add new todo...');
-  formInput.setAttribute('type', 'text');
+  const formInput = createElement('input', 'todo__form-input', '', [{ placeholder: 'Add new todo...' }, { type: 'text' }]);
 
   // _todo-form-button
-  const formButton = document.createElement('button');
-  formButton.classList.add('todo__form-button');
-  formButton.textContent = 'submit';
+  const formButton = createElement('button', 'todo__form-button', 'submit');
 
   // append elements to form
   form.append(...[formInput, formButton]);
@@ -78,21 +93,16 @@ const processForm = (input, button) => {
 
 const createTodoInfoBarContainer = () => {
   // _todo info bar
-  const todoInfoBar = document.createElement('div');
-  todoInfoBar.classList.add('todo__info-bar');
+  const todoInfoBar = createElement('div', 'todo__info-bar');
   return todoInfoBar;
 };
 
 const createInfoBarElements = () => {
   // _todos counter at info bar
-  const todoItemCounter = document.createElement('p');
-  todoItemCounter.classList.add('todo__item-counter');
-  todoItemCounter.textContent = 'Active todos: 1';
+  const todoItemCounter = createElement('p', 'todo__item-counter', 'Active todos: 1');
 
   // remove all todo btn
-  const removeAllButton = document.createElement('button');
-  removeAllButton.classList.add('todo__remove-all');
-  removeAllButton.textContent = 'Remove all';
+  const removeAllButton = createElement('button', 'todo__remove-all', 'Remove all');
   removeAllButton.addEventListener('click', removeAllTodo);
 
   // append 'counter' and 'remove todo button' to info bar
@@ -100,8 +110,7 @@ const createInfoBarElements = () => {
 };
 
 const createTodosContainer = () => {
-  const todosContaienr = document.createElement('div');
-  todosContaienr.classList.add('todo__items-container');
+  const todosContaienr = createElement('div', 'todo__items-container');
   return todosContaienr;
 };
 
@@ -123,7 +132,7 @@ const changeTodoCounter = (num) => {
 };
 
 const countActiveTodos = (todosArr) => {
-  const activeTodos = todosArr.filter((todo) => (todo.active ? todo : null));
+  const activeTodos = todosArr.filter((todo) => todo.active);
   return activeTodos.length;
 };
 
@@ -134,16 +143,10 @@ const renderTodos = (todos) => {
 
 const createTodoElement = (todo) => {
   //render todo
-  const todoWrapper = document.createElement('div');
-  todoWrapper.classList.add('todo__element-wrapper');
-  todoWrapper.id = todo.id;
+  const todoWrapper = createElement('div', 'todo__element-wrapper', '', [{ id: todo.id }]);
 
   // create input and its attrs
-  const todoItem = document.createElement('input');
-  todoItem.classList.add('todo__element');
-  todoItem.value = todo.name;
-  todoItem.name = todo.name;
-  todoItem.disabled = true;
+  const todoItem = createElement('input', 'todo__element', '', [{ name: todo.name, disabled: true, value: todo.name }]);
   if (!todo.active) {
     todoItem.classList.add('todo__element--done');
   }
@@ -152,8 +155,7 @@ const createTodoElement = (todo) => {
   todoWrapper.addEventListener('click', (e) => toggleTodoStatus(e.target, todo.id, todoItem.disabled));
 
   // create edit button
-  const editButton = document.createElement('span');
-  editButton.classList.add(...['todo__edit', 'todo__action-element']);
+  const editButton = createElement('span', ['todo__edit', 'todo__action-element']);
   editButton.innerHTML = '&#9998;';
   let isEditing = false;
 
@@ -174,9 +176,8 @@ const createTodoElement = (todo) => {
   });
 
   // create delete button
-  const deleteButton = document.createElement('span');
-  deleteButton.classList.add(...['todo__delete', 'todo__action-element']);
-  deleteButton.textContent = 'x';
+  const deleteButton = createElement('span', ['todo__delete', 'todo__action-element'], 'x');
+
   // listener for delete button
   deleteButton.addEventListener('click', () => deleteTodo(todo.id));
 
