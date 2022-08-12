@@ -183,7 +183,7 @@ const createTodoElement = (todo) => {
   const deleteButton = createElement('span', ['todo__delete', 'todo__action-element'], 'x');
 
   // listener for delete button
-  deleteButton.addEventListener('click', () => deleteTodo(todo.id));
+  deleteButton.addEventListener('click', deleteTodo);
 
   // append todo item+action button to wrapper, append wrappers to container
   todoWrapper.append(...[todoItem, editButton, deleteButton]);
@@ -253,15 +253,13 @@ const editTodo = (button, todoItem, isEditing, todoId) => {
   if (todoItem.value === '') {
     todoItem.classList.add('todo__element--err');
   }
-
-  console.log(todosArray);
 };
 
-const deleteTodo = (todoId) => {
+const deleteTodo = ({ target }) => {
+  const todoId = +target.parentElement.id;
   todosArray = todosArray.filter((todo) => todo.id !== todoId);
   renderTodos(todosArray);
   changeTodoCounter(countActiveTodos(todosArray));
-
   // if array with todos is empty - delete container with them and info bar
   if (todosArray.length === 0) {
     removeAllTodo();
