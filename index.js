@@ -219,6 +219,8 @@ const editTodo = (button, todoItem, isEditing, todoId) => {
         todo.name = todoItem.value;
       }
     });
+
+    renderTodos(todosArray);
   };
 
   let initialTodoValue = todoItem.name;
