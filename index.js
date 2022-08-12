@@ -204,7 +204,8 @@ const toggleTodoStatus = (target, todoId, isDisabled) => {
       }
     });
   }
-
+  
+  renderTodos(todosArray);
   changeTodoCounter(countActiveTodos(todosArray));
 };
 
