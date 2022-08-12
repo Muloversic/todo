@@ -60,11 +60,19 @@ const createTodoTemplate = () => {
 let todosArray = [];
 const processForm = (input, button) => {
   let todoName = '';
-  input.addEventListener('change', (e) => (todoName = e.target.value));
+  input.addEventListener('change', (e) => {
+    input.classList.remove('todo__form-input--error');
+    todoName = e.target.value.trim();
+  });
+
   button.addEventListener('click', (e) => {
     e.preventDefault();
-    // call createTodo function if input is not epmty string and reset 'todo name + input.value'
+    if (!todoName) {
+      input.classList.add('todo__form-input--error');
+    }
+
     if (todoName) {
+      input.classList.remove('todo__form-input--error');
       const todoId = todosArray.length + 1;
       const todoObj = {
         name: todoName,
@@ -76,14 +84,8 @@ const processForm = (input, button) => {
         createInfoBarElements();
       }
 
-      input.classList.remove('todo__form-input--error');
-
       todosArray.push(todoObj);
       renderTodos(todosArray);
-    }
-
-    if (!todoName) {
-      input.classList.add('todo__form-input--error');
     }
 
     input.value = '';
