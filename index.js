@@ -9,6 +9,7 @@ import {
   DELETE_ALL_TODOS,
   DELETE_INFO_BAR_ELEM,
   TOGGLE_TODO_STATUS,
+  CHANGE_TODO,
 } from './app/constants.js';
 const store = new Store();
 const todoTemplate = new TodoTemplate();
@@ -35,6 +36,11 @@ eventEmitter.subscribe(DELETE_INFO_BAR_ELEM, () => {
 
 eventEmitter.subscribe(TOGGLE_TODO_STATUS, (event) => {
   store.toggleTodoStatus(event);
+  store.countActiveTodos();
+});
+
+eventEmitter.subscribe(CHANGE_TODO, (todoData) => {
+  store.changeTodo(todoData);
   store.countActiveTodos();
 });
 

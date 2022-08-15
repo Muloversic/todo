@@ -24,11 +24,10 @@ class Store {
   };
 
   toggleTodoStatus = ({ target }) => {
-    const isTodo = [...target.classList].includes('todo__element');
     const isDisabled = target.disabled;
     const todoId = +target.parentElement.id;
 
-    if (isTodo && isDisabled) {
+    if (isDisabled) {
       const todos = this.state.todos.map((todo) => {
         if (todo.id === todoId) {
           todo.active = !todo.active;
@@ -45,6 +44,23 @@ class Store {
 
       this.setState(newState);
     }
+  };
+
+  changeTodo = ({ todoId, newTodoName }) => {
+    const todos = this.state.todos.map((todo) => {
+      if (todo.id === todoId) {
+        todo.name = newTodoName;
+      }
+
+      return todo;
+    });
+
+    const newState = {
+      ...this.state,
+      todos,
+    };
+
+    this.setState(newState);
   };
 
   deleteTodo = ({ target }) => {
