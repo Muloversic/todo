@@ -49,13 +49,13 @@ class Todos {
 
     // create input and its attrs
     const todoItemInput = createElement('input', ['todo__element', 'todo__element--hidden'], '', [{ name: todo.name }]);
-
     todoItemInput.value = todo.name;
-    if (!todo.active) {
-      todoItemInput.classList.add('todo__element--done');
-    }
 
     const todoItemText = createElement('span', 'todo__element-text', todo.name);
+
+    if (!todo.active) {
+      todoItemText.classList.add('todo__element--done');
+    }
 
     // create edit button
     const editButton = createElement('span', ['todo__edit', 'todo__action-element']);
@@ -66,7 +66,7 @@ class Todos {
 
     // add toggle todo status listener for todo wrapper
     todoWrapper.addEventListener('click', (event) => {
-      if (event.target === todoItemInput && !this.isEditing) {
+      if (event.target === todoItemText && !this.isEditing) {
         eventEmitter.emit({ type: TOGGLE_TODO_STATUS, payload: event });
       }
 

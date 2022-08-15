@@ -24,26 +24,22 @@ class Store {
   };
 
   toggleTodoStatus = ({ target }) => {
-    const isDisabled = target.disabled;
     const todoId = +target.parentElement.id;
+    const todos = this.state.todos.map((todo) => {
+      if (todo.id === todoId) {
+        todo.active = !todo.active;
+        target.classList.toggle('todo__element--done');
+      }
 
-    if (isDisabled) {
-      const todos = this.state.todos.map((todo) => {
-        if (todo.id === todoId) {
-          todo.active = !todo.active;
-          target.classList.toggle('todo__element--done');
-        }
+      return todo;
+    });
 
-        return todo;
-      });
+    const newState = {
+      ...this.state,
+      todos,
+    };
 
-      const newState = {
-        ...this.state,
-        todos,
-      };
-
-      this.setState(newState);
-    }
+    this.setState(newState);
   };
 
   changeTodo = ({ todoId, newTodoName }) => {
