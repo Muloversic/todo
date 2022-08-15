@@ -109,7 +109,7 @@ class Todos {
         type: CHANGE_TODO,
         payload: {
           todoId,
-          newTodoName: todoItemInput.value,
+          newTodoName: todoItemInput.value.trim(),
         },
       });
     };
@@ -118,7 +118,7 @@ class Todos {
     todoItemInput.addEventListener('keydown', (e) => {
       // if escape was pressed set initial value to input.value and to arr with edited todo
       // works only if input value is not empty
-      if (e.key === 'Escape' && todoItemInput.value !== '') {
+      if (e.key === 'Escape' && todoItemInput.value.trim() !== '') {
         todoItemInput.classList.add('todo__element--hidden');
         todoItemText.classList.remove('todo__element--hidden');
         button.innerHTML = '&#9998;';
@@ -127,23 +127,25 @@ class Todos {
         todoItemInput.classList.remove('todo__element--err');
       }
 
-      if (e.key === 'Enter' && todoItemInput.value !== '') {
+      if (e.key === 'Enter' && todoItemInput.value.trim() !== '') {
         confirmTodoChanges();
       }
     });
 
     // make todo editable
-    todoItemInput.classList.toggle('todo__element--hidden');
-    todoItemText.classList.toggle('todo__element--hidden');
     button.innerHTML = '&#10004;';
+    if (todoItemInput.value.trim() !== '') {
+      todoItemInput.classList.toggle('todo__element--hidden');
+      todoItemText.classList.toggle('todo__element--hidden');
+    }
 
     // check if it's editing state and value is not empty save edited todo and disable input
-    if (!this.isEditing && todoItemInput.value !== '') {
+    if (!this.isEditing && todoItemInput.value.trim() !== '') {
       confirmTodoChanges();
     }
 
     // if input is empty make its border red
-    if (todoItemInput.value === '') {
+    if (todoItemInput.value.trim() === '') {
       todoItemInput.classList.add('todo__element--err');
     }
   };
