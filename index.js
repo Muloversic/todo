@@ -35,6 +35,7 @@ eventEmitter.subscribe(DELETE_INFO_BAR_ELEM, () => {
 
 eventEmitter.subscribe(TOGGLE_TODO_STATUS, (event) => {
   store.toggleTodoStatus(event);
+  store.countActiveTodos();
 });
 
 eventEmitter.subscribe(STATE_UPDATED, (state) => {
