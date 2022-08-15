@@ -48,40 +48,42 @@ class Todos {
     const todoWrapper = createElement('div', 'todo__element-wrapper', '', [{ id: todo.id }]);
 
     // create input and its attrs
-    const todoItem = createElement('input', 'todo__element', '', [{ name: todo.name, disabled: true }]);
-    todoItem.value = todo.name;
+    const todoItemInput = createElement('input', ['todo__element', 'todo__element--hidden'], '', [{ name: todo.name }]);
+
+    todoItemInput.value = todo.name;
     if (!todo.active) {
-      todoItem.classList.add('todo__element--done');
+      todoItemInput.classList.add('todo__element--done');
     }
+
+    const todoItemText = createElement('span', 'todo__element-text', todo.name);
 
     // create edit button
     const editButton = createElement('span', ['todo__edit', 'todo__action-element']);
     editButton.innerHTML = '&#9998;';
-    // let isEditing = false;
 
     // create delete button
     const deleteButton = createElement('span', ['todo__delete', 'todo__action-element'], 'x');
 
     // add toggle todo status listener for todo wrapper
     todoWrapper.addEventListener('click', (event) => {
-      if (event.target === todoItem && !this.isEditing) {
+      if (event.target === todoItemInput && !this.isEditing) {
         eventEmitter.emit({ type: TOGGLE_TODO_STATUS, payload: event });
       }
 
       if (event.target === editButton) {
         // _!isEditing means input is editable
-        if (todoItem.value !== '') {
+        if (todoItemInput.value !== '') {
           this.isEditing = !this.isEditing;
         }
 
         // flip isEditing state if esc was pressed
-        todoItem.addEventListener('keydown', (e) => {
+        todoItemInput.addEventListener('keydown', (e) => {
           if (e.key === 'Escape' || e.key === 'Enter') {
             this.isEditing = false;
           }
         });
 
-        this.editTodo(editButton, todoItem, todo.id);
+        this.editTodo(editButton, todoItemInput, todoItemText, todo.id);
       }
 
       if (event.target === deleteButton) {
@@ -90,56 +92,59 @@ class Todos {
     });
 
     // append todo item+action button to wrapper, append wrappers to container
-    todoWrapper.append(...[todoItem, editButton, deleteButton]);
+    todoWrapper.append(...[todoItemInput, todoItemText, editButton, deleteButton]);
     this.todoContainer.append(todoWrapper);
 
     this.renderTodos();
   };
 
-  editTodo = (button, todoItem, todoId) => {
+  editTodo = (button, todoItemInput, todoItemText, todoId) => {
     const confirmTodoChanges = () => {
-      todoItem.disabled = true;
+      todoItemInput.classList.toggle('todo__element--hidden');
+      todoItemText.classList.toggle('todo__element--hidden');
       button.innerHTML = '&#9998;';
-      todoItem.classList.remove('todo__element--err');
-      todoItem.name = todoItem.value;
+      todoItemInput.classList.remove('todo__element--err');
+      todoItemInput.name = todoItemInput.value;
       eventEmitter.emit({
         type: CHANGE_TODO,
         payload: {
           todoId,
-          newTodoName: todoItem.value,
+          newTodoName: todoItemInput.value,
         },
       });
     };
 
-    let initialTodoValue = todoItem.name;
-    todoItem.addEventListener('keydown', (e) => {
+    let initialTodoValue = todoItemInput.name;
+    todoItemInput.addEventListener('keydown', (e) => {
       // if escape was pressed set initial value to input.value and to arr with edited todo
       // works only if input value is not empty
-      if (e.key === 'Escape' && todoItem.value !== '') {
-        todoItem.disabled = true;
+      if (e.key === 'Escape' && todoItemInput.value !== '') {
+        todoItemInput.classList.add('todo__element--hidden');
+        todoItemText.classList.remove('todo__element--hidden');
         button.innerHTML = '&#9998;';
-        todoItem.value = initialTodoValue;
-        todoItem.name = initialTodoValue;
-        todoItem.classList.remove('todo__element--err');
+        todoItemInput.value = initialTodoValue;
+        todoItemInput.name = initialTodoValue;
+        todoItemInput.classList.remove('todo__element--err');
       }
 
-      if (e.key === 'Enter' && todoItem.value !== '') {
+      if (e.key === 'Enter' && todoItemInput.value !== '') {
         confirmTodoChanges();
       }
     });
 
     // make todo editable
-    todoItem.disabled = false;
+    todoItemInput.classList.toggle('todo__element--hidden');
+    todoItemText.classList.toggle('todo__element--hidden');
     button.innerHTML = '&#10004;';
 
     // check if it's editing state and value is not empty save edited todo and disable input
-    if (!this.isEditing && todoItem.value !== '') {
+    if (!this.isEditing && todoItemInput.value !== '') {
       confirmTodoChanges();
     }
 
     // if input is empty make its border red
-    if (todoItem.value === '') {
-      todoItem.classList.add('todo__element--err');
+    if (todoItemInput.value === '') {
+      todoItemInput.classList.add('todo__element--err');
     }
   };
 

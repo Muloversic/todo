@@ -115,23 +115,37 @@ input:focus-visible {
   padding: 4px;
   background-color: rgb(129, 134, 218);
   border-radius: 5px;
+  height: 40px;
 }
 
 .todo__element {
   border: 1px solid rgb(129, 134, 218);
+  font-family: inherit;
   font-size: 18px;
   border-radius: 5px;
-  padding: 5px 8px 5px 8px;
+  padding: 4px 8px 5px 8px;
+  color: #fff;
+  width: 80%;
+}
+
+.todo__element--hidden {
+  display: none;
+}
+
+.todo__element-text {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(0, -50%);
+  font-size: 18px;
+  border-radius: 5px;
+  padding: 5px 8px 5px 12px;
   color: #fff;
   width: 80%;
 }
 
 .todo__element--done {
   text-decoration: line-through;
-}
-
-.todo__element--done:not(:disabled) {
-  text-decoration: none;
 }
 
 .todo__element--err {
