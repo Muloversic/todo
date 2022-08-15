@@ -1,4 +1,5 @@
 import eventEmitter from '../store/EventEmitter.js';
+import { DELETE_TODO, DELETE_ALL_TODOS } from '../constants.js';
 import { createElement } from '../helpers.js';
 class Todos {
   constructor() {
@@ -18,21 +19,20 @@ class Todos {
 
     // remove all todo btn
     const removeAllButton = createElement('button', 'todo__remove-all', 'Remove all');
-    // removeAllButton.addEventListener('click', () => eventEmitter.emit('DELETE_ALL_TODOS'));
+    removeAllButton.addEventListener('click', () => eventEmitter.emit({ type: DELETE_ALL_TODOS }));
 
     // append 'counter' and 'remove todo button' to info bar
     this.todoInfoBar.append(...[todoItemCounter, removeAllButton]);
   };
 
+  deleteInfoBarElements = () => {
+    const todoInfoBar = document.querySelector('.todo__info-bar');
+    [...todoInfoBar.children].forEach((element) => element.remove());
+  };
+
   createTodosContainer = () => {
     const todosContaienr = createElement('div', 'todo__items-container');
     return todosContaienr;
-  };
-
-  removeAllTodo = () => {
-    this.todosArray = [];
-    [...this.todoInfoBar.children].forEach((element) => element.remove());
-    this.renderTodos(this.todosArray);
   };
 
   changeTodoCounter = (num) => {
@@ -82,7 +82,9 @@ class Todos {
     const deleteButton = createElement('span', ['todo__delete', 'todo__action-element'], 'x');
 
     // listener for delete button
-    deleteButton.addEventListener('click', this.deleteTodo);
+    deleteButton.addEventListener('click', (event) => {
+      eventEmitter.emit({ type: DELETE_TODO, payload: event });
+    });
 
     // append todo item+action button to wrapper, append wrappers to container
     todoWrapper.append(...[todoItem, editButton, deleteButton]);
@@ -103,7 +105,7 @@ class Todos {
     }
 
     //   renderTodos(todosArray);
-    this.changeTodoCounter(this.countActiveTodos(this.todosArray));
+    // this.changeTodoCounter(this.countActiveTodos(this.todosArray));
   };
 
   editTodo = (button, todoItem, isEditing, todoId) => {
@@ -150,17 +152,6 @@ class Todos {
     // if input is empty make its border red
     if (todoItem.value === '') {
       todoItem.classList.add('todo__element--err');
-    }
-  };
-
-  deleteTodo = ({ target }) => {
-    const todoId = +target.parentElement.id;
-    this.todosArray = this.todosArray.filter((todo) => todo.id !== todoId);
-    this.renderTodos(todosArray);
-    this.changeTodoCounter(this.countActiveTodos(this.todosArray));
-    // if array with todos is empty - delete container with them and info bar
-    if (this.todosArray.length === 0) {
-      this.removeAllTodo();
     }
   };
 
