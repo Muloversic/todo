@@ -1,5 +1,5 @@
 import eventEmitter from '../store/EventEmitter.js';
-import { DELETE_TODO, DELETE_ALL_TODOS } from '../constants.js';
+import { DELETE_TODO, DELETE_ALL_TODOS, TOGGLE_TODO_STATUS } from '../constants.js';
 import { createElement } from '../helpers.js';
 class Todos {
   constructor() {
@@ -54,7 +54,9 @@ class Todos {
     }
 
     // add toggle todo status listener for todo wrapper
-    todoWrapper.addEventListener('click', (e) => this.toggleTodoStatus(e.target, todo.id, todoItem.disabled));
+    todoWrapper.addEventListener('click', (event) => {
+      eventEmitter.emit({ type: TOGGLE_TODO_STATUS, payload: event });
+    });
 
     // create edit button
     const editButton = createElement('span', ['todo__edit', 'todo__action-element']);
@@ -91,21 +93,6 @@ class Todos {
     this.todoContainer.append(todoWrapper);
 
     this.renderTodos();
-  };
-
-  toggleTodoStatus = (target, todoId, isDisabled) => {
-    const isTodo = [...target.classList].includes('todo__element');
-    if (isTodo && isDisabled) {
-      this.todosArray.forEach((todo) => {
-        if (todo.id === todoId) {
-          todo.active = !todo.active;
-          target.classList.toggle('todo__element--done');
-        }
-      });
-    }
-
-    //   renderTodos(todosArray);
-    // this.changeTodoCounter(this.countActiveTodos(this.todosArray));
   };
 
   editTodo = (button, todoItem, isEditing, todoId) => {

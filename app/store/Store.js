@@ -23,6 +23,30 @@ class Store {
     this.setState(newState);
   };
 
+  toggleTodoStatus = ({ target }) => {
+    const isTodo = [...target.classList].includes('todo__element');
+    const isDisabled = target.disabled;
+    const todoId = +target.parentElement.id;
+
+    if (isTodo && isDisabled) {
+      const todos = this.state.todos.map((todo) => {
+        if (todo.id === todoId) {
+          todo.active = !todo.active;
+          target.classList.toggle('todo__element--done');
+        }
+
+        return todo;
+      });
+
+      const newState = {
+        ...this.state,
+        todos,
+      };
+
+      this.setState(newState);
+    }
+  };
+
   deleteTodo = ({ target }) => {
     const todoId = +target.parentElement.id;
     const todos = this.state.todos.filter((todo) => todo.id !== todoId);
