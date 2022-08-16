@@ -71,8 +71,9 @@ class Todos {
 
     // add toggle todo status listener for todo wrapper
     todoWrapper.addEventListener('click', (event) => {
+      const todoId = +event.target.parentElement.id;
       if (event.target === todoItemText && !this.isEditing) {
-        eventEmitter.emit({ type: TOGGLE_TODO_STATUS, payload: event });
+        eventEmitter.emit({ type: TOGGLE_TODO_STATUS, payload: todoId });
       }
 
       if (event.target === editButton) {
@@ -92,7 +93,7 @@ class Todos {
       }
 
       if (event.target === deleteButton) {
-        eventEmitter.emit({ type: DELETE_TODO, payload: event });
+        eventEmitter.emit({ type: DELETE_TODO, payload: todoId });
       }
     });
 

@@ -21,7 +21,8 @@ class Store {
   };
 
   addTodo = ({ payload }) => {
-    const todos = [...this.state.todos, payload];
+    const todo = payload;
+    const todos = [...this.state.todos, todo];
     const newState = {
       ...this.state,
       activeTodos: this.countActiveTodos(todos),
@@ -32,11 +33,10 @@ class Store {
   };
 
   toggleTodoStatus = ({ payload }) => {
-    const todoId = +payload.target.parentElement.id;
+    const todoId = payload;
     const todos = this.state.todos.map((todo) => {
       if (todo.id === todoId) {
         todo.active = !todo.active;
-        payload.target.classList.toggle('todo__element--done');
       }
 
       return todo;
@@ -71,8 +71,7 @@ class Store {
   };
 
   deleteTodo = ({ payload }) => {
-    const { target } = payload;
-    const todoId = +target.parentElement.id;
+    const todoId = payload;
     const todos = this.state.todos.filter((todo) => todo.id !== todoId);
     const newState = {
       ...this.state,
