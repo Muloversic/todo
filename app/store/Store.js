@@ -20,8 +20,8 @@ class Store {
     eventEmitter.emit({ type: STATE_UPDATED });
   };
 
-  addTodo = (newTodo) => {
-    const todos = [...this.state.todos, newTodo];
+  addTodo = ({ payload }) => {
+    const todos = [...this.state.todos, payload];
     const newState = {
       ...this.state,
       activeTodos: this.countActiveTodos(todos),
@@ -31,12 +31,12 @@ class Store {
     this.setState(newState);
   };
 
-  toggleTodoStatus = ({ target }) => {
-    const todoId = +target.parentElement.id;
+  toggleTodoStatus = ({ payload }) => {
+    const todoId = +payload.target.parentElement.id;
     const todos = this.state.todos.map((todo) => {
       if (todo.id === todoId) {
         todo.active = !todo.active;
-        target.classList.toggle('todo__element--done');
+        payload.target.classList.toggle('todo__element--done');
       }
 
       return todo;
@@ -51,7 +51,8 @@ class Store {
     this.setState(newState);
   };
 
-  changeTodo = ({ todoId, newTodoName }) => {
+  changeTodo = ({ payload }) => {
+    const { todoId, newTodoName } = payload;
     const todos = this.state.todos.map((todo) => {
       if (todo.id === todoId) {
         todo.name = newTodoName;
@@ -69,7 +70,8 @@ class Store {
     this.setState(newState);
   };
 
-  deleteTodo = ({ target }) => {
+  deleteTodo = ({ payload }) => {
+    const { target } = payload;
     const todoId = +target.parentElement.id;
     const todos = this.state.todos.filter((todo) => todo.id !== todoId);
     const newState = {

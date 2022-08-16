@@ -12,9 +12,9 @@ class EventEmitter {
     this.events[type] = this.events[type].filter((eventCallback) => callback !== eventCallback);
   };
 
-  emit = ({ type, payload }) => {
-    const event = this.events[type];
-    event && event.forEach((callback) => callback.call(null, payload));
+  emit = (action) => {
+    const event = this.events[action.type];
+    event && event.forEach((callback) => callback.call(null, action));
   };
 }
 
