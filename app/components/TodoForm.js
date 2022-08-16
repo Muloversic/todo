@@ -1,12 +1,12 @@
 import eventEmitter from '../store/EventEmitter.js';
 import { createElement } from '../helpers.js';
 import { ADD_TODO } from '../constants.js';
-class TodoTemplate {
+class TodoForm {
   constructor() {
-    this.todoBody = this.createTodoTemplate();
+    this.todoBody = this.createTodoForm();
   }
 
-  createTodoTemplate = () => {
+  createTodoForm = () => {
     // _todo body
     const todoBody = createElement('div', 'todo');
 
@@ -74,4 +74,4 @@ class TodoTemplate {
   getTodoBody = () => this.todoBody;
 }
 
-export default TodoTemplate;
+export default TodoForm;

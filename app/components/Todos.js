@@ -1,11 +1,21 @@
 import eventEmitter from '../store/EventEmitter.js';
-import { DELETE_TODO, DELETE_ALL_TODOS, TOGGLE_TODO_STATUS, CHANGE_TODO } from '../constants.js';
+import store from '../store/Store.js';
+import {
+  DELETE_TODO,
+  DELETE_ALL_TODOS,
+  TOGGLE_TODO_STATUS,
+  CHANGE_TODO,
+  DELETE_INFO_BAR_ELEM,
+  STATE_UPDATED,
+} from '../constants.js';
 import { createElement } from '../helpers.js';
 class Todos {
   constructor() {
     this.todoContainer = this.createTodosContainer();
     this.todoInfoBar = this.createTodoInfoBarContainer();
     this.isEditing = false;
+    eventEmitter.subscribe(DELETE_INFO_BAR_ELEM, this.deleteInfoBarElements);
+    eventEmitter.subscribe(STATE_UPDATED, this.processTodos);
   }
 
   createTodoInfoBarContainer = () => {
@@ -150,7 +160,8 @@ class Todos {
     }
   };
 
-  processTodos = (state) => {
+  processTodos = () => {
+    const state = store.state;
     const { todos, activeTodos } = state;
     [...this.todoContainer.children].forEach((todo) => todo.remove());
     todos.forEach((todo) => this.createTodoElement(todo));

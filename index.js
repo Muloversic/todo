@@ -1,53 +1,13 @@
-import TodoTemplate from './app/components/TodoTemplate.js';
+import TodoForm from './app/components/TodoForm.js';
 import Todos from './app/components/Todos.js';
-import eventEmitter from './app/store/EventEmitter.js';
-import Store from './app/store/Store.js';
-import {
-  ADD_TODO,
-  STATE_UPDATED,
-  DELETE_TODO,
-  DELETE_ALL_TODOS,
-  DELETE_INFO_BAR_ELEM,
-  TOGGLE_TODO_STATUS,
-  CHANGE_TODO,
-} from './app/constants.js';
-const store = new Store();
-const todoTemplate = new TodoTemplate();
+import App from './app/components/App.js';
+
+const todoForm = new TodoForm();
 const todos = new Todos();
-
-eventEmitter.subscribe(ADD_TODO, (todo) => {
-  store.addTodo(todo);
-  store.countActiveTodos();
-});
-
-eventEmitter.subscribe(DELETE_TODO, (event) => {
-  store.deleteTodo(event);
-  store.countActiveTodos();
-});
-
-eventEmitter.subscribe(DELETE_ALL_TODOS, () => {
-  store.removeAllTodo();
-  store.countActiveTodos();
-});
-
-eventEmitter.subscribe(DELETE_INFO_BAR_ELEM, () => {
-  todos.deleteInfoBarElements();
-});
-
-eventEmitter.subscribe(TOGGLE_TODO_STATUS, (event) => {
-  store.toggleTodoStatus(event);
-  store.countActiveTodos();
-});
-
-eventEmitter.subscribe(CHANGE_TODO, (todoData) => {
-  store.changeTodo(todoData);
-  store.countActiveTodos();
-});
-
-eventEmitter.subscribe(STATE_UPDATED, (state) => {
-  todos.processTodos(state);
-});
+const appMain = new App();
 
 const app = document.querySelector('#app');
-const todoBody = todoTemplate.getTodoBody();
+const todoBody = todoForm.getTodoBody();
 app.append(todoBody);
+
+window.addEventListener('load', appMain.render());
