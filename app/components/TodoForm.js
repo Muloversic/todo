@@ -2,16 +2,16 @@ import eventEmitter from '../store/EventEmitter.js';
 import { createElement } from '../helpers.js';
 import { ADD_TODO } from '../constants.js';
 class TodoForm {
-  constructor() {
-    this.todoBody = this.createTodoForm();
-  }
-
-  createTodoForm = () => {
+  createTodoBody = () => {
     // _todo body
     const todoBody = createElement('div', 'todo');
+    todoBody.append(this.createTodoForm());
+    return todoBody;
+  };
 
+  createTodoForm = () => {
     // _todo body-template-container
-    const todoBodyTemplate = createElement('div', 'todo__template');
+    const todoBodyForm = createElement('div', 'todo__form-wrapper');
 
     // _todo heading
     const todoHeading = createElement('h1', 'todo__heading', 'todo list');
@@ -29,13 +29,12 @@ class TodoForm {
     form.append(...[formInput, formButton]);
 
     // append elements to todo template and template to main container
-    todoBodyTemplate.append(...[todoHeading, form]);
-    todoBody.append(todoBodyTemplate);
+    todoBodyForm.append(...[todoHeading, form]);
 
     // call function for processing form
     this.processForm(formInput, formButton);
 
-    return todoBody;
+    return todoBodyForm;
   };
 
   processForm = (input, button) => {
@@ -71,7 +70,7 @@ class TodoForm {
     });
   };
 
-  getTodoBody = () => this.todoBody;
+  render = () => this.createTodoBody();
 }
 
 export default TodoForm;
