@@ -2,13 +2,6 @@ import eventEmitter from '../store/EventEmitter.js';
 import { createElement } from '../helpers.js';
 import { ADD_TODO } from '../constants.js';
 class TodoForm {
-  createTodoBody = () => {
-    // _todo body
-    const todoBody = createElement('div', 'todo');
-    todoBody.append(this.createTodoForm());
-    return todoBody;
-  };
-
   createTodoForm = () => {
     // _todo body-template-container
     const todoBodyForm = createElement('div', 'todo__form-wrapper');
@@ -70,7 +63,12 @@ class TodoForm {
     });
   };
 
-  render = () => this.createTodoBody();
+  render = () => {
+    // _todo body
+    const todoBody = createElement('div', 'todo');
+    todoBody.append(this.createTodoForm());
+    return todoBody;
+  };
 }
 
 export default TodoForm;
