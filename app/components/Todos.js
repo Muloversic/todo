@@ -1,22 +1,22 @@
 import eventEmitter from '../store/EventEmitter.js';
 import store from '../store/Store.js';
-import {
-  DELETE_TODO,
-  DELETE_ALL_TODOS,
-  TOGGLE_TODO_STATUS,
-  CHANGE_TODO,
-  DELETE_INFO_BAR_ELEM,
-  STATE_UPDATED,
-} from '../constants.js';
+import { DELETE_TODO, DELETE_ALL_TODOS, TOGGLE_TODO_STATUS, CHANGE_TODO, STATE_UPDATED } from '../constants.js';
 import { createElement } from '../helpers.js';
 class Todos {
   constructor() {
     this.todoContainer = this.createTodosContainer();
     this.todoInfoBar = this.createTodoInfoBarContainer();
+    this.todoElementsContainer = this.createTodoElementsContainer();
+    this.createInfoBarElements();
+    this.todoElementsContainer.append(...[this.todoInfoBar, this.todoContainer]);
     this.isEditing = false;
-    eventEmitter.subscribe(DELETE_INFO_BAR_ELEM, this.deleteInfoBarElements);
     eventEmitter.subscribe(STATE_UPDATED, this.processTodos);
   }
+
+  createTodoElementsContainer = () => {
+    const todoElementsContainer = createElement('div', 'todo__elements-container');
+    return todoElementsContainer;
+  };
 
   createTodoInfoBarContainer = () => {
     // _todo info bar
@@ -34,11 +34,6 @@ class Todos {
 
     // append 'counter' and 'remove todo button' to info bar
     this.todoInfoBar.append(...[todoItemCounter, removeAllButton]);
-  };
-
-  deleteInfoBarElements = () => {
-    const todoInfoBar = document.querySelector('.todo__info-bar');
-    [...todoInfoBar.children].forEach((element) => element.remove());
   };
 
   createTodosContainer = () => {
@@ -104,8 +99,6 @@ class Todos {
     // append todo item+action button to wrapper, append wrappers to container
     todoWrapper.append(...[todoItemInput, todoItemText, editButton, deleteButton]);
     this.todoContainer.append(todoWrapper);
-
-    this.renderTodos();
   };
 
   editTodo = (button, todoItemInput, todoItemText, todoId) => {
@@ -165,17 +158,19 @@ class Todos {
     const { todos, activeTodos } = state;
     [...this.todoContainer.children].forEach((todo) => todo.remove());
     todos.forEach((todo) => this.createTodoElement(todo));
+    this.render();
     this.changeTodoCounter(activeTodos);
   };
 
-  renderTodos = () => {
+  render = () => {
+    const state = store.state;
     const todoBody = document.querySelector('.todo');
-    if (!this.todoInfoBar.children.length) {
-      this.createInfoBarElements();
+    if (todoBody.children.length <= 1) {
+      todoBody.append(this.todoElementsContainer);
     }
 
-    if (todoBody.children.length <= 1) {
-      todoBody.append(...[this.todoInfoBar, this.todoContainer]);
+    if (state.todos.length === 0) {
+      this.todoElementsContainer.remove();
     }
   };
 }

@@ -1,13 +1,5 @@
 import eventEmitter from '../store/EventEmitter.js';
-import {
-  ADD_TODO,
-  STATE_UPDATED,
-  DELETE_TODO,
-  DELETE_ALL_TODOS,
-  DELETE_INFO_BAR_ELEM,
-  TOGGLE_TODO_STATUS,
-  CHANGE_TODO,
-} from '../constants.js';
+import { ADD_TODO, STATE_UPDATED, DELETE_TODO, DELETE_ALL_TODOS, TOGGLE_TODO_STATUS, CHANGE_TODO } from '../constants.js';
 
 class Store {
   constructor() {
@@ -87,10 +79,6 @@ class Store {
     };
 
     this.setState(newState);
-
-    if (!this.state.todos.length) {
-      eventEmitter.emit({ type: DELETE_INFO_BAR_ELEM });
-    }
   };
 
   removeAllTodo = () => {
