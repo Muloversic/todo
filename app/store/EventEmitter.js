@@ -1,22 +1,22 @@
 class EventEmitter {
   constructor() {
-    this.events = {};
+    this.events = {}
   }
 
   subscribe = (type, callback) => {
-    !this.events[type] && (this.events[type] = []);
-    this.events[type].push(callback);
-  };
+    !this.events[type] && (this.events[type] = [])
+    this.events[type].push(callback)
+  }
 
   unsubscribe = (type, callback) => {
-    this.events[type] = this.events[type].filter((eventCallback) => callback !== eventCallback);
-  };
+    this.events[type] = this.events[type].filter((eventCallback) => callback !== eventCallback)
+  }
 
   emit = (action) => {
-    const event = this.events[action.type];
-    event && event.forEach((callback) => callback.call(null, action));
-  };
+    const event = this.events[action.type]
+    event && event.forEach((callback) => callback.call(null, action))
+  }
 }
 
-const eventEmitter = new EventEmitter();
-export default eventEmitter;
+const eventEmitter = new EventEmitter()
+export default eventEmitter
