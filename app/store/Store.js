@@ -1,8 +1,8 @@
 import eventEmitter from './EventEmitter.js'
 import {
-  ADD_TODO,
+  ADD_TODO_SUCCESS,
   STATE_UPDATED,
-  DELETE_TODO,
+  DELETE_TODO_SUCCESS,
   DELETE_ALL_TODOS,
   TOGGLE_TODO_STATUS,
   CHANGE_TODO,
@@ -15,8 +15,8 @@ class Store {
       activeTodos: 0,
     }
 
-    eventEmitter.subscribe(ADD_TODO, this.addTodo)
-    eventEmitter.subscribe(DELETE_TODO, this.deleteTodo)
+    eventEmitter.subscribe(ADD_TODO_SUCCESS, this.addTodo)
+    eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.deleteTodo)
     eventEmitter.subscribe(DELETE_ALL_TODOS, this.removeAllTodo)
     eventEmitter.subscribe(TOGGLE_TODO_STATUS, this.toggleTodoStatus)
     eventEmitter.subscribe(CHANGE_TODO, this.changeTodo)
@@ -28,8 +28,7 @@ class Store {
   }
 
   addTodo = ({ payload }) => {
-    const todo = payload
-    const todos = [...this.state.todos, todo]
+    const todos = payload ? [...payload] : []
     const newState = {
       ...this.state,
       activeTodos: this.countActiveTodos(todos),

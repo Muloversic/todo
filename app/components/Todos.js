@@ -1,7 +1,7 @@
 import eventEmitter from '../store/EventEmitter.js'
 import store from '../store/Store.js'
 import {
-  DELETE_TODO,
+	DELETE_TODO_REQUEST,
   DELETE_ALL_TODOS,
   TOGGLE_TODO_STATUS,
   CHANGE_TODO,
@@ -102,7 +102,7 @@ class Todos {
       }
 
       if (event.target === deleteButton) {
-        eventEmitter.emit({ type: DELETE_TODO, payload: todoId })
+        eventEmitter.emit({ type: DELETE_TODO_REQUEST, payload: todoId })
       }
     })
 

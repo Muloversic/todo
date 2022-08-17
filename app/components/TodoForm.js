@@ -1,6 +1,6 @@
 import eventEmitter from '../store/EventEmitter.js'
 import { createElement } from '../helpers.js'
-import { ADD_TODO } from '../constants.js'
+import { ADD_TODO_REQUEST } from '../constants.js'
 
 class TodoForm {
   createTodoForm = () => {
@@ -57,7 +57,7 @@ class TodoForm {
         }
 
         eventEmitter.emit({
-          type: ADD_TODO,
+          type: ADD_TODO_REQUEST,
           payload: todoObj,
         })
       }
@@ -71,6 +71,7 @@ class TodoForm {
     // _todo body
     const todoBody = createElement('div', 'todo')
     todoBody.append(this.createTodoForm())
+
     return todoBody
   }
 }
