@@ -23,8 +23,12 @@ class Store {
   }
 
   setState = (newState) => {
-    this.state = { ...this.state, ...newState }
-    eventEmitter.emit({ type: STATE_UPDATED })
+    const oldState = this.state
+    if (JSON.stringify(newState) !== JSON.stringify(oldState)) {
+      this.state = { ...this.state, ...newState }
+      eventEmitter.emit({ type: STATE_UPDATED })
+      console.log(JSON.stringify(newState) !== JSON.stringify(oldState))
+    }
   }
 
   addTodo = ({ payload }) => {

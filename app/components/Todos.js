@@ -106,6 +106,8 @@ class Todos {
       if (event.target === deleteButton) {
         eventEmitter.emit({ type: DELETE_TODO_REQUEST, payload: todoId })
       }
+
+      console.log(this.isEditing)
     })
 
     // append todo item+action button to wrapper, append wrappers to container
@@ -148,10 +150,14 @@ class Todos {
     })
 
     // make todo editable
-    button.innerHTML = '&#10004;'
-    if (todoItemInput.value.trim() !== '') {
-      todoItemInput.classList.toggle('todo__element--hidden')
-      todoItemText.classList.toggle('todo__element--hidden')
+    if (this.isEditing) {
+      button.innerHTML = '&#10004;'
+      if (todoItemInput.value.trim() !== '') {
+        todoItemInput.classList.toggle('todo__element--hidden')
+        todoItemText.classList.toggle('todo__element--hidden')
+      }
+    } else {
+      button.innerHTML = '&#9998;'
     }
 
     // check if it's editing state and value is not empty save edited todo and disable input
