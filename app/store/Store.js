@@ -16,10 +16,10 @@ class Store {
     }
 
     eventEmitter.subscribe(ADD_TODO_SUCCESS, this.addTodo)
-    eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.deleteTodo)
-    eventEmitter.subscribe(DELETE_ALL_TODOS_SUCCESS, this.removeAllTodo)
-    eventEmitter.subscribe(TOGGLE_TODO_STATUS_SUCCESS, this.toggleTodoStatus)
-    eventEmitter.subscribe(CHANGE_TODO_SUCCESS, this.changeTodo)
+    eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.getModifiedTodos)
+    eventEmitter.subscribe(DELETE_ALL_TODOS_SUCCESS, this.getModifiedTodos)
+    eventEmitter.subscribe(TOGGLE_TODO_STATUS_SUCCESS, this.getModifiedTodos)
+    eventEmitter.subscribe(CHANGE_TODO_SUCCESS, this.getModifiedTodos)
   }
 
   setState = (newState) => {
@@ -38,37 +38,7 @@ class Store {
     this.setState(newState)
   }
 
-  toggleTodoStatus = ({ payload }) => {
-    const newState = {
-      ...this.state,
-      activeTodos: this.countActiveTodos(payload),
-      todos: payload,
-    }
-
-    this.setState(newState)
-  }
-
-  changeTodo = ({ payload }) => {
-    const newState = {
-      ...this.state,
-      activeTodos: this.countActiveTodos(payload),
-      todos: payload,
-    }
-
-    this.setState(newState)
-  }
-
-  deleteTodo = ({ payload }) => {
-    const newState = {
-      ...this.state,
-      activeTodos: this.countActiveTodos(payload),
-      todos: payload,
-    }
-
-    this.setState(newState)
-  }
-
-  removeAllTodo = ({ payload }) => {
+  getModifiedTodos = ({ payload }) => {
     const newState = {
       ...this.state,
       activeTodos: this.countActiveTodos(payload),
