@@ -56,6 +56,20 @@ class Sagas {
     this.sendTodo(TOGGLE_TODO_STATUS_SUCCESS)
   }
 
+  changeTodo = ({ payload }) => {
+    const { todoId, newTodoName } = payload
+    this.todos = this.todos.map((todo) => {
+      if (todo.id === todoId) {
+        todo.name = newTodoName
+      }
+
+      return todo
+    })
+
+    localStorage.setItem('todos', JSON.stringify(this.todos))
+    this.sendTodo(CHANGE_TODO_SUCCESS)
+  }
+
   sendTodo = (eventType) => {
     eventEmitter.emit({
       type: eventType,
