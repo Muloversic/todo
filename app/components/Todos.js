@@ -1,8 +1,8 @@
 import eventEmitter from '../store/EventEmitter.js'
 import store from '../store/Store.js'
 import {
-	DELETE_TODO_REQUEST,
-  DELETE_ALL_TODOS,
+  DELETE_TODO_REQUEST,
+  DELETE_ALL_TODOS_REQUEST,
   TOGGLE_TODO_STATUS,
   CHANGE_TODO,
   STATE_UPDATED,
@@ -37,7 +37,9 @@ class Todos {
 
     // remove all todo btn
     const removeAllButton = createElement('button', 'todo__remove-all', 'Remove all')
-    removeAllButton.addEventListener('click', () => eventEmitter.emit({ type: DELETE_ALL_TODOS }))
+    removeAllButton.addEventListener('click', () =>
+      eventEmitter.emit({ type: DELETE_ALL_TODOS_REQUEST })
+    )
 
     // append 'counter' and 'remove todo button' to info bar
     this.todoInfoBar.append(...[todoItemCounter, removeAllButton])
