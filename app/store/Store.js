@@ -1,4 +1,4 @@
-import eventEmitter from '../store/EventEmitter.js'
+import eventEmitter from './EventEmitter.js'
 import {
   ADD_TODO,
   STATE_UPDATED,

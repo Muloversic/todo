@@ -8,6 +8,7 @@ import {
   STATE_UPDATED,
 } from '../constants.js'
 import { createElement } from '../helpers.js'
+
 class Todos {
   constructor() {
     this.todoContainer = this.createTodosContainer()
@@ -55,7 +56,7 @@ class Todos {
   }
 
   createTodoElement = (todo) => {
-    //render todo
+    // render todo
     const todoWrapper = createElement('div', 'todo__element-wrapper', '', [{ id: todo.id }])
 
     // create input and its attrs
@@ -110,7 +111,7 @@ class Todos {
     this.todoContainer.append(todoWrapper)
   }
 
-  editTodo = (button, todoItemInput, todoItemText, todoId) => {
+  editTodo(button, todoItemInput, todoItemText, todoId) {
     const confirmTodoChanges = () => {
       todoItemInput.classList.toggle('todo__element--hidden')
       todoItemText.classList.toggle('todo__element--hidden')
@@ -126,7 +127,7 @@ class Todos {
       })
     }
 
-    let initialTodoValue = todoItemInput.name
+    const initialTodoValue = todoItemInput.name
     todoItemInput.addEventListener('keydown', (e) => {
       // if escape was pressed set initial value to input.value and to arr with edited todo
       // works only if input value is not empty
@@ -163,7 +164,7 @@ class Todos {
   }
 
   processTodos = () => {
-    const state = store.state
+    const { state } = store
     const { todos, activeTodos } = state
     ;[...this.todoContainer.children].forEach((todo) => todo.remove())
     todos.forEach((todo) => this.createTodoElement(todo))
@@ -171,8 +172,8 @@ class Todos {
     this.changeTodoCounter(activeTodos)
   }
 
-  render = () => {
-    const state = store.state
+  render() {
+    const { state } = store
     const todoBody = document.querySelector('.todo')
     if (todoBody.children.length <= 1) {
       todoBody.append(this.todoElementsContainer)
