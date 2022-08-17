@@ -4,7 +4,7 @@ import {
   STATE_UPDATED,
   DELETE_TODO_SUCCESS,
   DELETE_ALL_TODOS_SUCCESS,
-  TOGGLE_TODO_STATUS,
+  TOGGLE_TODO_STATUS_SUCCESS,
   CHANGE_TODO,
 } from '../constants.js'
 
@@ -18,7 +18,7 @@ class Store {
     eventEmitter.subscribe(ADD_TODO_SUCCESS, this.addTodo)
     eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.deleteTodo)
     eventEmitter.subscribe(DELETE_ALL_TODOS_SUCCESS, this.removeAllTodo)
-    eventEmitter.subscribe(TOGGLE_TODO_STATUS, this.toggleTodoStatus)
+    eventEmitter.subscribe(TOGGLE_TODO_STATUS_SUCCESS, this.toggleTodoStatus)
     eventEmitter.subscribe(CHANGE_TODO, this.changeTodo)
   }
 
@@ -39,19 +39,10 @@ class Store {
   }
 
   toggleTodoStatus = ({ payload }) => {
-    const todoId = payload
-    const todos = this.state.todos.map((todo) => {
-      if (todo.id === todoId) {
-        todo.active = !todo.active
-      }
-
-      return todo
-    })
-
     const newState = {
       ...this.state,
-      activeTodos: this.countActiveTodos(todos),
-      todos,
+      activeTodos: this.countActiveTodos(payload),
+      todos: payload,
     }
 
     this.setState(newState)

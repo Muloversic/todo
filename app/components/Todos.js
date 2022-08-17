@@ -3,8 +3,8 @@ import store from '../store/Store.js'
 import {
   DELETE_TODO_REQUEST,
   DELETE_ALL_TODOS_REQUEST,
-  TOGGLE_TODO_STATUS,
-  CHANGE_TODO,
+  TOGGLE_TODO_STATUS_REQUEST,
+  CHANGE_TODO_REQUEST,
   STATE_UPDATED,
 } from '../constants.js'
 import { createElement } from '../helpers.js'
@@ -84,7 +84,7 @@ class Todos {
     todoWrapper.addEventListener('click', (event) => {
       const todoId = +event.target.parentElement.id
       if (event.target === todoItemText && !this.isEditing) {
-        eventEmitter.emit({ type: TOGGLE_TODO_STATUS, payload: todoId })
+        eventEmitter.emit({ type: TOGGLE_TODO_STATUS_REQUEST, payload: todoId })
       }
 
       if (event.target === editButton) {
@@ -121,7 +121,7 @@ class Todos {
       todoItemInput.classList.remove('todo__element--err')
       todoItemInput.name = todoItemInput.value
       eventEmitter.emit({
-        type: CHANGE_TODO,
+        type: CHANGE_TODO_REQUEST,
         payload: {
           todoId,
           newTodoName: todoItemInput.value.trim(),
