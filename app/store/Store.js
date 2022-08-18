@@ -13,6 +13,7 @@ class Store {
     this.state = {
       todos: [],
       activeTodos: 0,
+      foo: 'a',
     }
 
     eventEmitter.subscribe(ADD_TODO_SUCCESS, this.addTodo)
@@ -22,12 +23,37 @@ class Store {
     eventEmitter.subscribe(CHANGE_TODO_SUCCESS, this.getModifiedTodos)
   }
 
+  shouldStateUpdate = (newState) => {
+    if (newState.activeTodos !== this.state.activeTodos) {
+      return true
+    }
+
+    if (newState.todos.length !== this.state.todos.length) {
+      return true
+    }
+
+    let isDifferent = false
+    const oldTodos = this.state.todos
+    const newTodos = newState.todos
+    newTodos.forEach((newTodo, i) => {
+      const todoKeys = Object.keys(newTodo)
+      const isUpdated = !todoKeys.every((key) => newTodo[key] === oldTodos[i][key])
+      if (isUpdated) {
+        isDifferent = true
+      }
+    })
+
+    return isDifferent
+  }
+
   setState = (newState) => {
-    const oldState = this.state
-    if (JSON.stringify(newState) !== JSON.stringify(oldState)) {
-      this.state = { ...this.state, ...newState }
+    const stateToUpdate = { ...this.state, ...newState }
+    const shouldUpdate = this.shouldStateUpdate(stateToUpdate)
+    if (shouldUpdate) {
+      this.state = {
+        ...stateToUpdate,
+      }
       eventEmitter.emit({ type: STATE_UPDATED })
-      console.log(JSON.stringify(newState) !== JSON.stringify(oldState))
     }
   }
 
