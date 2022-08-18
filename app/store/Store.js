@@ -1,5 +1,6 @@
 import eventEmitter from './EventEmitter.js'
 import {
+  LOAD_TODO_SUCCESS,
   ADD_TODO_SUCCESS,
   STATE_UPDATED,
   DELETE_TODO_SUCCESS,
@@ -16,6 +17,7 @@ class Store {
       foo: 'a',
     }
 
+    eventEmitter.subscribe(LOAD_TODO_SUCCESS, this.loadTodo)
     eventEmitter.subscribe(ADD_TODO_SUCCESS, this.addTodo)
     eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.getModifiedTodos)
     eventEmitter.subscribe(DELETE_ALL_TODOS_SUCCESS, this.getModifiedTodos)
@@ -55,6 +57,17 @@ class Store {
       }
       eventEmitter.emit({ type: STATE_UPDATED })
     }
+  }
+
+  loadTodo = ({ payload }) => {
+    const todos = payload ? [...payload] : []
+    const newState = {
+      ...this.state,
+      activeTodos: this.countActiveTodos(todos),
+      todos,
+    }
+
+    this.setState(newState)
   }
 
   addTodo = ({ payload }) => {
