@@ -22,7 +22,7 @@ class Sagas {
     eventEmitter.subscribe(DELETE_TODO_REQUEST, this.deleteTodo)
     eventEmitter.subscribe(DELETE_ALL_TODOS_REQUEST, this.deleteAllTodo)
     eventEmitter.subscribe(TOGGLE_TODO_STATUS_REQUEST, this.toggleTodoStatus)
-    eventEmitter.subscribe(CHANGE_TODO_REQUEST, this.changeTodo)
+    // eventEmitter.subscribe(CHANGE_TODO_REQUEST, this.changeTodo)
   }
 
   loadTodo = () => {
@@ -77,7 +77,10 @@ class Sagas {
     })
 
     localStorage.setItem('todos', JSON.stringify(this.todos))
-    this.sendTodo(CHANGE_TODO_SUCCESS)
+    eventEmitter.emit({
+      type: CHANGE_TODO_SUCCESS,
+      payload,
+    })
   }
 
   sendTodo = (eventType) => {

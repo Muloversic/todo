@@ -7,6 +7,7 @@ import {
   DELETE_ALL_TODOS_SUCCESS,
   TOGGLE_TODO_STATUS_SUCCESS,
   CHANGE_TODO_SUCCESS,
+  CHANGE_TODO_REQUEST,
 } from '../constants.js'
 
 class Store {
@@ -14,15 +15,14 @@ class Store {
     this.state = {
       todos: [],
       activeTodos: 0,
-      foo: 'a',
     }
 
     eventEmitter.subscribe(LOAD_TODO_SUCCESS, this.loadTodo)
     eventEmitter.subscribe(ADD_TODO_SUCCESS, this.addTodo)
+    eventEmitter.subscribe(CHANGE_TODO_REQUEST, this.changeTodo)
     eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.getModifiedTodos)
     eventEmitter.subscribe(DELETE_ALL_TODOS_SUCCESS, this.getModifiedTodos)
     eventEmitter.subscribe(TOGGLE_TODO_STATUS_SUCCESS, this.getModifiedTodos)
-    eventEmitter.subscribe(CHANGE_TODO_SUCCESS, this.getModifiedTodos)
   }
 
   shouldStateUpdate = (newState) => {
@@ -57,6 +57,8 @@ class Store {
       }
       eventEmitter.emit({ type: STATE_UPDATED })
     }
+
+    console.log(shouldUpdate)
   }
 
   loadTodo = ({ payload }) => {
@@ -71,12 +73,33 @@ class Store {
   }
 
   addTodo = ({ payload }) => {
-    const todos = payload ? [...payload] : []
+    const todos = payload
     const newState = {
       ...this.state,
       activeTodos: this.countActiveTodos(todos),
       todos,
     }
+
+    this.setState(newState)
+  }
+
+  changeTodo = ({ payload }) => {
+    const { todoId, newTodoName } = payload
+    const todos = [...this.state.todos].map((todo) => {
+      if (todo.id === todoId) {
+        todo.name = newTodoName
+      }
+
+      return todo
+    })
+
+    const newState = {
+      ...this.state,
+      activeTodos: this.countActiveTodos(todos),
+      todos,
+    }
+
+    console.log(this.state)
 
     this.setState(newState)
   }
