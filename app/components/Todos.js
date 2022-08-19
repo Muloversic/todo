@@ -16,7 +16,7 @@ class Todos {
     this.todoElementsContainer = this.createTodoElementsContainer()
     this.createInfoBarElements()
     this.todoElementsContainer.append(...[this.todoInfoBar, this.todoContainer])
-    this.isEditing = false
+    // this.isEditing = false
     eventEmitter.subscribe(STATE_UPDATED, this.processTodos)
   }
 
@@ -81,31 +81,33 @@ class Todos {
     const deleteButton = createElement('span', ['todo__delete', 'todo__action-element'], 'x')
 
     // add toggle todo status listener for todo wrapper
+    let isEditing = false
     todoWrapper.addEventListener('click', (event) => {
       const todoId = +event.target.parentElement.id
-      if (event.target === todoItemText && !this.isEditing) {
+      if (event.target === todoItemText && !isEditing) {
         eventEmitter.emit({ type: TOGGLE_TODO_STATUS_REQUEST, payload: todoId })
       }
 
       if (event.target === editButton) {
         // _!isEditing means input is editable
         if (todoItemInput.value !== '') {
-          this.isEditing = !this.isEditing
+          isEditing = !isEditing
         }
 
         // flip isEditing state if esc was pressed
         todoItemInput.addEventListener('keydown', (e) => {
           if (e.key === 'Escape' || e.key === 'Enter') {
-            this.isEditing = false
+            isEditing = false
           }
         })
 
-        this.editTodo(editButton, todoItemInput, todoItemText, todo.id)
+        this.editTodo(editButton, todoItemInput, todoItemText, todo.id, isEditing)
       }
 
       if (event.target === deleteButton) {
         eventEmitter.emit({ type: DELETE_TODO_REQUEST, payload: todoId })
       }
+      console.log(isEditing)
     })
 
     // append todo item+action button to wrapper, append wrappers to container
@@ -113,7 +115,7 @@ class Todos {
     this.todoContainer.append(todoWrapper)
   }
 
-  editTodo(button, todoItemInput, todoItemText, todoId) {
+  editTodo(button, todoItemInput, todoItemText, todoId, isEditing) {
     const confirmTodoChanges = () => {
       todoItemInput.classList.toggle('todo__element--hidden')
       todoItemText.classList.toggle('todo__element--hidden')
@@ -143,12 +145,13 @@ class Todos {
       }
 
       if (e.key === 'Enter' && todoItemInput.value.trim() !== '') {
+        console.log('enter submit')
         confirmTodoChanges()
       }
     })
 
     // make todo editable
-    if (this.isEditing) {
+    if (isEditing) {
       button.innerHTML = '&#10004;'
       if (todoItemInput.value.trim() !== '') {
         todoItemInput.classList.toggle('todo__element--hidden')
@@ -159,7 +162,7 @@ class Todos {
     }
 
     // check if it's editing state and value is not empty save edited todo and disable input
-    if (!this.isEditing && todoItemInput.value.trim() !== '') {
+    if (!isEditing && todoItemInput.value.trim() !== '') {
       confirmTodoChanges()
     }
 
