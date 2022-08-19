@@ -48,7 +48,7 @@ class Store {
   }
 
   setState = (newState) => {
-    console.log(newState, this.state)
+    console.log('new:', newState, 'old:', this.state)
     const stateToUpdate = { ...this.state, ...newState }
     const shouldUpdate = this.shouldStateUpdate(stateToUpdate)
     if (shouldUpdate) {
@@ -83,7 +83,7 @@ class Store {
 
   changeTodo = ({ payload }) => {
     const { todoId, newTodoName } = payload
-    const todos = [...this.state.todos].map((todo) => {
+    const todos = this.state.todos.map((todo) => {
       if (todo.id === todoId) {
         todo.name = newTodoName
       }

@@ -16,9 +16,6 @@ class App {
     eventEmitter.emit({
       type: LOAD_TODO_REQUEST,
     })
-    // eventEmitter.emit({
-    //   type: ADD_TODO_REQUEST,
-    // })
   }
 }
 
