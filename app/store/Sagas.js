@@ -12,6 +12,12 @@ import {
   TOGGLE_TODO_STATUS_SUCCESS,
   CHANGE_TODO_REQUEST,
   CHANGE_TODO_SUCCESS,
+  SHOW_ALL_TODOS_REQUEST,
+  SHOW_ALL_TODOS_SUCCESS,
+  SHOW_ACTIVE_TODOS_REQUEST,
+  SHOW_ACTIVE_TODOS_SUCCESS,
+  SHOW_DONE_TODOS_REQUEST,
+  SHOW_DONE_TODOS_SUCCESS,
 } from '../constants.js'
 
 class Sagas {
@@ -22,6 +28,9 @@ class Sagas {
     eventEmitter.subscribe(DELETE_ALL_TODOS_REQUEST, this.deleteAllTodo)
     eventEmitter.subscribe(TOGGLE_TODO_STATUS_REQUEST, this.toggleTodoStatus)
     eventEmitter.subscribe(CHANGE_TODO_REQUEST, this.changeTodo)
+    eventEmitter.subscribe(SHOW_ALL_TODOS_REQUEST, this.showAllTodos)
+    eventEmitter.subscribe(SHOW_ACTIVE_TODOS_REQUEST, this.showActiveTodos)
+    eventEmitter.subscribe(SHOW_DONE_TODOS_REQUEST, this.showDoneTodos)
   }
 
   loadTodo = () => {
@@ -96,6 +105,32 @@ class Sagas {
     eventEmitter.emit({
       type: CHANGE_TODO_SUCCESS,
       payload,
+    })
+  }
+
+  showAllTodos = () => {
+    const todos = JSON.parse(localStorage.getItem('todos')) || []
+    eventEmitter.emit({
+      type: SHOW_ALL_TODOS_SUCCESS,
+      payload: todos,
+    })
+  }
+
+  showActiveTodos = () => {
+    const todos = JSON.parse(localStorage.getItem('todos')) || []
+    const activeTodos = todos.filter((todo) => todo.active)
+    eventEmitter.emit({
+      type: SHOW_ACTIVE_TODOS_SUCCESS,
+      payload: activeTodos,
+    })
+  }
+
+  showDoneTodos = () => {
+    const todos = JSON.parse(localStorage.getItem('todos')) || []
+    const doneTodos = todos.filter((todo) => !todo.active)
+    eventEmitter.emit({
+      type: SHOW_DONE_TODOS_SUCCESS,
+      payload: doneTodos,
     })
   }
 }

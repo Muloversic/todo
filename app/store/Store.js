@@ -7,6 +7,9 @@ import {
   DELETE_ALL_TODOS_SUCCESS,
   TOGGLE_TODO_STATUS_SUCCESS,
   CHANGE_TODO_SUCCESS,
+  SHOW_ALL_TODOS_SUCCESS,
+  SHOW_ACTIVE_TODOS_SUCCESS,
+  SHOW_DONE_TODOS_SUCCESS,
 } from '../constants.js'
 
 class Store {
@@ -22,6 +25,9 @@ class Store {
     eventEmitter.subscribe(DELETE_ALL_TODOS_SUCCESS, this.deleteAllTodos)
     eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.deleteTodo)
     eventEmitter.subscribe(TOGGLE_TODO_STATUS_SUCCESS, this.toggleTodoStatus)
+    eventEmitter.subscribe(SHOW_ALL_TODOS_SUCCESS, this.showAllTodos)
+    eventEmitter.subscribe(SHOW_ACTIVE_TODOS_SUCCESS, this.showActiveTodos)
+    eventEmitter.subscribe(SHOW_DONE_TODOS_SUCCESS, this.showDoneTodos)
   }
 
   shouldStateUpdate = (newState) => {
@@ -56,6 +62,39 @@ class Store {
       }
       eventEmitter.emit({ type: STATE_UPDATED })
     }
+  }
+
+  showAllTodos = ({ payload }) => {
+    const todos = payload ? [...payload] : []
+    const newState = {
+      ...this.state,
+      activeTodos: this.todosCounter(todos),
+      todos,
+    }
+
+    this.setState(newState)
+  }
+
+  showActiveTodos = ({ payload }) => {
+    const todos = payload ? [...payload] : []
+    const newState = {
+      ...this.state,
+      activeTodos: this.todosCounter(todos),
+      todos,
+    }
+
+    this.setState(newState)
+  }
+
+  showDoneTodos = ({ payload }) => {
+    const todos = payload ? [...payload] : []
+    const newState = {
+      ...this.state,
+      activeTodos: this.todosCounter(todos),
+      todos,
+    }
+
+    this.setState(newState)
   }
 
   loadTodo = ({ payload }) => {

@@ -6,6 +6,9 @@ import {
   TOGGLE_TODO_STATUS_REQUEST,
   CHANGE_TODO_REQUEST,
   STATE_UPDATED,
+  SHOW_ALL_TODOS_REQUEST,
+  SHOW_ACTIVE_TODOS_REQUEST,
+  SHOW_DONE_TODOS_REQUEST,
 } from '../constants.js'
 import { createElement } from '../helpers.js'
 
@@ -29,8 +32,22 @@ class Todos {
 
     // filter buttons
     const showAllTodosButton = createElement('button', 'todo__filtres-button', 'All todos')
+    showAllTodosButton.addEventListener('click', (e) => {
+      e.preventDefault()
+      eventEmitter.emit({ type: SHOW_ALL_TODOS_REQUEST })
+    })
+
     const showActiveTodos = createElement('button', 'todo__filtres-button', 'Active todos')
-    const showDoneTodos = createElement('button', 'todo__filtres-button', 'Todos counter')
+    showActiveTodos.addEventListener('click', (e) => {
+      e.preventDefault()
+      eventEmitter.emit({ type: SHOW_ACTIVE_TODOS_REQUEST })
+    })
+
+    const showDoneTodos = createElement('button', 'todo__filtres-button', 'Done todos')
+    showDoneTodos.addEventListener('click', (e) => {
+      e.preventDefault()
+      eventEmitter.emit({ type: SHOW_DONE_TODOS_REQUEST })
+    })
 
     // append buttons
     todoFilterButtons.append(...[showAllTodosButton, showActiveTodos, showDoneTodos])
