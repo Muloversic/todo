@@ -30,7 +30,7 @@ class Todos {
     // filter buttons
     const showAllTodosButton = createElement('button', 'todo__filtres-button', 'All todos')
     const showActiveTodos = createElement('button', 'todo__filtres-button', 'Active todos')
-    const showDoneTodos = createElement('button', 'todo__filtres-button', 'Done todos')
+    const showDoneTodos = createElement('button', 'todo__filtres-button', 'Todos counter')
 
     // append buttons
     todoFilterButtons.append(...[showAllTodosButton, showActiveTodos, showDoneTodos])
@@ -56,7 +56,7 @@ class Todos {
   changeTodoCounter = (num) => {
     const counterItem = document.querySelector('.todo__item-counter')
     if (counterItem) {
-      counterItem.textContent = `Active todos: ${num}`
+      counterItem.textContent = `Todos counter: ${num}`
     }
   }
 

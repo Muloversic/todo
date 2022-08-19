@@ -62,7 +62,7 @@ class Store {
     const todos = payload ? [...payload] : []
     const newState = {
       ...this.state,
-      activeTodos: this.countActiveTodos(todos),
+      activeTodos: this.todosCounter(todos),
       todos,
     }
 
@@ -73,7 +73,7 @@ class Store {
     const todos = [...this.state.todos, payload]
     const newState = {
       ...this.state,
-      activeTodos: this.countActiveTodos(todos),
+      activeTodos: this.todosCounter(todos),
       todos,
     }
 
@@ -95,7 +95,7 @@ class Store {
 
     const newState = {
       ...this.state,
-      activeTodos: this.countActiveTodos(todos),
+      activeTodos: this.todosCounter(todos),
       todos,
     }
 
@@ -106,7 +106,7 @@ class Store {
     const todos = []
     const newState = {
       ...this.state,
-      activeTodos: this.countActiveTodos(todos),
+      activeTodos: this.todosCounter(todos),
       todos,
     }
 
@@ -117,7 +117,7 @@ class Store {
     const todos = this.state.todos.filter((todo) => todo.id !== payload)
     const newState = {
       ...this.state,
-      activeTodos: this.countActiveTodos(todos),
+      activeTodos: this.todosCounter(todos),
       todos,
     }
 
@@ -138,18 +138,14 @@ class Store {
 
     const newState = {
       ...this.state,
-      activeTodos: this.countActiveTodos(todos),
+      activeTodos: this.todosCounter(todos),
       todos,
     }
 
     this.setState(newState)
   }
 
-  countActiveTodos = (todos) => {
-    const activeTodosArr = todos.filter((todo) => todo.active)
-    const activeTodos = activeTodosArr.length
-    return activeTodos
-  }
+  todosCounter = (todos) => todos.length
 }
 
 const store = new Store()
