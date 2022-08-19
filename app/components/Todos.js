@@ -13,16 +13,8 @@ class Todos {
   constructor() {
     this.todoContainer = this.createTodosContainer()
     this.todoInfoBar = this.createTodoInfoBarContainer()
-    this.todoElementsContainer = this.createTodoElementsContainer()
     this.createInfoBarElements()
-    this.todoElementsContainer.append(...[this.todoInfoBar, this.todoContainer])
-    // this.isEditing = false
     eventEmitter.subscribe(STATE_UPDATED, this.processTodos)
-  }
-
-  createTodoElementsContainer = () => {
-    const todoElementsContainer = createElement('div', 'todo__elements-container')
-    return todoElementsContainer
   }
 
   createTodoInfoBarContainer = () => {
@@ -181,14 +173,9 @@ class Todos {
   }
 
   render() {
-    const { state } = store
     const todoBody = document.querySelector('.todo')
     if (todoBody.children.length <= 1) {
-      todoBody.append(this.todoElementsContainer)
-    }
-
-    if (state.todos.length === 0) {
-      this.todoElementsContainer.remove()
+      todoBody.append(...[this.todoInfoBar, this.todoContainer])
     }
   }
 }
