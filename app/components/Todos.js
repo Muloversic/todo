@@ -35,7 +35,7 @@ class Todos {
     // append buttons
     todoFilterButtons.append(...[showAllTodosButton, showActiveTodos, showDoneTodos])
     // _todos counter at info bar
-    const todoItemCounter = createElement('p', 'todo__item-counter', 'Active todos: 1')
+    const todoItemCounter = createElement('p', 'todo__item-counter', 'All todos: 0')
 
     // remove all todo btn
     const removeAllButton = createElement('button', 'todo__remove-all', 'Remove all')
