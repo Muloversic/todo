@@ -27,7 +27,7 @@ input:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 40px;
+  padding-bottom: 60px;
 }
 
 /* _todo heading */
@@ -77,9 +77,30 @@ input:focus-visible {
 
 .todo__filters {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   padding: 0 60px;
+}
+
+.todo__filters-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.todo__filtres-button {
+  padding: 8px 13px;
+  background-color: #fff;
+  cursor: pointer;
+  border: none;
+  font-size: 18px;
+  color: green;
+  border: 1px solid #fff;
+}
+
+.todo__filtres-button:hover {
+  background-color: green;
+  color: #fff;
 }
 
 .todo__item-counter {

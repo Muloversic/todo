@@ -24,6 +24,16 @@ class Todos {
   }
 
   createFiltersElements = () => {
+    const todoFilterButtons = createElement('div', 'todo__filters-row')
+    const todoFiltersInfo = createElement('div', 'todo__filters-row')
+
+    // filter buttons
+    const showAllTodosButton = createElement('button', 'todo__filtres-button', 'All todos')
+    const showActiveTodos = createElement('button', 'todo__filtres-button', 'Active todos')
+    const showDoneTodos = createElement('button', 'todo__filtres-button', 'Done todos')
+
+    // append buttons
+    todoFilterButtons.append(...[showAllTodosButton, showActiveTodos, showDoneTodos])
     // _todos counter at info bar
     const todoItemCounter = createElement('p', 'todo__item-counter', 'Active todos: 1')
 
@@ -34,7 +44,8 @@ class Todos {
     )
 
     // append 'counter' and 'remove todo button' to info bar
-    this.todoFiltersContainer.append(...[todoItemCounter, removeAllButton])
+    todoFiltersInfo.append(...[todoItemCounter, removeAllButton])
+    this.todoFiltersContainer.append(...[todoFilterButtons, todoFiltersInfo])
   }
 
   createTodosContainer = () => {
