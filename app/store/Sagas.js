@@ -62,7 +62,10 @@ class Sagas {
     const existingTodos = JSON.parse(localStorage.getItem('todos'))
     const todos = existingTodos.map((todo) => {
       if (todo.id === payload) {
-        todo.active = !todo.active
+        return {
+          ...todo,
+          active: !todo.active,
+        }
       }
 
       return todo
@@ -80,7 +83,10 @@ class Sagas {
     const existingTodos = JSON.parse(localStorage.getItem('todos'))
     const todos = existingTodos.map((todo) => {
       if (todo.id === todoId) {
-        todo.name = newTodoName
+        return {
+          ...todo,
+          name: newTodoName,
+        }
       }
 
       return todo

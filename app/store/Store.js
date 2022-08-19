@@ -82,9 +82,12 @@ class Store {
 
   changeTodo = ({ payload }) => {
     const { todoId, newTodoName } = payload
-    const todos = this.state.todos.map(({ ...todo }) => {
+    const todos = this.state.todos.map((todo) => {
       if (todo.id === todoId) {
-        todo.name = newTodoName
+        return {
+          ...todo,
+          name: newTodoName,
+        }
       }
 
       return todo
@@ -122,9 +125,12 @@ class Store {
   }
 
   toggleTodoStatus = ({ payload }) => {
-    const todos = this.state.todos.map(({ ...todo }) => {
+    const todos = this.state.todos.map((todo) => {
       if (todo.id === payload) {
-        todo.active = !todo.active
+        return {
+          ...todo,
+          active: !todo.active,
+        }
       }
 
       return todo
