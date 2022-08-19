@@ -7,7 +7,6 @@ import {
   DELETE_ALL_TODOS_SUCCESS,
   TOGGLE_TODO_STATUS_SUCCESS,
   CHANGE_TODO_SUCCESS,
-  CHANGE_TODO_REQUEST,
 } from '../constants.js'
 
 class Store {
@@ -19,10 +18,10 @@ class Store {
 
     eventEmitter.subscribe(LOAD_TODO_SUCCESS, this.loadTodo)
     eventEmitter.subscribe(ADD_TODO_SUCCESS, this.addTodo)
-    eventEmitter.subscribe(CHANGE_TODO_REQUEST, this.changeTodo)
-    eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.getModifiedTodos)
-    eventEmitter.subscribe(DELETE_ALL_TODOS_SUCCESS, this.getModifiedTodos)
-    eventEmitter.subscribe(TOGGLE_TODO_STATUS_SUCCESS, this.getModifiedTodos)
+    eventEmitter.subscribe(CHANGE_TODO_SUCCESS, this.changeTodo)
+    eventEmitter.subscribe(DELETE_ALL_TODOS_SUCCESS, this.deleteAllTodos)
+    eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.deleteTodo)
+    eventEmitter.subscribe(TOGGLE_TODO_STATUS_SUCCESS, this.toggleTodoStatus)
   }
 
   shouldStateUpdate = (newState) => {
@@ -49,6 +48,7 @@ class Store {
   }
 
   setState = (newState) => {
+    console.log(newState, this.state)
     const stateToUpdate = { ...this.state, ...newState }
     const shouldUpdate = this.shouldStateUpdate(stateToUpdate)
     if (shouldUpdate) {
@@ -57,8 +57,6 @@ class Store {
       }
       eventEmitter.emit({ type: STATE_UPDATED })
     }
-
-    console.log(shouldUpdate)
   }
 
   loadTodo = ({ payload }) => {
@@ -73,7 +71,7 @@ class Store {
   }
 
   addTodo = ({ payload }) => {
-    const todos = payload
+    const todos = [...this.state.todos, payload]
     const newState = {
       ...this.state,
       activeTodos: this.countActiveTodos(todos),
@@ -99,16 +97,44 @@ class Store {
       todos,
     }
 
-    console.log(this.state)
+    this.setState(newState)
+  }
+
+  deleteAllTodos = () => {
+    const todos = []
+    const newState = {
+      ...this.state,
+      activeTodos: this.countActiveTodos(todos),
+      todos,
+    }
 
     this.setState(newState)
   }
 
-  getModifiedTodos = ({ payload }) => {
+  deleteTodo = ({ payload }) => {
+    const todos = this.state.todos.filter((todo) => todo.id !== payload)
     const newState = {
       ...this.state,
-      activeTodos: this.countActiveTodos(payload),
-      todos: payload,
+      activeTodos: this.countActiveTodos(todos),
+      todos,
+    }
+
+    this.setState(newState)
+  }
+
+  toggleTodoStatus = ({ payload }) => {
+    const todos = this.state.todos.map((todo) => {
+      if (todo.id === payload) {
+        todo.active = !todo.active
+      }
+
+      return todo
+    })
+
+    const newState = {
+      ...this.state,
+      activeTodos: this.countActiveTodos(todos),
+      todos,
     }
 
     this.setState(newState)
