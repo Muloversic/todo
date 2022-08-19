@@ -107,7 +107,6 @@ class Todos {
       if (event.target === deleteButton) {
         eventEmitter.emit({ type: DELETE_TODO_REQUEST, payload: todoId })
       }
-      console.log(isEditing)
     })
 
     // append todo item+action button to wrapper, append wrappers to container
