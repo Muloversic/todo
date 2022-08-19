@@ -48,7 +48,6 @@ class Store {
   }
 
   setState = (newState) => {
-    console.log('new:', newState, 'old:', this.state)
     const stateToUpdate = { ...this.state, ...newState }
     const shouldUpdate = this.shouldStateUpdate(stateToUpdate)
     if (shouldUpdate) {
@@ -84,11 +83,12 @@ class Store {
   changeTodo = ({ payload }) => {
     const { todoId, newTodoName } = payload
     const todos = this.state.todos.map((todo) => {
-      if (todo.id === todoId) {
-        todo.name = newTodoName
+      const editedTodo = { ...todo }
+      if (editedTodo.id === todoId) {
+        editedTodo.name = newTodoName
       }
 
-      return todo
+      return editedTodo
     })
 
     const newState = {
@@ -124,11 +124,12 @@ class Store {
 
   toggleTodoStatus = ({ payload }) => {
     const todos = this.state.todos.map((todo) => {
-      if (todo.id === payload) {
-        todo.active = !todo.active
+      const toggledTodo = { ...todo }
+      if (toggledTodo.id === payload) {
+        toggledTodo.active = !toggledTodo.active
       }
 
-      return todo
+      return toggledTodo
     })
 
     const newState = {
