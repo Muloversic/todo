@@ -75,7 +75,7 @@ input:focus-visible {
 
 /* _todo info bar */
 
-.todo__info-bar {
+.todo__filters {
   display: flex;
   justify-content: space-between;
   align-items: center;

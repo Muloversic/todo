@@ -12,18 +12,18 @@ import { createElement } from '../helpers.js'
 class Todos {
   constructor() {
     this.todoContainer = this.createTodosContainer()
-    this.todoInfoBar = this.createTodoInfoBarContainer()
-    this.createInfoBarElements()
+    this.todoFiltersContainer = this.createFiltersContainer()
+    this.createFiltersElements()
     eventEmitter.subscribe(STATE_UPDATED, this.processTodos)
   }
 
-  createTodoInfoBarContainer = () => {
+  createFiltersContainer = () => {
     // _todo info bar
-    const todoInfoBar = createElement('div', 'todo__info-bar')
-    return todoInfoBar
+    const todoFilters = createElement('div', 'todo__filters')
+    return todoFilters
   }
 
-  createInfoBarElements = () => {
+  createFiltersElements = () => {
     // _todos counter at info bar
     const todoItemCounter = createElement('p', 'todo__item-counter', 'Active todos: 1')
 
@@ -34,7 +34,7 @@ class Todos {
     )
 
     // append 'counter' and 'remove todo button' to info bar
-    this.todoInfoBar.append(...[todoItemCounter, removeAllButton])
+    this.todoFiltersContainer.append(...[todoItemCounter, removeAllButton])
   }
 
   createTodosContainer = () => {
@@ -175,7 +175,7 @@ class Todos {
   render() {
     const todoBody = document.querySelector('.todo')
     if (todoBody.children.length <= 1) {
-      todoBody.append(...[this.todoInfoBar, this.todoContainer])
+      todoBody.append(...[this.todoFiltersContainer, this.todoContainer])
     }
   }
 }
