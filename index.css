@@ -98,6 +98,10 @@ input:focus-visible {
   border: 1px solid #fff;
 }
 
+.todo__filtres-button--active{
+	
+}
+
 .todo__filtres-button:hover {
   background-color: green;
   color: #fff;

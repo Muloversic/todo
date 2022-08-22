@@ -31,7 +31,11 @@ class Todos {
     const todoFiltersInfo = createElement('div', 'todo__filters-row')
 
     // filter buttons
-    const showAllTodosButton = createElement('button', 'todo__filtres-button', 'All todos')
+    const showAllTodosButton = createElement(
+      'button',
+      ['todo__filtres-button', 'todo__filtres-button--active'],
+      'All todos',
+    )
     showAllTodosButton.addEventListener('click', (e) => {
       e.preventDefault()
       eventEmitter.emit({ type: SHOW_ALL_TODOS_REQUEST })
@@ -57,7 +61,7 @@ class Todos {
     // remove all todo btn
     const removeAllButton = createElement('button', 'todo__remove-all', 'Remove all')
     removeAllButton.addEventListener('click', () =>
-      eventEmitter.emit({ type: DELETE_ALL_TODOS_REQUEST })
+      eventEmitter.emit({ type: DELETE_ALL_TODOS_REQUEST }),
     )
 
     // append 'counter' and 'remove todo button' to info bar
