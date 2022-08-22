@@ -1,8 +1,8 @@
-import TodoForm from './TodoForm.js'
-import Todos from './Todos.js'
-import Sagas from '../store/Sagas.js'
-import eventEmitter from '../store/EventEmitter.js'
-import { LOAD_TODO_REQUEST } from '../constants.js'
+import TodoForm from './TodoForm'
+import Todos from './Todos'
+import Sagas from '../store/Sagas'
+import eventEmitter from '../store/EventEmitter'
+import { LOAD_TODO_REQUEST } from '../constants'
 
 const todoForm = new TodoForm()
 const todos = new Todos()

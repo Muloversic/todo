@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'https://jspm.dev/uuid'
+import { v4 as uuidv4 } from 'uuid'
 import eventEmitter from '../store/EventEmitter.js'
 import { createElement } from '../helpers.js'
 import { ADD_TODO_REQUEST } from '../constants.js'
