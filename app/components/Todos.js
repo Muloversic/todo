@@ -106,6 +106,14 @@ class Todos {
       const todoId = +event.target.parentElement.id
       if (event.target === todoItemText && !isEditing) {
         eventEmitter.emit({ type: TOGGLE_TODO_STATUS_REQUEST, payload: todoId })
+
+        if (store.state.filterType === 'active') {
+          eventEmitter.emit({ type: SHOW_ACTIVE_TODOS_REQUEST })
+        }
+
+        if (store.state.filterType === 'done') {
+          eventEmitter.emit({ type: SHOW_DONE_TODOS_REQUEST })
+        }
       }
 
       if (event.target === editButton) {

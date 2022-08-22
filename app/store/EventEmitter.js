@@ -15,10 +15,10 @@ class EventEmitter {
   emit = (action) => {
     const event = this.events[action.type]
     event && event.forEach((callback) => callback.call(null, action))
-    // console.log(`%c ACTION "${action.type}" DISPATCHED: `, 'color: green; font-weight: 700', {
-    //   type: action.type,
-    //   payload: action.payload,
-    // })
+    console.log(`%c ACTION "${action.type}" DISPATCHED: `, 'color: green; font-weight: 700', {
+      type: action.type,
+      payload: action.payload,
+    })
   }
 }
 

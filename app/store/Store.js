@@ -17,6 +17,7 @@ class Store {
     this.state = {
       todos: [],
       activeTodos: 0,
+      filterType: 'all',
     }
 
     eventEmitter.subscribe(LOAD_TODO_SUCCESS, this.loadTodo)
@@ -60,6 +61,7 @@ class Store {
       this.state = {
         ...stateToUpdate,
       }
+
       eventEmitter.emit({ type: STATE_UPDATED })
     }
   }
@@ -69,6 +71,7 @@ class Store {
     const newState = {
       ...this.state,
       activeTodos: this.todosCounter(todos),
+      filterType: 'all',
       todos,
     }
 
@@ -80,6 +83,7 @@ class Store {
     const newState = {
       ...this.state,
       activeTodos: this.todosCounter(todos),
+      filterType: 'active',
       todos,
     }
 
@@ -91,6 +95,7 @@ class Store {
     const newState = {
       ...this.state,
       activeTodos: this.todosCounter(todos),
+      filterType: 'done',
       todos,
     }
 
@@ -116,7 +121,9 @@ class Store {
       todos,
     }
 
-    this.setState(newState)
+    if (this.state.filterType !== 'done') {
+      this.setState(newState)
+    }
   }
 
   changeTodo = ({ payload }) => {
