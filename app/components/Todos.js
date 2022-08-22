@@ -36,20 +36,33 @@ class Todos {
       ['todo__filtres-button', 'todo__filtres-button--active'],
       'All todos',
     )
+
     showAllTodosButton.addEventListener('click', (e) => {
       e.preventDefault()
+      ;[...todoFilterButtons.children].forEach((button) =>
+        button.classList.remove('todo__filtres-button--active'),
+      )
+      showAllTodosButton.classList.add('todo__filtres-button--active')
       eventEmitter.emit({ type: SHOW_ALL_TODOS_REQUEST })
     })
 
     const showActiveTodos = createElement('button', 'todo__filtres-button', 'Active todos')
     showActiveTodos.addEventListener('click', (e) => {
       e.preventDefault()
+      ;[...todoFilterButtons.children].forEach((button) =>
+        button.classList.remove('todo__filtres-button--active'),
+      )
+      showActiveTodos.classList.add('todo__filtres-button--active')
       eventEmitter.emit({ type: SHOW_ACTIVE_TODOS_REQUEST })
     })
 
     const showDoneTodos = createElement('button', 'todo__filtres-button', 'Done todos')
     showDoneTodos.addEventListener('click', (e) => {
       e.preventDefault()
+      ;[...todoFilterButtons.children].forEach((button) =>
+        button.classList.remove('todo__filtres-button--active'),
+      )
+      showDoneTodos.classList.add('todo__filtres-button--active')
       eventEmitter.emit({ type: SHOW_DONE_TODOS_REQUEST })
     })
 

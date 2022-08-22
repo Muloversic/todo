@@ -94,16 +94,16 @@ input:focus-visible {
   cursor: pointer;
   border: none;
   font-size: 18px;
-  color: green;
+  color: #000;
   border: 1px solid #fff;
 }
 
-.todo__filtres-button--active{
-	
+.todo__filtres-button--active {
+  background-color: rgb(204, 232, 255);
 }
 
 .todo__filtres-button:hover {
-  background-color: green;
+  background-color: rgb(0, 78, 141);
   color: #fff;
 }
 
