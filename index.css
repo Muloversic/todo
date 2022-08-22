@@ -121,6 +121,10 @@ input:focus-visible {
   color: rgb(197, 0, 0);
 }
 
+.todo__remove-all--hidden {
+  display: none;
+}
+
 .todo__remove-all:hover {
   text-decoration: underline;
 }

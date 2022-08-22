@@ -220,6 +220,15 @@ class Todos {
     if (todoBody.children.length <= 1) {
       todoBody.append(...[this.todoFiltersContainer, this.todoContainer])
     }
+
+    const removeAllButton = document.querySelector('.todo__remove-all')
+    console.log(removeAllButton)
+    const { todos } = store.state
+    if (todos.length) {
+      removeAllButton.classList.remove('todo__remove-all--hidden')
+    } else {
+      removeAllButton.classList.add('todo__remove-all--hidden')
+    }
   }
 }
 
