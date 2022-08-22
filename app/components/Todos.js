@@ -222,7 +222,6 @@ class Todos {
     }
 
     const removeAllButton = document.querySelector('.todo__remove-all')
-    console.log(removeAllButton)
     const { todos } = store.state
     if (todos.length) {
       removeAllButton.classList.remove('todo__remove-all--hidden')
