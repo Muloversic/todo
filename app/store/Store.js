@@ -7,9 +7,7 @@ import {
   DELETE_ALL_TODOS_SUCCESS,
   TOGGLE_TODO_STATUS_SUCCESS,
   CHANGE_TODO_SUCCESS,
-  SHOW_ALL_TODOS_SUCCESS,
-  SHOW_ACTIVE_TODOS_SUCCESS,
-  SHOW_DONE_TODOS_SUCCESS,
+  UPDATE_FILTER_SUCCESS,
 } from '../constants.js'
 
 class Store {
@@ -26,9 +24,7 @@ class Store {
     eventEmitter.subscribe(DELETE_ALL_TODOS_SUCCESS, this.deleteAllTodos)
     eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.deleteTodo)
     eventEmitter.subscribe(TOGGLE_TODO_STATUS_SUCCESS, this.toggleTodoStatus)
-    eventEmitter.subscribe(SHOW_ALL_TODOS_SUCCESS, this.showAllTodos)
-    eventEmitter.subscribe(SHOW_ACTIVE_TODOS_SUCCESS, this.showActiveTodos)
-    eventEmitter.subscribe(SHOW_DONE_TODOS_SUCCESS, this.showDoneTodos)
+    eventEmitter.subscribe(UPDATE_FILTER_SUCCESS, this.updateFilter)
   }
 
   shouldStateUpdate = (newState) => {
@@ -66,40 +62,11 @@ class Store {
     }
   }
 
-  showAllTodos = ({ payload }) => {
-    const todos = payload ? [...payload] : []
-    const newState = {
+  updateFilter = ({ payload }) => {
+    this.state = {
       ...this.state,
-      activeTodos: this.todosCounter(todos),
-      filterType: 'all',
-      todos,
+      filterType: payload,
     }
-
-    this.setState(newState)
-  }
-
-  showActiveTodos = ({ payload }) => {
-    const todos = payload ? [...payload] : []
-    const newState = {
-      ...this.state,
-      activeTodos: this.todosCounter(todos),
-      filterType: 'active',
-      todos,
-    }
-
-    this.setState(newState)
-  }
-
-  showDoneTodos = ({ payload }) => {
-    const todos = payload ? [...payload] : []
-    const newState = {
-      ...this.state,
-      activeTodos: this.todosCounter(todos),
-      filterType: 'done',
-      todos,
-    }
-
-    this.setState(newState)
   }
 
   loadTodo = ({ payload }) => {

@@ -15,6 +15,7 @@ class App {
     app.append(form)
     eventEmitter.emit({
       type: LOAD_TODO_REQUEST,
+      payload: 'all',
     })
   }
 }

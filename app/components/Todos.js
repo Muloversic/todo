@@ -6,9 +6,7 @@ import {
   TOGGLE_TODO_STATUS_REQUEST,
   CHANGE_TODO_REQUEST,
   STATE_UPDATED,
-  SHOW_ALL_TODOS_REQUEST,
-  SHOW_ACTIVE_TODOS_REQUEST,
-  SHOW_DONE_TODOS_REQUEST,
+  UPDATE_FILTER_REQUEST,
 } from '../constants.js'
 import { createElement } from '../helpers.js'
 
@@ -43,7 +41,7 @@ class Todos {
         button.classList.remove('todo__filtres-button--active'),
       )
       showAllTodosButton.classList.add('todo__filtres-button--active')
-      eventEmitter.emit({ type: SHOW_ALL_TODOS_REQUEST })
+      eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'all' })
     })
 
     const showActiveTodos = createElement('button', 'todo__filtres-button', 'Active todos')
@@ -53,7 +51,7 @@ class Todos {
         button.classList.remove('todo__filtres-button--active'),
       )
       showActiveTodos.classList.add('todo__filtres-button--active')
-      eventEmitter.emit({ type: SHOW_ACTIVE_TODOS_REQUEST })
+      eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'active' })
     })
 
     const showDoneTodos = createElement('button', 'todo__filtres-button', 'Done todos')
@@ -63,7 +61,7 @@ class Todos {
         button.classList.remove('todo__filtres-button--active'),
       )
       showDoneTodos.classList.add('todo__filtres-button--active')
-      eventEmitter.emit({ type: SHOW_DONE_TODOS_REQUEST })
+      eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'done' })
     })
 
     // append buttons
