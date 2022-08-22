@@ -80,10 +80,14 @@ class Sagas {
       return todo
     })
 
+    const toggledTodo = todos.find((todo) => todo.id === payload)
     localStorage.setItem('todos', JSON.stringify(todos))
     eventEmitter.emit({
       type: TOGGLE_TODO_STATUS_SUCCESS,
-      payload,
+      payload: {
+        todoId: toggledTodo.id,
+        todoActive: toggledTodo.active,
+      },
     })
   }
 

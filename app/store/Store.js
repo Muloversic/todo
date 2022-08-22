@@ -171,16 +171,25 @@ class Store {
   }
 
   toggleTodoStatus = ({ payload }) => {
-    const todos = this.state.todos.map((todo) => {
-      if (todo.id === payload) {
-        return {
-          ...todo,
-          active: !todo.active,
+    const { filterType } = this.state
+    const { todoId, todoActive } = payload
+    let todos = []
+    const shouldTodoRemove =
+      (filterType === 'active' && !todoActive) || (filterType === 'done' && todoActive)
+    if (shouldTodoRemove) {
+      todos = this.state.todos.filter((todo) => todo.id !== todoId)
+    } else {
+      todos = this.state.todos.map((todo) => {
+        if (todo.id === todoId) {
+          return {
+            ...todo,
+            active: todoActive,
+          }
         }
-      }
 
-      return todo
-    })
+        return todo
+      })
+    }
 
     const newState = {
       ...this.state,
