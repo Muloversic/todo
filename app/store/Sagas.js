@@ -27,14 +27,15 @@ class Sagas {
     eventEmitter.subscribe(UPDATE_FILTER_REQUEST, this.updateFilter)
   }
 
-  loadTodo = ({ payload }) => {
+  loadTodo = () => {
     const todos = JSON.parse(localStorage.getItem('todos')) || []
+    const filterType = localStorage.getItem('filterType')
     let filteredTodos = todos
-    if (payload === 'done') {
+    if (filterType === 'done') {
       filteredTodos = todos.filter((todo) => !todo.active)
     }
 
-    if (payload === 'active') {
+    if (filterType === 'active') {
       filteredTodos = todos.filter((todo) => todo.active)
     }
 
@@ -118,11 +119,9 @@ class Sagas {
 
   updateFilter = ({ payload }) => {
     localStorage.setItem('filterType', payload)
-    const filterType = localStorage.getItem('filterType')
     eventEmitter.emit({ type: UPDATE_FILTER_SUCCESS, payload })
     eventEmitter.emit({
       type: LOAD_TODO_REQUEST,
-      payload: filterType,
     })
   }
 }

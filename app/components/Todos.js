@@ -118,7 +118,7 @@ class Todos {
     // add toggle todo status listener for todo wrapper
     let isEditing = false
     todoWrapper.addEventListener('click', (event) => {
-      const todoId = +event.target.parentElement.id
+      const todoId = event.target.parentElement.id
       if (event.target === todoItemText && !isEditing) {
         eventEmitter.emit({ type: TOGGLE_TODO_STATUS_REQUEST, payload: todoId })
       }
