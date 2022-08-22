@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'https://jspm.dev/uuid'
 import eventEmitter from '../store/EventEmitter.js'
 import { createElement } from '../helpers.js'
 import { ADD_TODO_REQUEST } from '../constants.js'
@@ -49,7 +50,7 @@ class TodoForm {
 
       if (todoName) {
         input.classList.remove('todo__form-input--error')
-        const todoId = Math.random()
+        const todoId = uuidv4()
         const todoObj = {
           name: todoName,
           active: true,
