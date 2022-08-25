@@ -16,6 +16,8 @@ import {
   UPDATE_FILTER_SUCCESS,
 } from '../constants.js'
 
+const axios = require('axios').default
+
 class Sagas {
   constructor() {
     eventEmitter.subscribe(ADD_TODO_REQUEST, this.addToodo)
@@ -45,7 +47,15 @@ class Sagas {
     })
   }
 
-  addToodo = ({ payload }) => {
+  addToodo = async ({ payload }) => {
+    const options = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    const postTodo = await axios.post('http://localhost:8080', payload, options)
+    console.log(postTodo.data)
+
     const existingTodos = JSON.parse(localStorage.getItem('todos')) || []
     existingTodos.push(payload)
     localStorage.setItem('todos', JSON.stringify(existingTodos))
