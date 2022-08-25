@@ -48,26 +48,21 @@ class Sagas {
   }
 
   addToodo = async ({ payload }) => {
-    const options = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-    const postTodo = await axios.post('http://localhost:8080', payload, options)
+    const postTodo = await axios.post('http://localhost:8080/todos/add', JSON.stringify(payload))
     console.log(postTodo.data)
 
     const existingTodos = JSON.parse(localStorage.getItem('todos')) || []
-    existingTodos.push(payload)
+    existingTodos.push(postTodo.data)
     localStorage.setItem('todos', JSON.stringify(existingTodos))
     eventEmitter.emit({
       type: ADD_TODO_SUCCESS,
-      payload,
+      payload: postTodo.data,
     })
   }
 
   deleteTodo = ({ payload }) => {
     const existingTodos = JSON.parse(localStorage.getItem('todos'))
-    const todos = existingTodos.filter((todo) => todo.id !== payload)
+    const todos = existingTodos.filter((todo) => todo._id !== payload)
     localStorage.setItem('todos', JSON.stringify(todos))
     eventEmitter.emit({
       type: DELETE_TODO_SUCCESS,
@@ -85,7 +80,7 @@ class Sagas {
   toggleTodoStatus = ({ payload }) => {
     const existingTodos = JSON.parse(localStorage.getItem('todos'))
     const todos = existingTodos.map((todo) => {
-      if (todo.id === payload) {
+      if (todo._id === payload) {
         return {
           ...todo,
           active: !todo.active,
@@ -95,12 +90,12 @@ class Sagas {
       return todo
     })
 
-    const toggledTodo = todos.find((todo) => todo.id === payload)
+    const toggledTodo = todos.find((todo) => todo._id === payload)
     localStorage.setItem('todos', JSON.stringify(todos))
     eventEmitter.emit({
       type: TOGGLE_TODO_STATUS_SUCCESS,
       payload: {
-        todoId: toggledTodo.id,
+        todoId: toggledTodo._id,
         todoActive: toggledTodo.active,
       },
     })

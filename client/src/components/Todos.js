@@ -94,7 +94,7 @@ class Todos {
 
   createTodoElement = (todo) => {
     // render todo
-    const todoWrapper = createElement('div', 'todo__element-wrapper', '', [{ id: todo.id }])
+    const todoWrapper = createElement('div', 'todo__element-wrapper', '', [{ id: todo._id }])
 
     // create input and its attrs
     const todoItemInput = createElement('input', ['todo__element', 'todo__element--hidden'], '', [
@@ -136,7 +136,7 @@ class Todos {
           }
         })
 
-        this.editTodo(editButton, todoItemInput, todoItemText, todo.id, isEditing)
+        this.editTodo(editButton, todoItemInput, todoItemText, todo._id, isEditing)
       }
 
       if (event.target === deleteButton) {

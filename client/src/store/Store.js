@@ -123,7 +123,7 @@ class Store {
   }
 
   deleteTodo = ({ payload }) => {
-    const todos = this.state.todos.filter((todo) => todo.id !== payload)
+    const todos = this.state.todos.filter((todo) => todo._id !== payload)
     const newState = {
       activeTodos: this.todosCounter(todos),
       todos,
@@ -139,10 +139,10 @@ class Store {
     const shouldTodoRemove =
       (filterType === 'active' && !todoActive) || (filterType === 'done' && todoActive)
     if (shouldTodoRemove) {
-      todos = this.state.todos.filter((todo) => todo.id !== todoId)
+      todos = this.state.todos.filter((todo) => todo._id !== todoId)
     } else {
       todos = this.state.todos.map((todo) => {
-        if (todo.id === todoId) {
+        if (todo._id === todoId) {
           return {
             ...todo,
             active: todoActive,

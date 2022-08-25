@@ -1,4 +1,5 @@
 import http from 'http';
+import url from 'url';
 import mongoose from 'mongoose';
 import postTodo from './controllers/Todos/createTodo';
 
@@ -16,16 +17,20 @@ connectDb();
 const PORT = 8080;
 const server = http
   .createServer((request, response) => {
-    console.log(request.method);
+    response.setHeader('Access-Control-Allow-Origin', '*');
+    response.setHeader('Content-Type', 'application/json');
+    response.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    const requestPath = url.parse(request.url).path;
+    console.log(request.method, requestPath);
     if (request.method === 'OPTIONS') {
-      response.setHeader('Access-Control-Allow-Origin', '*');
-      response.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
       response.writeHead(200);
       response.end();
+      return;
     }
 
-    if (request.method === 'POST') {
+    if (request.method === 'POST' && requestPath === '/todos/add') {
       postTodo(request, response);
+      response.writeHead(201);
     } else {
       response.writeHead(404, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify({ message: 'not found' }));
