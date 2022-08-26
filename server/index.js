@@ -5,6 +5,7 @@ import postTodo from './controllers/Todos/createTodo';
 import deleteTodo from './controllers/Todos/deleteTodo';
 import getAllTodos from './controllers/Todos/getAllTodos';
 import deleteAllTodo from './controllers/Todos/deleteAllTodos';
+import updateTodo from './controllers/Todos/updateTodo';
 
 const db = 'mongodb://localhost:27017/todo';
 const connectDb = async () => {
@@ -51,6 +52,12 @@ server.on('request', async (request, response) => {
 
   if (request.method === 'DELETE' && requestPath === '/todos') {
     await deleteAllTodo(request, response);
+    return;
+  }
+
+  if (request.method === 'PATCH' && requestPath === '/todos/update') {
+    await updateTodo(request, response);
+    response.writeHead(200);
     return;
   }
 

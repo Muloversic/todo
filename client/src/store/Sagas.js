@@ -50,11 +50,6 @@ class Sagas {
 
   addToodo = async ({ payload }) => {
     const postTodo = await axios.post('http://localhost:8080/todos/add', JSON.stringify(payload))
-    console.log(postTodo.data)
-
-    const existingTodos = JSON.parse(localStorage.getItem('todos')) || []
-    existingTodos.push(postTodo.data)
-    localStorage.setItem('todos', JSON.stringify(existingTodos))
     eventEmitter.emit({
       type: ADD_TODO_SUCCESS,
       payload: postTodo.data,
@@ -77,9 +72,10 @@ class Sagas {
     })
   }
 
-  toggleTodoStatus = ({ payload }) => {
-    const existingTodos = JSON.parse(localStorage.getItem('todos'))
-    const todos = existingTodos.map((todo) => {
+  toggleTodoStatus = async ({ payload }) => {
+    const getAllTodos = await axios.get('http://localhost:8080/todos')
+    const allTodos = getAllTodos.data
+    const updatedTodos = allTodos.map((todo) => {
       if (todo._id === payload) {
         return {
           ...todo,
@@ -90,13 +86,18 @@ class Sagas {
       return todo
     })
 
-    const toggledTodo = todos.find((todo) => todo._id === payload)
-    localStorage.setItem('todos', JSON.stringify(todos))
+    const toggledTodo = updatedTodos.find((todo) => todo._id === payload)
+
+    const updatedTodo = await axios.patch(
+      `http://localhost:8080/todos/update`,
+      JSON.stringify(toggledTodo),
+    )
+    const { _id, active } = updatedTodo.data
     eventEmitter.emit({
       type: TOGGLE_TODO_STATUS_SUCCESS,
       payload: {
-        todoId: toggledTodo._id,
-        todoActive: toggledTodo.active,
+        todoId: _id,
+        todoActive: active,
       },
     })
   }
