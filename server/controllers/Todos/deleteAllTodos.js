@@ -6,6 +6,7 @@ const deleteAllTodo = async (request, response) => {
     return response.end(JSON.stringify(todos))
   } catch (err) {
     console.error(err)
+    return response.end(404, JSON.stringify(err.message))
   }
 }
 

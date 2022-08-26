@@ -6,6 +6,7 @@ const getAllTodos = async (request, response) => {
     return response.end(JSON.stringify(todos))
   } catch (err) {
     console.log(err)
+	return response.end(404, JSON.stringify(err.message))
   }
 }
 

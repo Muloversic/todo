@@ -14,6 +14,7 @@ const updateTodo = async (request, response) => {
     })
   } catch (err) {
     console.log(err)
+    return response.end(404, JSON.stringify(err.message))
   }
 }
 
