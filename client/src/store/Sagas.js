@@ -76,25 +76,11 @@ class Sagas {
   }
 
   toggleTodoStatus = async ({ payload }) => {
-    const getAllTodos = await axios.get('http://localhost:8080/todos')
-    const allTodos = getAllTodos.data
-    const updatedTodos = allTodos.map((todo) => {
-      if (todo._id === payload) {
-        return {
-          ...todo,
-          active: !todo.active,
-        }
-      }
-
-      return todo
-    })
-
-    const toggledTodo = updatedTodos.find((todo) => todo._id === payload)
-
     const updatedTodo = await axios.patch(
-      `http://localhost:8080/todos`,
-      JSON.stringify(toggledTodo),
+      `http://localhost:8080/todos/${payload._id}`,
+      JSON.stringify(payload),
     )
+    console.log(updatedTodo.data)
     const { _id, active } = updatedTodo.data
     eventEmitter.emit({
       type: TOGGLE_TODO_STATUS_SUCCESS,
@@ -106,24 +92,9 @@ class Sagas {
   }
 
   changeTodo = async ({ payload }) => {
-    const { todoId, newTodoName } = payload
-    const getAllTodos = await axios.get('http://localhost:8080/todos')
-    const allTodos = getAllTodos.data
-    const todos = allTodos.map((todo) => {
-      if (todo._id === todoId) {
-        return {
-          ...todo,
-          name: newTodoName,
-        }
-      }
-
-      return todo
-    })
-
-    const editedTodo = todos.find((todo) => todo._id === todoId)
     const updatedTodo = await axios.patch(
-      `http://localhost:8080/todos/update`,
-      JSON.stringify(editedTodo),
+      `http://localhost:8080/todos/${payload._id}`,
+      JSON.stringify(payload),
     )
 
     const { _id, name } = updatedTodo.data

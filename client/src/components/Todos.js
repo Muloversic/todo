@@ -122,7 +122,10 @@ class Todos {
     todoWrapper.addEventListener('click', (event) => {
       const todoId = event.target.parentElement.id
       if (event.target === todoItemText && !isEditing) {
-        eventEmitter.emit({ type: TOGGLE_TODO_STATUS_REQUEST, payload: todoId })
+        eventEmitter.emit({
+          type: TOGGLE_TODO_STATUS_REQUEST,
+          payload: { ...todo, active: !todo.active },
+        })
       }
 
       if (event.target === editButton) {
@@ -138,7 +141,7 @@ class Todos {
           }
         })
 
-        this.editTodo(editButton, todoItemInput, todoItemText, todo._id, isEditing)
+        this.editTodo(editButton, todoItemInput, todoItemText, todo._id, isEditing, todo.active)
       }
 
       if (event.target === deleteButton) {
@@ -151,7 +154,7 @@ class Todos {
     this.todoContainer.append(todoWrapper)
   }
 
-  editTodo(button, todoItemInput, todoItemText, todoId, isEditing) {
+  editTodo(button, todoItemInput, todoItemText, todoId, isEditing, active) {
     const confirmTodoChanges = () => {
       todoItemInput.classList.toggle('todo__element--hidden')
       todoItemText.classList.toggle('todo__element--hidden')
@@ -161,8 +164,9 @@ class Todos {
       eventEmitter.emit({
         type: CHANGE_TODO_REQUEST,
         payload: {
-          todoId,
-          newTodoName: todoItemInput.value.trim(),
+          _id: todoId,
+          name: todoItemInput.value.trim(),
+          active,
         },
       })
     }

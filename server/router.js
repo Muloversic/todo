@@ -33,7 +33,7 @@ const router = async (request, response) => {
     return
   }
 
-  if (request.method === 'PATCH' && request.url === '/todos') {
+  if (request.method === 'PATCH' && todoIdMatch) {
     await updateTodo(request, response)
     return
   }
