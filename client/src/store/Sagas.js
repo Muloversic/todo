@@ -44,7 +44,10 @@ class Sagas {
 
     eventEmitter.emit({
       type: LOAD_TODO_SUCCESS,
-      payload: filteredTodos,
+      payload: {
+        filteredTodos,
+        filterType,
+      },
     })
   }
 

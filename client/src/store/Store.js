@@ -70,10 +70,12 @@ class Store {
   }
 
   loadTodo = ({ payload }) => {
-    const todos = payload ? [...payload] : []
+    const { filteredTodos, filterType } = payload
+    const todos = filteredTodos ? [...filteredTodos] : []
     const newState = {
       activeTodos: this.todosCounter(todos),
       todos,
+      filterType,
     }
 
     this.setState(newState)

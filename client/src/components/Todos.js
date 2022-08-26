@@ -29,11 +29,9 @@ class Todos {
     const todoFiltersInfo = createElement('div', 'todo__filters-row')
 
     // filter buttons
-    const showAllTodosButton = createElement(
-      'button',
-      ['todo__filtres-button', 'todo__filtres-button--active'],
-      'All todos',
-    )
+    const showAllTodosButton = createElement('button', ['todo__filtres-button'], 'All todos', [
+      { 'data-sort': 'all' },
+    ])
 
     showAllTodosButton.addEventListener('click', (e) => {
       e.preventDefault()
@@ -44,7 +42,9 @@ class Todos {
       eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'all' })
     })
 
-    const showActiveTodos = createElement('button', 'todo__filtres-button', 'Active todos')
+    const showActiveTodos = createElement('button', 'todo__filtres-button', 'Active todos', [
+      { 'data-sort': 'active' },
+    ])
     showActiveTodos.addEventListener('click', (e) => {
       e.preventDefault()
       ;[...todoFilterButtons.children].forEach((button) =>
@@ -54,7 +54,9 @@ class Todos {
       eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'active' })
     })
 
-    const showDoneTodos = createElement('button', 'todo__filtres-button', 'Done todos')
+    const showDoneTodos = createElement('button', 'todo__filtres-button', 'Done todos', [
+      { 'data-sort': 'done' },
+    ])
     showDoneTodos.addEventListener('click', (e) => {
       e.preventDefault()
       ;[...todoFilterButtons.children].forEach((button) =>
@@ -222,7 +224,20 @@ class Todos {
     }
 
     const removeAllButton = document.querySelector('.todo__remove-all')
-    const { todos } = store.state
+    const { todos, filterType } = store.state
+    const sortAll = document.querySelector('[data-sort="all"]')
+    const sortActive = document.querySelector('[data-sort="active"]')
+    const sortDone = document.querySelector('[data-sort="done"]')
+    if (filterType === 'active') {
+      sortActive.classList.add('todo__filtres-button--active')
+    }
+    if (filterType === 'done') {
+      sortDone.classList.add('todo__filtres-button--active')
+    }
+    if (filterType === 'all') {
+      sortAll.classList.add('todo__filtres-button--active')
+    }
+
     if (todos.length) {
       removeAllButton.classList.remove('todo__remove-all--hidden')
     } else {
