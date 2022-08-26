@@ -29,8 +29,9 @@ class Sagas {
     eventEmitter.subscribe(UPDATE_FILTER_REQUEST, this.updateFilter)
   }
 
-  loadTodo = () => {
-    const todos = JSON.parse(localStorage.getItem('todos')) || []
+  loadTodo = async () => {
+    const getAllTodos = await axios.get('http://localhost:8080/todos')
+    const todos = getAllTodos.data
     const filterType = localStorage.getItem('filterType')
     let filteredTodos = todos
     if (filterType === 'done') {
@@ -60,7 +61,9 @@ class Sagas {
     })
   }
 
-  deleteTodo = ({ payload }) => {
+  deleteTodo = async ({ payload }) => {
+    const delteTodo = await axios.delete(`http://localhost:8080/todos/${payload}`)
+
     const existingTodos = JSON.parse(localStorage.getItem('todos'))
     const todos = existingTodos.filter((todo) => todo._id !== payload)
     localStorage.setItem('todos', JSON.stringify(todos))
