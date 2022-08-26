@@ -1,4 +1,5 @@
 import todoModel from '../../models/todoModel'
+
 const getAllTodos = async (request, response) => {
   try {
     const todos = await todoModel.find()
