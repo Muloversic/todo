@@ -102,11 +102,12 @@ class Sagas {
     })
   }
 
-  changeTodo = ({ payload }) => {
+  changeTodo = async ({ payload }) => {
     const { todoId, newTodoName } = payload
-    const existingTodos = JSON.parse(localStorage.getItem('todos'))
-    const todos = existingTodos.map((todo) => {
-      if (todo.id === todoId) {
+    const getAllTodos = await axios.get('http://localhost:8080/todos')
+    const allTodos = getAllTodos.data
+    const todos = allTodos.map((todo) => {
+      if (todo._id === todoId) {
         return {
           ...todo,
           name: newTodoName,
@@ -116,10 +117,16 @@ class Sagas {
       return todo
     })
 
-    localStorage.setItem('todos', JSON.stringify(todos))
+    const editedTodo = todos.find((todo) => todo._id === todoId)
+    const updatedTodo = await axios.patch(
+      `http://localhost:8080/todos/update`,
+      JSON.stringify(editedTodo),
+    )
+
+    const { _id, name } = updatedTodo.data
     eventEmitter.emit({
       type: CHANGE_TODO_SUCCESS,
-      payload,
+      payload: { todoId: _id, newTodoName: name },
     })
   }
 

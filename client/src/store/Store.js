@@ -94,7 +94,7 @@ class Store {
   changeTodo = ({ payload }) => {
     const { todoId, newTodoName } = payload
     const todos = this.state.todos.map((todo) => {
-      if (todo.id === todoId) {
+      if (todo._id === todoId) {
         return {
           ...todo,
           name: newTodoName,
