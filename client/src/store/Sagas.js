@@ -52,7 +52,7 @@ class Sagas {
   }
 
   addToodo = async ({ payload }) => {
-    const postTodo = await axios.post('http://localhost:8080/todos/add', JSON.stringify(payload))
+    const postTodo = await axios.post('http://localhost:8080/todos', JSON.stringify(payload))
     eventEmitter.emit({
       type: ADD_TODO_SUCCESS,
       payload: postTodo.data,
@@ -92,7 +92,7 @@ class Sagas {
     const toggledTodo = updatedTodos.find((todo) => todo._id === payload)
 
     const updatedTodo = await axios.patch(
-      `http://localhost:8080/todos/update`,
+      `http://localhost:8080/todos`,
       JSON.stringify(toggledTodo),
     )
     const { _id, active } = updatedTodo.data

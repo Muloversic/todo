@@ -12,7 +12,7 @@ const router = async (request, response) => {
     return
   }
 
-  if (request.method === 'POST' && request.url === '/todos/add') {
+  if (request.method === 'POST' && request.url === '/todos') {
     await postTodo(request, response)
     return
   }
@@ -33,7 +33,7 @@ const router = async (request, response) => {
     return
   }
 
-  if (request.method === 'PATCH' && request.url === '/todos/update') {
+  if (request.method === 'PATCH' && request.url === '/todos') {
     await updateTodo(request, response)
     return
   }
