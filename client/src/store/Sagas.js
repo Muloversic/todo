@@ -62,19 +62,16 @@ class Sagas {
   }
 
   deleteTodo = async ({ payload }) => {
-    const delteTodo = await axios.delete(`http://localhost:8080/todos/${payload}`)
-
-    const existingTodos = JSON.parse(localStorage.getItem('todos'))
-    const todos = existingTodos.filter((todo) => todo._id !== payload)
-    localStorage.setItem('todos', JSON.stringify(todos))
+    const deleteTodo = await axios.delete(`http://localhost:8080/todos/${payload}`)
+    const deletedTodo = deleteTodo.data
     eventEmitter.emit({
       type: DELETE_TODO_SUCCESS,
-      payload,
+      payload: deletedTodo._id,
     })
   }
 
-  deleteAllTodo = () => {
-    localStorage.removeItem('todos')
+  deleteAllTodo = async () => {
+    const deleteTodo = await axios.delete(`http://localhost:8080/todos`)
     eventEmitter.emit({
       type: DELETE_ALL_TODOS_SUCCESS,
     })

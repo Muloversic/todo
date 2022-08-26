@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import postTodo from './controllers/Todos/createTodo';
 import deleteTodo from './controllers/Todos/deleteTodo';
 import getAllTodos from './controllers/Todos/getAllTodos';
+import deleteAllTodo from './controllers/Todos/deleteAllTodos';
 
 const db = 'mongodb://localhost:27017/todo';
 const connectDb = async () => {
@@ -45,6 +46,11 @@ server.on('request', async (request, response) => {
   if (request.method === 'DELETE' && todoIdMatch) {
     const id = request.url.split('/')[2];
     await deleteTodo(request, response, id);
+    return;
+  }
+
+  if (request.method === 'DELETE' && requestPath === '/todos') {
+    await deleteAllTodo(request, response);
     return;
   }
 
