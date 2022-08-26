@@ -3,6 +3,7 @@ import todoModel from '../../models/todoModel'
 const deleteAllTodo = async (request, response) => {
   try {
     const todos = await todoModel.deleteMany()
+    response.writeHead(200)
     return response.end(JSON.stringify(todos))
   } catch (err) {
     console.error(err)
