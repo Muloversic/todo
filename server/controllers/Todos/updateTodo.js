@@ -9,12 +9,7 @@ const updateTodo = async (request, response) => {
 
     request.on('end', async () => {
       const { name, active } = JSON.parse(body)
-      if (!(name && name.trim()) || typeof active !== 'boolean') {
-        response.writeHead(404)
-        response.end(JSON.stringify('invalid data'))
-        return
-      }
-
+      const payload = name ? { name } : { active }
       const id = request.url.split('/')[2]
       const gotTodo = await Todo.findById(id)
       if (!gotTodo) {
@@ -23,7 +18,7 @@ const updateTodo = async (request, response) => {
         return
       }
 
-      const updatedTodo = await Todo.findByIdAndUpdate(id, { name, active }, { new: true })
+      const updatedTodo = await Todo.findByIdAndUpdate(id, payload, { new: true })
       console.log('todo was updated')
       response.writeHead(200)
       return response.end(JSON.stringify(updatedTodo))

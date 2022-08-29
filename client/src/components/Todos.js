@@ -3,10 +3,9 @@ import store from '../store/Store.js'
 import {
   DELETE_TODO_REQUEST,
   DELETE_ALL_TODOS_REQUEST,
-  TOGGLE_TODO_STATUS_REQUEST,
-  CHANGE_TODO_REQUEST,
   STATE_UPDATED,
   UPDATE_FILTER_REQUEST,
+  UPDATE_TODO_REQUEST,
 } from '../constants.js'
 import { createElement } from '../helpers.js'
 
@@ -123,8 +122,8 @@ class Todos {
       const todoId = event.target.parentElement.id
       if (event.target === todoItemText && !isEditing) {
         eventEmitter.emit({
-          type: TOGGLE_TODO_STATUS_REQUEST,
-          payload: { ...todo, active: !todo.active },
+          type: UPDATE_TODO_REQUEST,
+          payload: { _id: todo._id, active: !todo.active },
         })
       }
 
@@ -162,11 +161,10 @@ class Todos {
       todoItemInput.classList.remove('todo__element--err')
       todoItemInput.name = todoItemInput.value
       eventEmitter.emit({
-        type: CHANGE_TODO_REQUEST,
+        type: UPDATE_TODO_REQUEST,
         payload: {
           _id: todoId,
           name: todoItemInput.value.trim(),
-          active,
         },
       })
     }

@@ -9,10 +9,8 @@ import {
   DELETE_TODO_SUCCESS,
   DELETE_ALL_TODOS_REQUEST,
   DELETE_ALL_TODOS_SUCCESS,
-  TOGGLE_TODO_STATUS_REQUEST,
-  TOGGLE_TODO_STATUS_SUCCESS,
-  CHANGE_TODO_REQUEST,
-  CHANGE_TODO_SUCCESS,
+  UPDATE_TODO_REQUEST,
+  UPDATE_TODO_SUCCESS,
   UPDATE_FILTER_REQUEST,
   UPDATE_FILTER_SUCCESS,
 } from '../constants.js'
@@ -25,8 +23,7 @@ class Sagas {
     eventEmitter.subscribe(LOAD_TODO_REQUEST, this.loadTodo)
     eventEmitter.subscribe(DELETE_TODO_REQUEST, this.deleteTodo)
     eventEmitter.subscribe(DELETE_ALL_TODOS_REQUEST, this.deleteAllTodo)
-    eventEmitter.subscribe(TOGGLE_TODO_STATUS_REQUEST, this.toggleTodoStatus)
-    eventEmitter.subscribe(CHANGE_TODO_REQUEST, this.changeTodo)
+    eventEmitter.subscribe(UPDATE_TODO_REQUEST, this.updateTodo)
     eventEmitter.subscribe(UPDATE_FILTER_REQUEST, this.updateFilter)
   }
 
@@ -83,29 +80,12 @@ class Sagas {
     }
   }
 
-  toggleTodoStatus = async ({ payload }) => {
+  updateTodo = async ({ payload }) => {
     try {
       const updatedTodo = await axios.patch(`${BASE_URL}/${payload._id}`, JSON.stringify(payload))
-      const { _id, active } = updatedTodo.data
       eventEmitter.emit({
-        type: TOGGLE_TODO_STATUS_SUCCESS,
-        payload: {
-          todoId: _id,
-          todoActive: active,
-        },
-      })
-    } catch (err) {
-      console.error(err.message)
-    }
-  }
-
-  changeTodo = async ({ payload }) => {
-    try {
-      const updatedTodo = await axios.patch(`${BASE_URL}/${payload._id}`, JSON.stringify(payload))
-      const { _id, name } = updatedTodo.data
-      eventEmitter.emit({
-        type: CHANGE_TODO_SUCCESS,
-        payload: { todoId: _id, newTodoName: name },
+        type: UPDATE_TODO_SUCCESS,
+        payload: updatedTodo.data,
       })
     } catch (err) {
       console.error(err.message)

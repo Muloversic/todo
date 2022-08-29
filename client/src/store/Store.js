@@ -5,9 +5,8 @@ import {
   STATE_UPDATED,
   DELETE_TODO_SUCCESS,
   DELETE_ALL_TODOS_SUCCESS,
-  TOGGLE_TODO_STATUS_SUCCESS,
-  CHANGE_TODO_SUCCESS,
   UPDATE_FILTER_SUCCESS,
+  UPDATE_TODO_SUCCESS,
 } from '../constants.js'
 
 class Store {
@@ -20,10 +19,9 @@ class Store {
 
     eventEmitter.subscribe(LOAD_TODO_SUCCESS, this.loadTodo)
     eventEmitter.subscribe(ADD_TODO_SUCCESS, this.addTodo)
-    eventEmitter.subscribe(CHANGE_TODO_SUCCESS, this.changeTodo)
+    eventEmitter.subscribe(UPDATE_TODO_SUCCESS, this.updateTodo)
     eventEmitter.subscribe(DELETE_ALL_TODOS_SUCCESS, this.deleteAllTodos)
     eventEmitter.subscribe(DELETE_TODO_SUCCESS, this.deleteTodo)
-    eventEmitter.subscribe(TOGGLE_TODO_STATUS_SUCCESS, this.toggleTodoStatus)
     eventEmitter.subscribe(UPDATE_FILTER_SUCCESS, this.updateFilter)
   }
 
@@ -93,18 +91,27 @@ class Store {
     }
   }
 
-  changeTodo = ({ payload }) => {
-    const { todoId, newTodoName } = payload
-    const todos = this.state.todos.map((todo) => {
-      if (todo._id === todoId) {
-        return {
-          ...todo,
-          name: newTodoName,
+  updateTodo = ({ payload }) => {
+    const { filterType } = this.state
+    const { _id, name, active } = payload
+    let todos = []
+    const shouldTodoRemove =
+      (filterType === 'active' && !active) || (filterType === 'done' && active)
+    if (shouldTodoRemove) {
+      todos = this.state.todos.filter((todo) => todo._id !== _id)
+    } else {
+      todos = this.state.todos.map((todo) => {
+        if (todo._id === _id) {
+          return {
+            ...todo,
+            active,
+            name,
+          }
         }
-      }
 
-      return todo
-    })
+        return todo
+      })
+    }
 
     const newState = {
       activeTodos: this.todosCounter(todos),
@@ -113,6 +120,57 @@ class Store {
 
     this.setState(newState)
   }
+
+  toggleTodoStatus = ({ payload }) => {
+    const { filterType } = this.state
+    const { _id, active, name } = payload
+    let todos = []
+    const shouldTodoRemove =
+      (filterType === 'active' && !active) || (filterType === 'done' && active)
+    if (shouldTodoRemove) {
+      todos = this.state.todos.filter((todo) => todo._id !== _id)
+    } else {
+      todos = this.state.todos.map((todo) => {
+        if (todo._id === _id) {
+          return {
+            ...todo,
+            active,
+            name,
+          }
+        }
+
+        return todo
+      })
+    }
+
+    const newState = {
+      activeTodos: this.todosCounter(todos),
+      todos,
+    }
+
+    this.setState(newState)
+  }
+
+  //   changeTodo = ({ payload }) => {
+  //     const { todoId, newTodoName } = payload
+  //     const todos = this.state.todos.map((todo) => {
+  //       if (todo._id === todoId) {
+  //         return {
+  //           ...todo,
+  //           name: newTodoName,
+  //         }
+  //       }
+
+  //       return todo
+  //     })
+
+  //     const newState = {
+  //       activeTodos: this.todosCounter(todos),
+  //       todos,
+  //     }
+
+  //     this.setState(newState)
+  //   }
 
   deleteAllTodos = () => {
     const todos = []
@@ -126,35 +184,6 @@ class Store {
 
   deleteTodo = ({ payload }) => {
     const todos = this.state.todos.filter((todo) => todo._id !== payload)
-    const newState = {
-      activeTodos: this.todosCounter(todos),
-      todos,
-    }
-
-    this.setState(newState)
-  }
-
-  toggleTodoStatus = ({ payload }) => {
-    const { filterType } = this.state
-    const { todoId, todoActive } = payload
-    let todos = []
-    const shouldTodoRemove =
-      (filterType === 'active' && !todoActive) || (filterType === 'done' && todoActive)
-    if (shouldTodoRemove) {
-      todos = this.state.todos.filter((todo) => todo._id !== todoId)
-    } else {
-      todos = this.state.todos.map((todo) => {
-        if (todo._id === todoId) {
-          return {
-            ...todo,
-            active: todoActive,
-          }
-        }
-
-        return todo
-      })
-    }
-
     const newState = {
       activeTodos: this.todosCounter(todos),
       todos,
