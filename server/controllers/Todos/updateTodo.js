@@ -12,7 +12,8 @@ const updateTodo = async (request, response) => {
       const id = request.url.split('/')[2]
       const updatedTodo = await Todo.findByIdAndUpdate(id, { name, active }, { new: true })
       console.log('todo was updated')
-      return response.end(200, JSON.stringify(updatedTodo))
+      response.writeHead(200)
+      return response.end(JSON.stringify(updatedTodo))
     })
   } catch (err) {
     console.log(err.message)

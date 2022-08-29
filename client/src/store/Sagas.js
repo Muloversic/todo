@@ -51,7 +51,7 @@ class Sagas {
         },
       })
     } catch (err) {
-      console.err(err.message)
+      console.error(err.message)
     }
   }
 
@@ -63,7 +63,7 @@ class Sagas {
         payload: postTodo.data,
       })
     } catch (err) {
-      console.err(err.message)
+      console.error(err.message)
     }
   }
 
@@ -76,7 +76,7 @@ class Sagas {
         payload: deletedTodo._id,
       })
     } catch (err) {
-      console.err(err.message)
+      console.error(err.message)
     }
   }
 
@@ -87,7 +87,7 @@ class Sagas {
         type: DELETE_ALL_TODOS_SUCCESS,
       })
     } catch (err) {
-      console.err(err.message)
+      console.error(err.message)
     }
   }
 
@@ -106,7 +106,7 @@ class Sagas {
         },
       })
     } catch (err) {
-      console.err(err.message)
+      console.error(err.message)
     }
   }
 
@@ -123,7 +123,7 @@ class Sagas {
         payload: { todoId: _id, newTodoName: name },
       })
     } catch (err) {
-      console.err(err.message)
+      console.error(err.message)
     }
   }
 
