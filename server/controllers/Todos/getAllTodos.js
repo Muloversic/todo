@@ -1,22 +1,15 @@
+import url from 'url'
 import Todo from '../../models/todoModel'
 
 const getAllTodos = async (request, response) => {
   try {
-    const filterType = request.url.split('/')[2]
-    let todos = []
-    console.log(filterType)
-    if (filterType === 'all') {
-      todos = await Todo.find()
+    const queryObj = url.parse(request.url, true).query
+    let filter = {}
+    if (queryObj.active) {
+      filter = { active: JSON.parse(queryObj.active) }
     }
 
-    if (filterType === 'active') {
-      todos = await Todo.find({ active: true })
-    }
-
-    if (filterType === 'done') {
-      todos = await Todo.find({ active: false })
-    }
-
+    const todos = await Todo.find(filter)
     console.log('all todos were got')
     response.writeHead(200)
     return response.end(JSON.stringify(todos))

@@ -6,7 +6,7 @@ import updateTodo from './controllers/Todos/updateTodo'
 
 const router = async (request, response) => {
   const todoIdMatch = request.url.match(/\/todos\/([0-9]+)/)
-  const filterMatch = request.url.match(/todos\/active|done|all/gm)
+  const queryMatch = request.url.match(/todos(\?.*)?/gm)
   if (request.method === 'OPTIONS') {
     response.writeHead(200)
     response.end()
@@ -18,7 +18,7 @@ const router = async (request, response) => {
     return
   }
 
-  if (request.method === 'GET' && filterMatch) {
+  if (request.method === 'GET' && queryMatch) {
     await getAllTodos(request, response)
     return
   }

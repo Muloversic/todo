@@ -1,5 +1,6 @@
 import axios from 'axios'
 import eventEmitter from './EventEmitter.js'
+import Store from './Store'
 import {
   ADD_TODO_REQUEST,
   ADD_TODO_SUCCESS,
@@ -29,8 +30,20 @@ class Sagas {
 
   loadTodo = async () => {
     try {
-      const filterType = localStorage.getItem('filterType')
-      const getAllTodos = await axios.get(`${BASE_URL}/${filterType}`)
+      const { filterType } = Store.state
+      let filter = {}
+      if (filterType === 'active') {
+        filter = { active: true }
+      }
+
+      if (filterType === 'done') {
+        filter = { active: false }
+      }
+
+      const getAllTodos = await axios.get(`${BASE_URL}`, {
+        params: filter,
+      })
+
       const filteredTodos = getAllTodos.data
       eventEmitter.emit({
         type: LOAD_TODO_SUCCESS,
