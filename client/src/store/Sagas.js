@@ -32,18 +32,9 @@ class Sagas {
 
   loadTodo = async () => {
     try {
-      const getAllTodos = await axios.get(BASE_URL)
-      const todos = getAllTodos.data
       const filterType = localStorage.getItem('filterType')
-      let filteredTodos = todos
-      if (filterType === 'done') {
-        filteredTodos = todos.filter((todo) => !todo.active)
-      }
-
-      if (filterType === 'active') {
-        filteredTodos = todos.filter((todo) => todo.active)
-      }
-
+      const getAllTodos = await axios.get(`${BASE_URL}/${filterType}`)
+      const filteredTodos = getAllTodos.data
       eventEmitter.emit({
         type: LOAD_TODO_SUCCESS,
         payload: {
