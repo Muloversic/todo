@@ -22,6 +22,11 @@
   "dependencies": {
     "axios": "^0.27.2",
     "install-peerdeps": "^3.0.3",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-cors": "^0.0.16",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^12.0.0",
     "mongoose": "^6.5.2"
   }
 }
