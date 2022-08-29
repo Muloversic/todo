@@ -97,7 +97,6 @@ class Sagas {
         `http://localhost:8080/todos/${payload._id}`,
         JSON.stringify(payload),
       )
-      console.log(updatedTodo.data)
       const { _id, active } = updatedTodo.data
       eventEmitter.emit({
         type: TOGGLE_TODO_STATUS_SUCCESS,
