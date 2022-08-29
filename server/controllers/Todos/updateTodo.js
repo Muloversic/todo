@@ -1,4 +1,4 @@
-import todoModel from '../../models/todoModel'
+import Todo from '../../models/todoModel'
 
 const updateTodo = async (request, response) => {
   try {
@@ -10,7 +10,7 @@ const updateTodo = async (request, response) => {
     request.on('end', async () => {
       const { name, active } = JSON.parse(body)
       const id = request.url.split('/')[2]
-      const updatedTodo = await todoModel.findByIdAndUpdate(id, { name, active }, { new: true })
+      const updatedTodo = await Todo.findByIdAndUpdate(id, { name, active }, { new: true })
       response.writeHead(200)
       return response.end(JSON.stringify(updatedTodo))
     })

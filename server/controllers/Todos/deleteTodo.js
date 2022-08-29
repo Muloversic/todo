@@ -1,8 +1,8 @@
-import todoModel from '../../models/todoModel'
+import Todo from '../../models/todoModel'
 
 const deleteTodo = async (request, response, id) => {
   try {
-    const todo = await todoModel.findByIdAndDelete(id)
+    const todo = await Todo.findByIdAndDelete(id)
     response.writeHead(200)
     return response.end(JSON.stringify(todo))
   } catch (err) {
