@@ -10,11 +10,11 @@ const postTodo = async (request, response) => {
     request.on('end', async () => {
       const { name, active } = JSON.parse(body)
       const newTodo = await Todo.create({ name, active })
-      response.writeHead(201)
-      return response.end(JSON.stringify(newTodo))
+      console.log('New todo was created')
+      return response.end(201, JSON.stringify(newTodo))
     })
   } catch (err) {
-    console.log(err)
+    console.log(err.message)
     return response.end(404, JSON.stringify(err.message))
   }
 }
