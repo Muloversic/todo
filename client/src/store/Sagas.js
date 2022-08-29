@@ -30,78 +30,102 @@ class Sagas {
   }
 
   loadTodo = async () => {
-    const getAllTodos = await axios.get('http://localhost:8080/todos')
-    const todos = getAllTodos.data
-    const filterType = localStorage.getItem('filterType')
-    let filteredTodos = todos
-    if (filterType === 'done') {
-      filteredTodos = todos.filter((todo) => !todo.active)
-    }
+    try {
+      const getAllTodos = await axios.get('http://localhost:8080/todos')
+      const todos = getAllTodos.data
+      const filterType = localStorage.getItem('filterType')
+      let filteredTodos = todos
+      if (filterType === 'done') {
+        filteredTodos = todos.filter((todo) => !todo.active)
+      }
 
-    if (filterType === 'active') {
-      filteredTodos = todos.filter((todo) => todo.active)
-    }
+      if (filterType === 'active') {
+        filteredTodos = todos.filter((todo) => todo.active)
+      }
 
-    eventEmitter.emit({
-      type: LOAD_TODO_SUCCESS,
-      payload: {
-        filteredTodos,
-        filterType,
-      },
-    })
+      eventEmitter.emit({
+        type: LOAD_TODO_SUCCESS,
+        payload: {
+          filteredTodos,
+          filterType,
+        },
+      })
+    } catch (err) {
+      console.err(err.message)
+    }
   }
 
   addToodo = async ({ payload }) => {
-    const postTodo = await axios.post('http://localhost:8080/todos', JSON.stringify(payload))
-    eventEmitter.emit({
-      type: ADD_TODO_SUCCESS,
-      payload: postTodo.data,
-    })
+    try {
+      const postTodo = await axios.post('http://localhost:8080/todos', JSON.stringify(payload))
+      eventEmitter.emit({
+        type: ADD_TODO_SUCCESS,
+        payload: postTodo.data,
+      })
+    } catch (err) {
+      console.err(err.message)
+    }
   }
 
   deleteTodo = async ({ payload }) => {
-    const deleteTodo = await axios.delete(`http://localhost:8080/todos/${payload}`)
-    const deletedTodo = deleteTodo.data
-    eventEmitter.emit({
-      type: DELETE_TODO_SUCCESS,
-      payload: deletedTodo._id,
-    })
+    try {
+      const deleteTodo = await axios.delete(`http://localhost:8080/todos/${payload}`)
+      const deletedTodo = deleteTodo.data
+      eventEmitter.emit({
+        type: DELETE_TODO_SUCCESS,
+        payload: deletedTodo._id,
+      })
+    } catch (err) {
+      console.err(err.message)
+    }
   }
 
   deleteAllTodo = async () => {
-    const deleteTodo = await axios.delete(`http://localhost:8080/todos`)
-    eventEmitter.emit({
-      type: DELETE_ALL_TODOS_SUCCESS,
-    })
+    try {
+      const deleteTodo = await axios.delete(`http://localhost:8080/todos`)
+      eventEmitter.emit({
+        type: DELETE_ALL_TODOS_SUCCESS,
+      })
+    } catch (err) {
+      console.err(err.message)
+    }
   }
 
   toggleTodoStatus = async ({ payload }) => {
-    const updatedTodo = await axios.patch(
-      `http://localhost:8080/todos/${payload._id}`,
-      JSON.stringify(payload),
-    )
-    console.log(updatedTodo.data)
-    const { _id, active } = updatedTodo.data
-    eventEmitter.emit({
-      type: TOGGLE_TODO_STATUS_SUCCESS,
-      payload: {
-        todoId: _id,
-        todoActive: active,
-      },
-    })
+    try {
+      const updatedTodo = await axios.patch(
+        `http://localhost:8080/todos/${payload._id}`,
+        JSON.stringify(payload),
+      )
+      console.log(updatedTodo.data)
+      const { _id, active } = updatedTodo.data
+      eventEmitter.emit({
+        type: TOGGLE_TODO_STATUS_SUCCESS,
+        payload: {
+          todoId: _id,
+          todoActive: active,
+        },
+      })
+    } catch (err) {
+      console.err(err.message)
+    }
   }
 
   changeTodo = async ({ payload }) => {
-    const updatedTodo = await axios.patch(
-      `http://localhost:8080/todos/${payload._id}`,
-      JSON.stringify(payload),
-    )
+    try {
+      const updatedTodo = await axios.patch(
+        `http://localhost:8080/todos/${payload._id}`,
+        JSON.stringify(payload),
+      )
 
-    const { _id, name } = updatedTodo.data
-    eventEmitter.emit({
-      type: CHANGE_TODO_SUCCESS,
-      payload: { todoId: _id, newTodoName: name },
-    })
+      const { _id, name } = updatedTodo.data
+      eventEmitter.emit({
+        type: CHANGE_TODO_SUCCESS,
+        payload: { todoId: _id, newTodoName: name },
+      })
+    } catch (err) {
+      console.err(err.message)
+    }
   }
 
   updateFilter = ({ payload }) => {
