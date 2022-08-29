@@ -1,3 +1,4 @@
+import axios from 'axios'
 import eventEmitter from './EventEmitter.js'
 import {
   ADD_TODO_REQUEST,
@@ -16,7 +17,7 @@ import {
   UPDATE_FILTER_SUCCESS,
 } from '../constants.js'
 
-const axios = require('axios').default
+const BASE_URL = 'http://localhost:8080/todos'
 
 class Sagas {
   constructor() {
@@ -31,7 +32,7 @@ class Sagas {
 
   loadTodo = async () => {
     try {
-      const getAllTodos = await axios.get('http://localhost:8080/todos')
+      const getAllTodos = await axios.get(BASE_URL)
       const todos = getAllTodos.data
       const filterType = localStorage.getItem('filterType')
       let filteredTodos = todos
@@ -57,7 +58,7 @@ class Sagas {
 
   addToodo = async ({ payload }) => {
     try {
-      const postTodo = await axios.post('http://localhost:8080/todos', JSON.stringify(payload))
+      const postTodo = await axios.post(BASE_URL, JSON.stringify(payload))
       eventEmitter.emit({
         type: ADD_TODO_SUCCESS,
         payload: postTodo.data,
@@ -69,7 +70,7 @@ class Sagas {
 
   deleteTodo = async ({ payload }) => {
     try {
-      const deleteTodo = await axios.delete(`http://localhost:8080/todos/${payload}`)
+      const deleteTodo = await axios.delete(`${BASE_URL}/${payload}`)
       const deletedTodo = deleteTodo.data
       eventEmitter.emit({
         type: DELETE_TODO_SUCCESS,
@@ -82,7 +83,7 @@ class Sagas {
 
   deleteAllTodo = async () => {
     try {
-      const deleteTodo = await axios.delete(`http://localhost:8080/todos`)
+      const deleteTodo = await axios.delete(BASE_URL)
       eventEmitter.emit({
         type: DELETE_ALL_TODOS_SUCCESS,
       })
@@ -93,10 +94,7 @@ class Sagas {
 
   toggleTodoStatus = async ({ payload }) => {
     try {
-      const updatedTodo = await axios.patch(
-        `http://localhost:8080/todos/${payload._id}`,
-        JSON.stringify(payload),
-      )
+      const updatedTodo = await axios.patch(`${BASE_URL}/${payload._id}`, JSON.stringify(payload))
       const { _id, active } = updatedTodo.data
       eventEmitter.emit({
         type: TOGGLE_TODO_STATUS_SUCCESS,
@@ -112,11 +110,7 @@ class Sagas {
 
   changeTodo = async ({ payload }) => {
     try {
-      const updatedTodo = await axios.patch(
-        `http://localhost:8080/todos/${payload._id}`,
-        JSON.stringify(payload),
-      )
-
+      const updatedTodo = await axios.patch(`${BASE_URL}/${payload._id}`, JSON.stringify(payload))
       const { _id, name } = updatedTodo.data
       eventEmitter.emit({
         type: CHANGE_TODO_SUCCESS,
