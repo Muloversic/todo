@@ -9,6 +9,12 @@ const postTodo = async (request, response) => {
 
     request.on('end', async () => {
       const { name, active } = JSON.parse(body)
+      if (!(name && name.trim()) || typeof active !== 'boolean') {
+        response.writeHead(404)
+        response.end(JSON.stringify('invalid data'))
+        return
+      }
+
       const newTodo = await Todo.create({ name, active })
       console.log('New todo was created')
       response.writeHead(201)
