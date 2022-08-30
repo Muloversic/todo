@@ -95,7 +95,7 @@ class Sagas {
 
   updateTodo = async ({ payload }) => {
     try {
-      const updatedTodo = await axios.patch(`${BASE_URL}/${payload._id}`, JSON.stringify(payload))
+      const updatedTodo = await axios.patch(`${BASE_URL}/${payload._id}`, payload)
       eventEmitter.emit({
         type: UPDATE_TODO_SUCCESS,
         payload: updatedTodo.data,

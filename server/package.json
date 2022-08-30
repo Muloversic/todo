@@ -20,6 +20,7 @@
     "prettier": "^2.7.1"
   },
   "dependencies": {
+    "@koa/cors": "^3.4.1",
     "axios": "^0.27.2",
     "install-peerdeps": "^3.0.3",
     "koa": "^2.13.4",
