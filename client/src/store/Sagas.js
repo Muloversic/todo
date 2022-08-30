@@ -59,13 +59,13 @@ class Sagas {
 
   addToodo = async ({ payload }) => {
     try {
-      const postTodo = await axios.post(BASE_URL, JSON.stringify(payload))
+      const postTodo = await axios.post(BASE_URL, payload)
       eventEmitter.emit({
         type: ADD_TODO_SUCCESS,
         payload: postTodo.data,
       })
     } catch (err) {
-      console.error(err.message)
+      console.error(err)
     }
   }
 

@@ -1,28 +1,22 @@
 import Todo from '../../models/todoModel'
 
-const postTodo = async (request, response) => {
+const postTodo = async (ctx) => {
   try {
-    let body = ''
-    request.on('data', (chunk) => {
-      body += chunk.toString()
-    })
+    const { name, active } = ctx.request.body
+    if (!(name && name.trim()) || typeof active !== 'boolean') {
+      ctx.status = 404
+      ctx.body = 'invalid data'
+      return
+    }
 
-    request.on('end', async () => {
-      const { name, active } = JSON.parse(body)
-      if (!(name && name.trim()) || typeof active !== 'boolean') {
-        response.writeHead(404)
-        response.end(JSON.stringify('invalid data'))
-        return
-      }
-
-      const newTodo = await Todo.create({ name, active })
-      console.log('New todo was created')
-      response.writeHead(201)
-      return response.end(JSON.stringify(newTodo))
-    })
+    const newTodo = await Todo.create({ name, active })
+    console.log('New todo was created')
+    ctx.status = 201
+    ctx.body = newTodo
   } catch (err) {
     console.log(err.message)
-    return response.end(404, JSON.stringify(err.message))
+    ctx.status = 404
+    ctx.body = err.message
   }
 }
 

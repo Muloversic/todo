@@ -9,6 +9,10 @@ const router = new Router()
 router.get('/todos', async (ctx) => {
   await getAllTodos(ctx)
 })
+
+router.post('/todos', async (ctx) => {
+  await postTodo(ctx)
+})
 // const router = async (request, response) => {
 //   const todoIdMatch = request.url.match(/\/todos\/([0-9]+)/)
 //   const queryMatch = request.url.match(/todos(\?.*)?/gm)

@@ -121,57 +121,6 @@ class Store {
     this.setState(newState)
   }
 
-  toggleTodoStatus = ({ payload }) => {
-    const { filterType } = this.state
-    const { _id, active, name } = payload
-    let todos = []
-    const shouldTodoRemove =
-      (filterType === 'active' && !active) || (filterType === 'done' && active)
-    if (shouldTodoRemove) {
-      todos = this.state.todos.filter((todo) => todo._id !== _id)
-    } else {
-      todos = this.state.todos.map((todo) => {
-        if (todo._id === _id) {
-          return {
-            ...todo,
-            active,
-            name,
-          }
-        }
-
-        return todo
-      })
-    }
-
-    const newState = {
-      activeTodos: this.todosCounter(todos),
-      todos,
-    }
-
-    this.setState(newState)
-  }
-
-  //   changeTodo = ({ payload }) => {
-  //     const { todoId, newTodoName } = payload
-  //     const todos = this.state.todos.map((todo) => {
-  //       if (todo._id === todoId) {
-  //         return {
-  //           ...todo,
-  //           name: newTodoName,
-  //         }
-  //       }
-
-  //       return todo
-  //     })
-
-  //     const newState = {
-  //       activeTodos: this.todosCounter(todos),
-  //       todos,
-  //     }
-
-  //     this.setState(newState)
-  //   }
-
   deleteAllTodos = () => {
     const todos = []
     const newState = {
