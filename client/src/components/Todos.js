@@ -212,11 +212,11 @@ class Todos {
 
   processTodos = () => {
     const { state } = store
-    const { todos, activeTodos } = state
+    const { todos, todosCounter } = state
     ;[...this.todoContainer.children].forEach((todo) => todo.remove())
     todos.forEach((todo) => this.createTodoElement(todo))
     this.render()
-    this.changeTodoCounter(activeTodos)
+    this.changeTodoCounter(todosCounter)
   }
 
   render() {

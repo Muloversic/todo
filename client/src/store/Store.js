@@ -13,7 +13,7 @@ class Store {
   constructor() {
     this.state = {
       todos: [],
-      activeTodos: 0,
+      todosCounter: 0,
       filterType: 'all',
     }
 
@@ -26,7 +26,7 @@ class Store {
   }
 
   shouldStateUpdate = (newState) => {
-    if (newState.activeTodos !== this.state.activeTodos) {
+    if (newState.todosCounter !== this.state.todosCounter) {
       return true
     }
 
@@ -71,7 +71,7 @@ class Store {
     const { filteredTodos, filterType } = payload
     const todos = filteredTodos ? [...filteredTodos] : []
     const newState = {
-      activeTodos: this.todosCounter(todos),
+      todosCounter: this.todosCounter(todos),
       todos,
       filterType,
     }
@@ -82,7 +82,7 @@ class Store {
   addTodo = ({ payload }) => {
     const todos = [...this.state.todos, payload]
     const newState = {
-      activeTodos: this.todosCounter(todos),
+      todosCounter: this.todosCounter(todos),
       todos,
     }
 
@@ -114,7 +114,7 @@ class Store {
     }
 
     const newState = {
-      activeTodos: this.todosCounter(todos),
+      todosCounter: this.todosCounter(todos),
       todos,
     }
 
@@ -124,7 +124,7 @@ class Store {
   deleteAllTodos = () => {
     const todos = []
     const newState = {
-      activeTodos: this.todosCounter(todos),
+      todosCounter: this.todosCounter(todos),
       todos,
     }
 
@@ -134,7 +134,7 @@ class Store {
   deleteTodo = ({ payload }) => {
     const todos = this.state.todos.filter((todo) => todo._id !== payload)
     const newState = {
-      activeTodos: this.todosCounter(todos),
+      todosCounter: this.todosCounter(todos),
       todos,
     }
 
