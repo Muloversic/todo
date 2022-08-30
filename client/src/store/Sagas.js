@@ -44,11 +44,11 @@ class Sagas {
         params: filter,
       })
 
-      const filteredTodos = getAllTodos.data
+      const { data } = getAllTodos.data.body
       eventEmitter.emit({
         type: LOAD_TODO_SUCCESS,
         payload: {
-          filteredTodos,
+          filteredTodos: data,
           filterType,
         },
       })
@@ -60,9 +60,10 @@ class Sagas {
   addTodo = async ({ payload }) => {
     try {
       const postTodo = await axios.post(BASE_URL, payload)
+      const { data } = postTodo.data.body
       eventEmitter.emit({
         type: ADD_TODO_SUCCESS,
-        payload: postTodo.data,
+        payload: data,
       })
     } catch (err) {
       console.error('error while creating new todo:', err)
@@ -72,10 +73,10 @@ class Sagas {
   deleteTodo = async ({ payload }) => {
     try {
       const deleteTodo = await axios.delete(`${BASE_URL}/${payload}`)
-      const deletedTodo = deleteTodo.data
+      const { data } = deleteTodo.data.body
       eventEmitter.emit({
         type: DELETE_TODO_SUCCESS,
-        payload: deletedTodo._id,
+        payload: data._id,
       })
     } catch (err) {
       console.error('error while deleting todo', err)
@@ -96,9 +97,10 @@ class Sagas {
   updateTodo = async ({ payload }) => {
     try {
       const updatedTodo = await axios.patch(`${BASE_URL}/${payload._id}`, payload)
+      const { data } = updatedTodo.data.body
       eventEmitter.emit({
         type: UPDATE_TODO_SUCCESS,
-        payload: updatedTodo.data,
+        payload: data,
       })
     } catch (err) {
       console.error('error while updating todo', err)

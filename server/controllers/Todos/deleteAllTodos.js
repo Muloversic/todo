@@ -4,12 +4,10 @@ const deleteAllTodo = async (ctx) => {
   try {
     const todos = await Todo.deleteMany()
     console.log('all todos were deleted')
-    ctx.status = 200
-    ctx.body = todos
+    ctx.resolve(todos)
   } catch (err) {
     console.log('delete all todo err:', err.message)
-    ctx.status = 404
-    ctx.body = err.message
+    ctx.notFound(err.message)
   }
 }
 

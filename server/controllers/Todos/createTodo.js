@@ -5,19 +5,16 @@ const postTodo = async (ctx) => {
     const { name, active } = ctx.request.body
     if (!(name && name.trim()) || typeof active !== 'boolean') {
       console.log('invalid data came while creating new todo')
-      ctx.status = 404
-      ctx.body = 'invalid data'
+      ctx.notFound('invalid data')
       return
     }
 
     const newTodo = await Todo.create({ name, active })
     console.log('New todo was created')
-    ctx.status = 201
-    ctx.body = newTodo
+    ctx.resolve(newTodo)
   } catch (err) {
     console.log('post todo error:', err.message)
-    ctx.status = 404
-    ctx.body = err.message
+    ctx.notFound(err.message)
   }
 }
 

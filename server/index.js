@@ -6,6 +6,7 @@ import Router from 'koa-router'
 import cors from '@koa/cors'
 import todosRouter from './router'
 import configs from './configs'
+import { responseHelpers } from './helpers'
 
 const connectDb = async () => {
   try {
@@ -22,6 +23,7 @@ function runKoa() {
   app.use(cors())
   app.use(bodyParser())
   app.use(KoaLogger())
+  app.use(responseHelpers)
   router.use('/todos', ...todosRouter())
   app.use(router.routes())
   return app
