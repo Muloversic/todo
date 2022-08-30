@@ -1,21 +1,23 @@
 import Todo from '../../models/todoModel'
 
-const deleteTodo = async (request, response, id) => {
+const deleteTodo = async (ctx) => {
   try {
+    const id = ctx.request.url.split('/')[2]
     const gotTodo = await Todo.findById(id)
     if (!gotTodo) {
-      response.writeHead(404)
-      response.end(JSON.stringify('todo was not found'))
+      ctx.status = 404
+      ctx.body = 'todo was not found'
       return
     }
 
     const todo = await Todo.findByIdAndDelete(id)
     console.log('todo was deleted')
-    response.writeHead(200)
-    return response.end(JSON.stringify(todo))
+    ctx.status = 200
+    ctx.body = todo
   } catch (err) {
     console.log(err.message)
-    return response.end(404, JSON.stringify(err.message))
+    ctx.status = 404
+    ctx.body = err.message
   }
 }
 

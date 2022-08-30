@@ -13,6 +13,10 @@ router.get('/todos', async (ctx) => {
 router.post('/todos', async (ctx) => {
   await postTodo(ctx)
 })
+
+router.delete('/todos/:id', async (ctx) => {
+  await deleteTodo(ctx)
+})
 // const router = async (request, response) => {
 //   const todoIdMatch = request.url.match(/\/todos\/([0-9]+)/)
 //   const queryMatch = request.url.match(/todos(\?.*)?/gm)
