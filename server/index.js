@@ -5,7 +5,7 @@ import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import cors from '@koa/cors'
 import todosRouter from './router'
-import configs from '../configs'
+import configs from './configs'
 
 const connectDb = async () => {
   try {
