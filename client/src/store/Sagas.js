@@ -20,7 +20,7 @@ const BASE_URL = 'http://localhost:8080/todos'
 
 class Sagas {
   constructor() {
-    eventEmitter.subscribe(ADD_TODO_REQUEST, this.addToodo)
+    eventEmitter.subscribe(ADD_TODO_REQUEST, this.addTodo)
     eventEmitter.subscribe(LOAD_TODO_REQUEST, this.loadTodo)
     eventEmitter.subscribe(DELETE_TODO_REQUEST, this.deleteTodo)
     eventEmitter.subscribe(DELETE_ALL_TODOS_REQUEST, this.deleteAllTodo)
@@ -57,7 +57,7 @@ class Sagas {
     }
   }
 
-  addToodo = async ({ payload }) => {
+  addTodo = async ({ payload }) => {
     try {
       const postTodo = await axios.post(BASE_URL, payload)
       eventEmitter.emit({
