@@ -1,14 +1,15 @@
 import Todo from '../../models/todoModel'
 
-const deleteAllTodo = async (request, response) => {
+const deleteAllTodo = async (ctx) => {
   try {
     const todos = await Todo.deleteMany()
     console.log('all todos were deleted')
-    response.writeHead(200)
-    return response.end(JSON.stringify(todos))
+    ctx.status = 200
+    ctx.body = todos
   } catch (err) {
     console.error(err.message)
-    return response.end(404, JSON.stringify(err.message))
+    ctx.status = 404
+    ctx.body = err.message
   }
 }
 
