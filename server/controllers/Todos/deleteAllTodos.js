@@ -7,7 +7,7 @@ const deleteAllTodo = async (ctx) => {
     ctx.status = 200
     ctx.body = todos
   } catch (err) {
-    console.log(err.message)
+    console.log('delete all todo err:', err.message)
     ctx.status = 404
     ctx.body = err.message
   }

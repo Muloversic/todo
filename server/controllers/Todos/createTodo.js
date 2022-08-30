@@ -4,6 +4,7 @@ const postTodo = async (ctx) => {
   try {
     const { name, active } = ctx.request.body
     if (!(name && name.trim()) || typeof active !== 'boolean') {
+      console.log('invalid data came while creating new todo')
       ctx.status = 404
       ctx.body = 'invalid data'
       return
@@ -14,7 +15,7 @@ const postTodo = async (ctx) => {
     ctx.status = 201
     ctx.body = newTodo
   } catch (err) {
-    console.log(err.message)
+    console.log('post todo error:', err.message)
     ctx.status = 404
     ctx.body = err.message
   }

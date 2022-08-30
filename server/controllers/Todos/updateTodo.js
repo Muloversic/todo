@@ -7,6 +7,7 @@ const updateTodo = async (ctx) => {
     const id = ctx.request.url.split('/')[2]
     const gotTodo = await Todo.findById(id)
     if (!gotTodo) {
+      console.log('todo was not found by id while updating')
       ctx.status = 404
       ctx.body = 'todo was not found'
       return
@@ -17,7 +18,7 @@ const updateTodo = async (ctx) => {
     ctx.status = 200
     ctx.body = updatedTodo
   } catch (err) {
-    console.log(err.message)
+    console.log('error while updating todo:', err.message)
     ctx.status = 404
     ctx.body = err.message
   }

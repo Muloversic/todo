@@ -14,7 +14,7 @@ const getAllTodos = async (ctx) => {
     ctx.status = 200
     ctx.body = todos
   } catch (err) {
-    console.log(err.message)
+    console.log('error while trying to get all todos:', err.message)
     ctx.body = err.message
   }
 }

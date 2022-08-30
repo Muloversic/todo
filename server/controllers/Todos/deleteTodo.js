@@ -5,6 +5,7 @@ const deleteTodo = async (ctx) => {
     const id = ctx.request.url.split('/')[2]
     const gotTodo = await Todo.findById(id)
     if (!gotTodo) {
+      console.log('todo was not found by id while deleting')
       ctx.status = 404
       ctx.body = 'todo was not found'
       return
@@ -15,7 +16,7 @@ const deleteTodo = async (ctx) => {
     ctx.status = 200
     ctx.body = todo
   } catch (err) {
-    console.log(err.message)
+    console.log('error while deleting todo:', err.message)
     ctx.status = 404
     ctx.body = err.message
   }

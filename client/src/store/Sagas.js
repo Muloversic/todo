@@ -65,7 +65,7 @@ class Sagas {
         payload: postTodo.data,
       })
     } catch (err) {
-      console.error(err)
+      console.error('error while creating new todo:', err)
     }
   }
 
@@ -78,7 +78,7 @@ class Sagas {
         payload: deletedTodo._id,
       })
     } catch (err) {
-      console.error(err.message)
+      console.error('error while deleting todo', err)
     }
   }
 
@@ -89,7 +89,7 @@ class Sagas {
         type: DELETE_ALL_TODOS_SUCCESS,
       })
     } catch (err) {
-      console.error(err.message)
+      console.error('error while deleting all todos', err)
     }
   }
 
@@ -101,7 +101,7 @@ class Sagas {
         payload: updatedTodo.data,
       })
     } catch (err) {
-      console.error(err.message)
+      console.error('error while updating todo', err)
     }
   }
 
