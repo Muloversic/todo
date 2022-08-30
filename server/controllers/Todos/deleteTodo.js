@@ -2,7 +2,7 @@ import Todo from '../../models/todoModel'
 
 const deleteTodo = async (ctx) => {
   try {
-    const id = ctx.request.url.split('/')[2]
+    const { id } = ctx.request.params
     const gotTodo = await Todo.findById(id)
     if (!gotTodo) {
       console.log('todo was not found by id while deleting')

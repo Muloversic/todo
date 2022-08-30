@@ -4,7 +4,7 @@ const updateTodo = async (ctx) => {
   try {
     const { name, active } = ctx.request.body
     const payload = name ? { name } : { active }
-    const id = ctx.request.url.split('/')[2]
+    const { id } = ctx.request.params
     const gotTodo = await Todo.findById(id)
     if (!gotTodo) {
       console.log('todo was not found by id while updating')

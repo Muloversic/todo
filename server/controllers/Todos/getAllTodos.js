@@ -1,12 +1,11 @@
-import url from 'url'
 import Todo from '../../models/todoModel'
 
 const getAllTodos = async (ctx) => {
   try {
-    const queryObj = url.parse(ctx.request.url, true).query
-    let filter = {}
-    if (queryObj.active) {
-      filter = { active: JSON.parse(queryObj.active) }
+    const { active } = ctx.query
+    const filter = {}
+    if (active) {
+      filter.active = active
     }
 
     const todos = await Todo.find(filter)
