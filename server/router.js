@@ -5,25 +5,14 @@ import getAllTodos from './controllers/Todos/getAllTodos'
 import deleteAllTodo from './controllers/Todos/deleteAllTodos'
 import updateTodo from './controllers/Todos/updateTodo'
 
-const router = new Router()
-router.get('/todos', async (ctx) => {
-  await getAllTodos(ctx)
-})
+export default function configureRoutes() {
+  const router = Router()
 
-router.post('/todos', async (ctx) => {
-  await postTodo(ctx)
-})
+  router.get('/', getAllTodos)
+  router.post('/', postTodo)
+  router.patch('/:id', updateTodo)
+  router.delete('/:id', deleteTodo)
+  router.delete('/', deleteAllTodo)
 
-router.patch('/todos/:id', async (ctx) => {
-  await updateTodo(ctx)
-})
-
-router.delete('/todos/:id', async (ctx) => {
-  await deleteTodo(ctx)
-})
-
-router.delete('/todos', async (ctx) => {
-  await deleteAllTodo(ctx)
-})
-
-export default router
+  return [router.routes(), router.allowedMethods()]
+}
