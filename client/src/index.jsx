@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import './index.html'
 import App from './components/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
@@ -10,5 +9,3 @@ root.render(
     <App />
   </React.StrictMode>,
 )
-// const app = new App()
-// window.addEventListener('load', app.render())

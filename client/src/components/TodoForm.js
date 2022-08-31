@@ -64,35 +64,4 @@ class TodoForm extends Component {
   }
 }
 
-// processForm = (input, button) => {
-//   let todoName = ''
-//   //   input.addEventListener('change', (e) => {
-//   //     input.classList.remove('todo__form-input--error')
-//   //     todoName = e.target.value.trim()
-//   //   })
-
-//   button.addEventListener('click', (e) => {
-//     // e.preventDefault()
-//     // if (!todoName) {
-//     //   input.classList.add('todo__form-input--error')
-//     // }
-
-//     // if (todoName) {
-//     //   input.classList.remove('todo__form-input--error')
-//     //   const todoObj = {
-//     //     name: todoName,
-//     //     active: true,
-//     //   }
-
-//     //   eventEmitter.emit({
-//     //     type: ADD_TODO_REQUEST,
-//     //     payload: todoObj,
-//     //   })
-//     // }
-
-//     input.value = ''
-//     todoName = ''
-//   })
-// }
-
 export default TodoForm
