@@ -1,3 +1,4 @@
+import React, { Component } from 'react'
 import eventEmitter from '../store/EventEmitter.js'
 import store from '../store/Store.js'
 import {
@@ -7,83 +8,201 @@ import {
   UPDATE_FILTER_REQUEST,
   UPDATE_TODO_REQUEST,
 } from '../constants.js'
-import { createElement } from '../helpers.js'
 
-class Todos {
+class Todos extends Component {
   constructor() {
-    this.todoContainer = this.createTodosContainer()
-    this.todoFiltersContainer = this.createFiltersContainer()
-    this.createFiltersElements()
-    eventEmitter.subscribe(STATE_UPDATED, this.processTodos)
+    super()
+    this.state = {
+      editing: {
+        targetId: '',
+        inputValue: '',
+      },
+      todoElements: [],
+    }
   }
 
-  createFiltersContainer = () => {
-    // _todo info bar
-    const todoFilters = createElement('div', 'todo__filters')
-    return todoFilters
+  componentDidMount() {
+    eventEmitter.subscribe(STATE_UPDATED, this.createTodoElements)
   }
 
-  createFiltersElements = () => {
-    const todoFilterButtons = createElement('div', 'todo__filters-row')
-    const todoFiltersInfo = createElement('div', 'todo__filters-row')
+  handleKeyDown = () => {}
 
-    // filter buttons
-    const showAllTodosButton = createElement('button', ['todo__filtres-button'], 'All todos', [
-      { 'data-sort': 'all' },
-    ])
+  editTodo = (e) => {
+    const { editing } = this.state
+    const input = e.target
+    this.setState((prevState) => ({
+      ...prevState,
+      editing: { ...editing, inputValue: input.value.trim() },
+    }))
+  }
 
-    showAllTodosButton.addEventListener('click', (e) => {
-      e.preventDefault()
-      ;[...todoFilterButtons.children].forEach((button) =>
-        button.classList.remove('todo__filtres-button--active'),
-      )
-      showAllTodosButton.classList.add('todo__filtres-button--active')
-      eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'all' })
+  handleTodoStatus = (todo) => {
+    eventEmitter.emit({
+      type: UPDATE_TODO_REQUEST,
+      payload: { _id: todo._id, active: !todo.active },
     })
+  }
 
-    const showActiveTodos = createElement('button', 'todo__filtres-button', 'Active todos', [
-      { 'data-sort': 'active' },
-    ])
-    showActiveTodos.addEventListener('click', (e) => {
-      e.preventDefault()
-      ;[...todoFilterButtons.children].forEach((button) =>
-        button.classList.remove('todo__filtres-button--active'),
-      )
-      showActiveTodos.classList.add('todo__filtres-button--active')
-      eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'active' })
-    })
+  handleDeleteTodo = (todo) => {
+    eventEmitter.emit({ type: DELETE_TODO_REQUEST, payload: todo._id })
+  }
 
-    const showDoneTodos = createElement('button', 'todo__filtres-button', 'Done todos', [
-      { 'data-sort': 'done' },
-    ])
-    showDoneTodos.addEventListener('click', (e) => {
-      e.preventDefault()
-      ;[...todoFilterButtons.children].forEach((button) =>
-        button.classList.remove('todo__filtres-button--active'),
-      )
-      showDoneTodos.classList.add('todo__filtres-button--active')
-      eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'done' })
-    })
+  handeEditingMode = (e) => {
+    const elementId = e.target.parentElement.id
+    const { editing } = this.state
+    const input = document.querySelector(`[data-input='${elementId}']`)
+    const textLabel = document.querySelector(`[data-label='${elementId}']`)
+    const edtiButton = e.target
+    input.value = input.name
+    input.classList.remove('todo__element--err')
+    this.setState((prevState) => ({
+      ...prevState,
+      editing: { inputValue: input.name, targetId: elementId },
+    }))
 
-    // append buttons
-    todoFilterButtons.append(...[showAllTodosButton, showActiveTodos, showDoneTodos])
-    // _todos counter at info bar
-    const todoItemCounter = createElement('p', 'todo__item-counter', 'All todos: 0')
+    const allInputs = document.querySelectorAll('.todo__element')
+    const allTextLabels = document.querySelectorAll('.todo__element-text')
+    if (elementId === editing.targetId || editing.targetId === '') {
+      input.classList.toggle('todo__element--hidden')
+      textLabel.classList.toggle('todo__element--hidden')
+    }
 
-    // remove all todo btn
-    const removeAllButton = createElement('button', 'todo__remove-all', 'Remove all')
-    removeAllButton.addEventListener('click', () =>
-      eventEmitter.emit({ type: DELETE_ALL_TODOS_REQUEST }),
+    if (elementId !== editing.targetId && editing.targetId !== '') {
+      ;[...allInputs].forEach((element) => element.classList.add('todo__element--hidden'))
+      ;[...allTextLabels].forEach((element) => element.classList.remove('todo__element--hidden'))
+      input.classList.remove('todo__element--hidden')
+      textLabel.classList.add('todo__element--hidden')
+    }
+
+    if (editing.targetId === elementId) {
+      this.setState((prevState) => ({
+        ...prevState,
+        editing: { ...editing, targetId: '' },
+      }))
+    }
+
+    if (
+      ![...input.classList].includes('todo__element--hidden') &&
+      elementId !== editing.targetId &&
+      editing.targetId !== ''
+    ) {
+      const allEditBtns = document.querySelectorAll('.todo__edit')
+      ;[...allEditBtns].forEach((element) => {
+        element.innerHTML = '&#9998;'
+      })
+    }
+
+    if (![...input.classList].includes('todo__element--hidden')) {
+      edtiButton.innerHTML = '&#10004;'
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          input.classList.add('todo__element--hidden')
+          textLabel.classList.remove('todo__element--hidden')
+          edtiButton.innerHTML = '&#9998;'
+        }
+      })
+
+      if (editing.inputValue === '') {
+        ;[...allInputs].forEach((element) => element.classList.add('todo__element--hidden'))
+        ;[...allTextLabels].forEach((element) => element.classList.remove('todo__element--hidden'))
+        input.classList.remove('todo__element--hidden')
+        textLabel.classList.add('todo__element--hidden')
+      }
+    }
+
+    if ([...input.classList].includes('todo__element--hidden')) {
+      if (editing.inputValue.trim()) {
+        edtiButton.innerHTML = '&#9998;'
+        eventEmitter.emit({
+          type: UPDATE_TODO_REQUEST,
+          payload: {
+            _id: elementId,
+            name: editing.inputValue,
+          },
+        })
+      } else {
+        edtiButton.innerHTML = '&#10004;'
+        input.value = ''
+        input.classList.remove('todo__element--hidden')
+        textLabel.classList.add('todo__element--hidden')
+        input.classList.add('todo__element--err')
+      }
+    }
+  }
+
+  createTodoElements = () => {
+    const { todos, todosCounter } = store.state
+    const todoElements = todos.map((todo) => (
+      <div className="todo__element-wrapper" id={todo._id} key={todo._id}>
+        <input
+          type="text"
+          className="todo__element todo__element--hidden"
+          name={todo.name}
+          data-input={todo._id}
+          onChange={this.editTodo}
+        />
+        <span
+          className={todo.active ? 'todo__element-text' : 'todo__element-text todo__element--done'}
+          onClick={() => this.handleTodoStatus(todo)}
+          onKeyDown={this.handleKeyDown}
+          role="button"
+          tabIndex="0"
+          data-label={todo._id}
+        >
+          {todo.name}
+        </span>
+        <button
+          type="button"
+          className="todo__edit todo__action-element"
+          onClick={this.handeEditingMode}
+        >
+          &#9998;
+        </button>
+        <button
+          type="button"
+          className="todo__delete todo__action-element"
+          onClick={() => this.handleDeleteTodo(todo)}
+        >
+          x
+        </button>
+      </div>
+    ))
+
+    this.changeTodoCounter(todosCounter)
+    this.setState({ todoElements })
+  }
+
+  processFilterButtons = (filterButton) => {
+    const todoFilterButtons = document.querySelector('.todo__filters-row--controls')
+    ;[...todoFilterButtons.children].forEach((button) =>
+      button.classList.remove('todo__filtres-button--active'),
     )
-
-    // append 'counter' and 'remove todo button' to info bar
-    todoFiltersInfo.append(...[todoItemCounter, removeAllButton])
-    this.todoFiltersContainer.append(...[todoFilterButtons, todoFiltersInfo])
+    filterButton.classList.add('todo__filtres-button--active')
   }
 
-  createTodosContainer = () => {
-    const todosContaienr = createElement('div', 'todo__items-container')
-    return todosContaienr
+  showAllTodos = (e) => {
+    e.preventDefault()
+    const filterButton = e.target
+    this.processFilterButtons(filterButton)
+    eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'all' })
+  }
+
+  showActiveTodos = (e) => {
+    e.preventDefault()
+    const filterButton = e.target
+    this.processFilterButtons(filterButton)
+    eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'active' })
+  }
+
+  showDoneTodos = (e) => {
+    e.preventDefault()
+    const filterButton = e.target
+    this.processFilterButtons(filterButton)
+    eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'done' })
+  }
+
+  deleteAllTodos = () => {
+    eventEmitter.emit({ type: DELETE_ALL_TODOS_REQUEST })
   }
 
   changeTodoCounter = (num) => {
@@ -93,158 +212,55 @@ class Todos {
     }
   }
 
-  createTodoElement = (todo) => {
-    // render todo
-    const todoWrapper = createElement('div', 'todo__element-wrapper', '', [{ id: todo._id }])
-
-    // create input and its attrs
-    const todoItemInput = createElement('input', ['todo__element', 'todo__element--hidden'], '', [
-      { name: todo.name },
-    ])
-    todoItemInput.value = todo.name
-
-    const todoItemText = createElement('span', 'todo__element-text', todo.name)
-
-    if (!todo.active) {
-      todoItemText.classList.add('todo__element--done')
-    }
-
-    // create edit button
-    const editButton = createElement('span', ['todo__edit', 'todo__action-element'])
-    editButton.innerHTML = '&#9998;'
-
-    // create delete button
-    const deleteButton = createElement('span', ['todo__delete', 'todo__action-element'], 'x')
-
-    // add toggle todo status listener for todo wrapper
-    let isEditing = false
-    todoWrapper.addEventListener('click', (event) => {
-      const todoId = event.target.parentElement.id
-      if (event.target === todoItemText && !isEditing) {
-        eventEmitter.emit({
-          type: UPDATE_TODO_REQUEST,
-          payload: { _id: todo._id, active: !todo.active },
-        })
-      }
-
-      if (event.target === editButton) {
-        // _!isEditing means input is editable
-        if (todoItemInput.value !== '') {
-          isEditing = !isEditing
-        }
-
-        // flip isEditing state if esc was pressed
-        todoItemInput.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' || e.key === 'Enter') {
-            isEditing = false
-          }
-        })
-
-        this.editTodo(editButton, todoItemInput, todoItemText, todo._id, isEditing, todo.active)
-      }
-
-      if (event.target === deleteButton) {
-        eventEmitter.emit({ type: DELETE_TODO_REQUEST, payload: todoId })
-      }
-    })
-
-    // append todo item+action button to wrapper, append wrappers to container
-    todoWrapper.append(...[todoItemInput, todoItemText, editButton, deleteButton])
-    this.todoContainer.append(todoWrapper)
-  }
-
-  editTodo(button, todoItemInput, todoItemText, todoId, isEditing, active) {
-    const confirmTodoChanges = () => {
-      todoItemInput.classList.toggle('todo__element--hidden')
-      todoItemText.classList.toggle('todo__element--hidden')
-      button.innerHTML = '&#9998;'
-      todoItemInput.classList.remove('todo__element--err')
-      todoItemInput.name = todoItemInput.value
-      eventEmitter.emit({
-        type: UPDATE_TODO_REQUEST,
-        payload: {
-          _id: todoId,
-          name: todoItemInput.value.trim(),
-        },
-      })
-    }
-
-    const initialTodoValue = todoItemInput.name
-    todoItemInput.addEventListener('keydown', (e) => {
-      // if escape was pressed set initial value to input.value and to arr with edited todo
-      // works only if input value is not empty
-      if (e.key === 'Escape' && todoItemInput.value.trim() !== '') {
-        todoItemInput.classList.add('todo__element--hidden')
-        todoItemText.classList.remove('todo__element--hidden')
-        button.innerHTML = '&#9998;'
-        todoItemInput.value = initialTodoValue
-        todoItemInput.name = initialTodoValue
-        todoItemInput.classList.remove('todo__element--err')
-      }
-
-      if (e.key === 'Enter' && todoItemInput.value.trim() !== '') {
-        console.log('enter submit')
-        confirmTodoChanges()
-      }
-    })
-
-    // make todo editable
-    if (isEditing) {
-      button.innerHTML = '&#10004;'
-      if (todoItemInput.value.trim() !== '') {
-        todoItemInput.classList.toggle('todo__element--hidden')
-        todoItemText.classList.toggle('todo__element--hidden')
-      }
-    } else {
-      button.innerHTML = '&#9998;'
-    }
-
-    // check if it's editing state and value is not empty save edited todo and disable input
-    if (!isEditing && todoItemInput.value.trim() !== '') {
-      confirmTodoChanges()
-    }
-
-    // if input is empty make its border red
-    if (todoItemInput.value.trim() === '') {
-      todoItemInput.classList.add('todo__element--err')
-    }
-  }
-
-  processTodos = () => {
-    const { state } = store
-    const { todos, todosCounter } = state
-    ;[...this.todoContainer.children].forEach((todo) => todo.remove())
-    todos.forEach((todo) => this.createTodoElement(todo))
-    this.render()
-    this.changeTodoCounter(todosCounter)
-  }
-
   render() {
-    const todoBody = document.querySelector('.todo')
-    if (todoBody.children.length <= 1) {
-      todoBody.append(...[this.todoFiltersContainer, this.todoContainer])
-    }
-
-    const removeAllButton = document.querySelector('.todo__remove-all')
-    const { todos, filterType } = store.state
-    const sortAll = document.querySelector('[data-sort="all"]')
-    const sortActive = document.querySelector('[data-sort="active"]')
-    const sortDone = document.querySelector('[data-sort="done"]')
-    if (filterType === 'active') {
-      sortActive.classList.add('todo__filtres-button--active')
-    }
-    if (filterType === 'done') {
-      sortDone.classList.add('todo__filtres-button--active')
-    }
-    if (filterType === 'all') {
-      sortAll.classList.add('todo__filtres-button--active')
-    }
-
-    if (todos.length) {
-      removeAllButton.classList.remove('todo__remove-all--hidden')
-    } else {
-      removeAllButton.classList.add('todo__remove-all--hidden')
-    }
+    const { todoElements } = this.state
+    return (
+      <>
+        <div className="todo__filters">
+          <div className="todo__filters-row todo__filters-row--controls">
+            <button
+              type="button"
+              className="todo__filtres-button todo__filtres-button--active"
+              data-sort="all"
+              onClick={this.showAllTodos}
+            >
+              All todos
+            </button>
+            <button
+              type="button"
+              className="todo__filtres-button"
+              data-sort="active"
+              onClick={this.showActiveTodos}
+            >
+              Active todos
+            </button>
+            <button
+              type="button"
+              className="todo__filtres-button"
+              data-sort="done"
+              onClick={this.showDoneTodos}
+            >
+              Done todos
+            </button>
+          </div>
+          <div className="todo__filters-row">
+            <p className="todo__item-counter">All todos: 0</p>
+            <button
+              type="submit"
+              className={
+                todoElements.length
+                  ? 'todo__remove-all'
+                  : 'todo__remove-all todo__remove-all--hidden'
+              }
+              onClick={this.deleteAllTodos}
+            >
+              Remove all
+            </button>
+          </div>
+        </div>
+        <div className="todo__items-container">{todoElements}</div>
+      </>
+    )
   }
 }
 

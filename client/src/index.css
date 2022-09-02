@@ -172,6 +172,9 @@ input:focus-visible {
   color: #fff;
   width: 80%;
   cursor: pointer;
+  background-color: rgb(129, 134, 218);
+  border: 0;
+  text-align: left;
 }
 
 .todo__element--done {
@@ -203,9 +206,13 @@ input:focus-visible {
 }
 
 .todo__edit {
+  background-color: transparent;
+  border: 0;
   right: 10%;
 }
 
 .todo__delete {
+  background-color: transparent;
+  border: 0;
   right: 5%;
 }

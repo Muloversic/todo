@@ -43,6 +43,7 @@ class TodoForm extends Component {
   }
 
   render() {
+    const { children } = this.props
     return (
       <div className="todo">
         <div className="todo__form-wrapper">
@@ -59,6 +60,7 @@ class TodoForm extends Component {
             </button>
           </form>
         </div>
+        {children}
       </div>
     )
   }
