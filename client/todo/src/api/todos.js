@@ -23,3 +23,13 @@ export const loadTodos = async (filterType) => {
     console.error('Errow while getting all todos', err);
   }
 };
+
+export const addTodo = async (payload) => {
+  try {
+    const postTodo = await axios.post(BASE_URL, payload);
+    const { data } = postTodo.data.body;
+    return data;
+  } catch (err) {
+    console.error('error while creating new todo:', err);
+  }
+};
