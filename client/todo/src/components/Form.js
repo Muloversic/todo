@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { ADD_TODO_REQUEST } from '../constants.js';
 import { addTodoRequest } from '../actions/todos.js';
 
 class TodoForm extends Component {
