@@ -4,6 +4,7 @@ import {
   DELETE_TODO_SUCCESS,
   UPDATE_TODO_SUCCESS,
   UPDATE_FILTER_SUCCESS,
+  DELETE_ALL_TODOS_SUCCESS,
 } from '../constants';
 const INITIAL_STATE = {
   todos: [],
@@ -21,11 +22,11 @@ const todo = (state = INITIAL_STATE, action) => {
     case ADD_TODO_SUCCESS:
       return {
         ...state,
-        todos: [...state.todos, action.todos],
+        todos: [...state.todos, action.payload],
       };
 
     case DELETE_TODO_SUCCESS:
-      const withoutDeletedTodo = state.todos.filter((todo) => todo._id !== action.todos._id);
+      const withoutDeletedTodo = state.todos.filter((todo) => todo._id !== action.payload._id);
       return {
         ...state,
         todos: withoutDeletedTodo,
@@ -37,9 +38,15 @@ const todo = (state = INITIAL_STATE, action) => {
         filterType: action.payload,
       };
 
+    case DELETE_ALL_TODOS_SUCCESS:
+      return {
+        ...state,
+        todos: [],
+      };
+
     case UPDATE_TODO_SUCCESS:
       const { filterType } = state;
-      const { _id, name, active } = action.todos;
+      const { _id, name, active } = action.payload;
       let updatedTodos = [];
       const shouldTodoRemove = (filterType === 'active' && !active) || (filterType === 'done' && active);
       if (shouldTodoRemove) {
@@ -57,6 +64,7 @@ const todo = (state = INITIAL_STATE, action) => {
           return todo;
         });
       }
+
       return {
         ...state,
         todos: updatedTodos,

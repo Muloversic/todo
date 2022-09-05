@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateFilterRequest } from '../actions/todos';
+import { updateFilterRequest, deleteAllTodosRequest } from '../actions/todos';
 
 class TodoFilters extends Component {
   processFilterButtons = (filterButton) => {
@@ -34,7 +34,8 @@ class TodoFilters extends Component {
   };
 
   deleteAllTodos = () => {
-    // eventEmitter.emit({ type: DELETE_ALL_TODOS_REQUEST });
+    const { deleteAllTodosAction } = this.props;
+    deleteAllTodosAction();
   };
 
   render() {
@@ -74,6 +75,7 @@ class TodoFilters extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   updateFiltersAction: (payload) => dispatch(updateFilterRequest(payload)),
+  deleteAllTodosAction: () => dispatch(deleteAllTodosRequest()),
 });
 
 export default connect(null, mapDispatchToProps)(TodoFilters);

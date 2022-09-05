@@ -53,3 +53,12 @@ export const updateTodoAPI = async (payload) => {
     console.error('error while updating todo', err);
   }
 };
+
+export const deleteAllTodoAPI = async () => {
+  try {
+    const deleteTodo = await axios.delete(BASE_URL);
+    return deleteTodo;
+  } catch (err) {
+    console.error('error while deleting all todos', err);
+  }
+};
