@@ -1,4 +1,4 @@
-import { LOAD_TODO_SUCCESS, ADD_TODO_SUCCESS } from '../constants';
+import { LOAD_TODO_SUCCESS, ADD_TODO_SUCCESS, DELETE_TODO_SUCCESS } from '../constants';
 const INITIAL_STATE = {
   todos: [],
 };
@@ -15,6 +15,13 @@ const todo = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         todos: [...state.todos, action.todos],
+      };
+
+    case DELETE_TODO_SUCCESS:
+      const todos = state.todos.filter((todo) => todo._id !== action.todos._id);
+      return {
+        ...state,
+        todos,
       };
 
     default:
