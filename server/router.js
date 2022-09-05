@@ -1,9 +1,9 @@
 import Router from 'koa-router'
-import postTodo from './controllers/Todos/createTodo'
-import deleteTodo from './controllers/Todos/deleteTodo'
-import getAllTodos from './controllers/Todos/getAllTodos'
-import deleteAllTodo from './controllers/Todos/deleteAllTodos'
-import updateTodo from './controllers/Todos/updateTodo'
+import postTodo from './controllers/Todos/create'
+import deleteTodo from './controllers/Todos/delete'
+import getAllTodos from './controllers/Todos/getAll'
+import deleteAllTodo from './controllers/Todos/deleteAll'
+import updateTodo from './controllers/Todos/update'
 
 export default function configureRoutes() {
   const router = Router()
