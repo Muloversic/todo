@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { deleteTodoRequest } from '../actions/todos.js';
+import { deleteTodoRequest, updateTodoRequest } from '../actions/todos.js';
 
 class Todo extends Component {
   constructor() {
@@ -25,19 +25,17 @@ class Todo extends Component {
   };
 
   handleTodoStatus = (todo) => {
-    // eventEmitter.emit({
-    //   type: UPDATE_TODO_REQUEST,
-    //   payload: { _id: todo._id, active: !todo.active },
-    // });
+    const { updateTodoAction } = this.props;
+    updateTodoAction({ _id: todo._id, active: !todo.active });
   };
 
   handleDeleteTodo = (todo) => {
     const { deleteTodoAction } = this.props;
     deleteTodoAction(todo._id);
-    // eventEmitter.emit({ type: DELETE_TODO_REQUEST, payload: todo._id });
   };
 
   handeEditingMode = (e) => {
+    const { updateTodoAction } = this.props;
     const elementId = e.target.parentElement.id;
     const { editing } = this.state;
     const input = document.querySelector(`[data-input='${elementId}']`);
@@ -103,13 +101,7 @@ class Todo extends Component {
     if ([...input.classList].includes('todo__element--hidden')) {
       if (editing.inputValue.trim()) {
         edtiButton.innerHTML = '&#9998;';
-        // eventEmitter.emit({
-        //   type: UPDATE_TODO_REQUEST,
-        //   payload: {
-        //     _id: elementId,
-        //     name: editing.inputValue,
-        //   },
-        // });
+        updateTodoAction({ _id: elementId, name: editing.inputValue });
       } else {
         edtiButton.innerHTML = '&#10004;';
         input.value = '';
@@ -154,6 +146,7 @@ class Todo extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   deleteTodoAction: (payload) => dispatch(deleteTodoRequest(payload)),
+  updateTodoAction: (payload) => dispatch(updateTodoRequest(payload)),
 });
 
 export default connect(null, mapDispatchToProps)(Todo);
