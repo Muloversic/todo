@@ -24,6 +24,33 @@ class Todo extends Component {
     }))
   }
 
+  handleInputKeys = (e) => {
+    const { updateTodoAction } = this.props
+    const { editing } = this.state
+    const elementId = e.target.parentElement.id
+    const input = document.querySelector(`[data-input='${elementId}']`)
+    const textLabel = document.querySelector(`[data-label='${elementId}']`)
+    const allEditBtns = document.querySelectorAll('.todo__edit')
+    if (e.key === 'Escape') {
+      input.classList.add('todo__element--hidden')
+      textLabel.classList.remove('todo__element--hidden')
+      ;[...allEditBtns].forEach((element) => {
+        element.innerHTML = '&#9998;'
+      })
+    }
+
+    if (e.key === 'Enter' && input.value.trim() !== '') {
+      input.classList.add('todo__element--hidden')
+      textLabel.classList.remove('todo__element--hidden')
+      ;[...allEditBtns].forEach((element) => {
+        element.innerHTML = '&#9998;'
+      })
+      updateTodoAction({ _id: elementId, name: editing.inputValue })
+    } else {
+      input.classList.add('todo__element--err')
+    }
+  }
+
   handleTodoStatus = (todo) => {
     const { updateTodoAction } = this.props
     updateTodoAction({ _id: todo._id, active: !todo.active })
@@ -36,90 +63,47 @@ class Todo extends Component {
 
   handeEditingMode = (e) => {
     const { updateTodoAction } = this.props
-    const elementId = e.target.parentElement.id
     const { editing } = this.state
+    const elementId = e.target.parentElement.id
     const input = document.querySelector(`[data-input='${elementId}']`)
     const textLabel = document.querySelector(`[data-label='${elementId}']`)
     const edtiButton = e.target
     const allInputs = document.querySelectorAll('.todo__element')
     const allTextLabels = document.querySelectorAll('.todo__element-text')
-    // console.log([...input.classList].includes('todo__element--hidden'));
-    // console.log(![...input.classList].includes('todo__element--hidden'));
-    console.log(elementId)
-
-    if (![...input.classList].includes('todo__element--hidden')) {
+    const allEditBtns = document.querySelectorAll('.todo__edit')
+    if ([...input.classList].includes('todo__element--hidden')) {
       ;[...allInputs].forEach((element) => element.classList.add('todo__element--hidden'))
       ;[...allTextLabels].forEach((element) => element.classList.remove('todo__element--hidden'))
-      input.classList.add('todo__element--hidden')
-      textLabel.classList.remove('todo__element--hidden')
-    }
+      ;[...allEditBtns].forEach((element) => {
+        element.innerHTML = '&#9998;'
+      })
 
-    if ([...input.classList].includes('todo__element--hidden')) {
+      this.setState((prevState) => ({
+        ...prevState,
+        editing: { inputValue: input.name, targetId: elementId },
+      }))
+
+      input.classList.remove('todo__element--err')
       input.classList.remove('todo__element--hidden')
       textLabel.classList.add('todo__element--hidden')
+      edtiButton.innerHTML = '&#10004;'
+      input.value = input.name
+    } else {
+      submitChanging()
     }
 
-    // input.value = input.name;
-    // input.classList.remove('todo__element--err');
-    // this.setState((prevState) => ({
-    //   ...prevState,
-    //   editing: { inputValue: input.name, targetId: elementId },
-    // }));
-    // if (elementId === editing.targetId || editing.targetId === '') {
-    //   input.classList.toggle('todo__element--hidden');
-    //   textLabel.classList.toggle('todo__element--hidden');
-    // }
-    // if (elementId !== editing.targetId && editing.targetId !== '') {
-    //   [...allInputs].forEach((element) => element.classList.add('todo__element--hidden'));
-    //   [...allTextLabels].forEach((element) => element.classList.remove('todo__element--hidden'));
-    //   input.classList.remove('todo__element--hidden');
-    //   textLabel.classList.add('todo__element--hidden');
-    // }
-    // if (editing.targetId === elementId) {
-    //   this.setState((prevState) => ({
-    //     ...prevState,
-    //     editing: { ...editing, targetId: '' },
-    //   }));
-    // }
-    // if (
-    //   ![...input.classList].includes('todo__element--hidden') &&
-    //   elementId !== editing.targetId &&
-    //   editing.targetId !== ''
-    // ) {
-    //   const allEditBtns = document.querySelectorAll('.todo__edit');
-    //   [...allEditBtns].forEach((element) => {
-    //     element.innerHTML = '&#9998;';
-    //   });
-    // }
-    // if (![...input.classList].includes('todo__element--hidden')) {
-    //   edtiButton.innerHTML = '&#10004;';
-    //   document.addEventListener('keydown', (event) => {
-    //     if (event.key === 'Escape') {
-    //       input.classList.add('todo__element--hidden');
-    //       textLabel.classList.remove('todo__element--hidden');
-    //       edtiButton.innerHTML = '&#9998;';
-    //     }
-    //   });
-    //   if (editing.inputValue === '') {
-    //     [...allInputs].forEach((element) => element.classList.add('todo__element--hidden'));
-    //     [...allTextLabels].forEach((element) =>
-    //  element.classList.remove('todo__element--hidden'))
-    //     input.classList.remove('todo__element--hidden');
-    //     textLabel.classList.add('todo__element--hidden');
-    //   }
-    // }
-    // if ([...input.classList].includes('todo__element--hidden')) {
-    //   if (editing.inputValue.trim()) {
-    //     edtiButton.innerHTML = '&#9998;';
-    //     updateTodoAction({ _id: elementId, name: editing.inputValue });
-    //   } else {
-    //     edtiButton.innerHTML = '&#10004;';
-    //     input.value = '';
-    //     input.classList.remove('todo__element--hidden');
-    //     textLabel.classList.add('todo__element--hidden');
-    //     input.classList.add('todo__element--err');
-    //   }
-    // }
+    function submitChanging() {
+      if (editing.inputValue !== '') {
+        input.classList.add('todo__element--hidden')
+        textLabel.classList.remove('todo__element--hidden')
+        edtiButton.innerHTML = '&#9998;'
+        updateTodoAction({ _id: elementId, name: editing.inputValue })
+      }
+
+      if (editing.inputValue === '') {
+        input.classList.add('todo__element--err')
+      }
+    }
   }
 
   render() {
@@ -132,6 +116,7 @@ class Todo extends Component {
           name={todo.name}
           data-input={todo._id}
           onChange={this.editTodo}
+          onKeyDown={this.handleInputKeys}
         />
         <span
           className={todo.active ? 'todo__element-text' : 'todo__element-text todo__element--done'}
