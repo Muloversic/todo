@@ -1,21 +1,10 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
-import axios from 'axios';
-import { LOAD_TODO_REQUEST, LOAD_TODO_SUCCESS } from '../constants';
+import { LOAD_TODO_REQUEST, LOAD_TODO_SUCCESS, UPDATE_FILTER_REQUEST } from '../constants';
+import { loadTodos } from '../api/todos';
 
-const BASE_URL = 'http://localhost:8080/todos';
-
-const todosFetch = async () => {
-  const getAllTodos = await axios.get(`${BASE_URL}`, {
-    params: 'all',
-  });
-
-  const { data } = getAllTodos.data.body;
-  return data;
-};
-
-function* loadTodos({ payload }) {
+function* fetchTodos({ payload }) {
   try {
-    const todos = yield call(todosFetch);
+    const todos = yield call(loadTodos, payload);
     yield put({ type: LOAD_TODO_SUCCESS, todos });
   } catch (err) {
     console.log(err);
@@ -23,8 +12,8 @@ function* loadTodos({ payload }) {
 }
 
 function* saga() {
-  yield takeEvery(LOAD_TODO_REQUEST, loadTodos);
-  console.log('saga runs');
+  yield takeEvery(LOAD_TODO_REQUEST, fetchTodos);
+  yield takeEvery(UPDATE_FILTER_REQUEST, fetchTodos);
 }
 
 export default saga;

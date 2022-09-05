@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import TodosContainer from './TodosContainer.js';
 import { ADD_TODO_REQUEST } from '../constants.js';
 
 class TodoForm extends Component {
@@ -44,7 +43,7 @@ class TodoForm extends Component {
 
   render() {
     return (
-      <div className="todo">
+      <>
         <div className="todo__form-wrapper">
           <h1 className="todo__heading">todo list</h1>
           <form className="todo__form">
@@ -54,8 +53,7 @@ class TodoForm extends Component {
             </button>
           </form>
         </div>
-        <TodosContainer />
-      </div>
+      </>
     );
   }
 }

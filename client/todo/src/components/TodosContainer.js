@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import Todo from './Todo.js';
-import { connect } from 'react-redux';
-import { loadTodosRequest, loadTodosSuccess } from '../actions/todos.js';
-import { LOAD_TODO_REQUEST } from '../constants.js';
 
 class TodosContainer extends Component {
   constructor() {
@@ -13,11 +10,6 @@ class TodosContainer extends Component {
         inputValue: '',
       },
     };
-  }
-
-  componentDidMount() {
-    const { loadTodosAction } = this.props;
-    loadTodosAction();
   }
 
   handleKeyDown = () => {};
@@ -125,92 +117,11 @@ class TodosContainer extends Component {
     }
   };
 
-  processFilterButtons = (filterButton) => {
-    const todoFilterButtons = document.querySelector('.todo__filters-row--controls');
-    [...todoFilterButtons.children].forEach((button) => button.classList.remove('todo__filtres-button--active'));
-    filterButton.classList.add('todo__filtres-button--active');
-  };
-
-  showAllTodos = (e) => {
-    e.preventDefault();
-    const filterButton = e.target;
-    this.processFilterButtons(filterButton);
-    // eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'all' });
-  };
-
-  showActiveTodos = (e) => {
-    e.preventDefault();
-    const filterButton = e.target;
-    this.processFilterButtons(filterButton);
-    // eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'active' });
-  };
-
-  showDoneTodos = (e) => {
-    e.preventDefault();
-    const filterButton = e.target;
-    this.processFilterButtons(filterButton);
-    // eventEmitter.emit({ type: UPDATE_FILTER_REQUEST, payload: 'done' });
-  };
-
-  deleteAllTodos = () => {
-    // eventEmitter.emit({ type: DELETE_ALL_TODOS_REQUEST });
-  };
-
-  changeTodoCounter = (num) => {
-    const counterItem = document.querySelector('.todo__item-counter');
-    if (counterItem) {
-      counterItem.textContent = `Todos counter: ${num}`;
-    }
-  };
-
   render() {
     const { todos } = this.props;
-    let todoElements = [];
-    if (todos) {
-      todoElements = todos.map((todo) => <Todo todo={todo} key={todo._id} />);
-    }
-    return (
-      <>
-        <div className="todo__filters">
-          <div className="todo__filters-row todo__filters-row--controls">
-            <button
-              type="button"
-              className="todo__filtres-button todo__filtres-button--active"
-              data-sort="all"
-              onClick={this.showAllTodos}
-            >
-              All todos
-            </button>
-            <button type="button" className="todo__filtres-button" data-sort="active" onClick={this.showActiveTodos}>
-              Active todos
-            </button>
-            <button type="button" className="todo__filtres-button" data-sort="done" onClick={this.showDoneTodos}>
-              Done todos
-            </button>
-          </div>
-          <div className="todo__filters-row">
-            <p className="todo__item-counter">All todos: 0</p>
-            <button
-              type="submit"
-              className={todoElements.length ? 'todo__remove-all' : 'todo__remove-all todo__remove-all--hidden'}
-              onClick={this.deleteAllTodos}
-            >
-              Remove all
-            </button>
-          </div>
-        </div>
-        <div className="todo__items-container">{todoElements}</div>
-      </>
-    );
+    const todoElements = todos.map((todo) => <Todo todo={todo} key={todo._id} />);
+    return <div className="todo__items-container">{todoElements}</div>;
   }
 }
 
-const mapStateToProps = (state) => {
-  return { todos: state.todo.todos };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  loadTodosAction: () => dispatch(loadTodosRequest()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TodosContainer);
+export default TodosContainer;
