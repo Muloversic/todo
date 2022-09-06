@@ -7,12 +7,26 @@ import {
   DELETE_ALL_TODOS_SUCCESS,
 } from '../constants'
 
-const INITIAL_STATE = {
+const TODOS_STATE = {
   todos: [],
-  filterType: 'all',
 }
 
-const todo = (state = INITIAL_STATE, action) => {
+const TODOS_FILTER = 'all'
+
+export const filter = (state = TODOS_FILTER, { type, payload }) => {
+  switch (type) {
+    case UPDATE_FILTER_SUCCESS:
+      return {
+        ...state,
+        filterType: payload,
+      }
+
+    default:
+      return state
+  }
+}
+
+export const todo = (state = TODOS_STATE, action) => {
   switch (action.type) {
     case LOAD_TODO_SUCCESS:
       return {
@@ -33,12 +47,6 @@ const todo = (state = INITIAL_STATE, action) => {
         todos: withoutDeletedTodo,
       }
 
-    case UPDATE_FILTER_SUCCESS:
-      return {
-        ...state,
-        filterType: action.payload,
-      }
-
     case DELETE_ALL_TODOS_SUCCESS:
       return {
         ...state,
@@ -46,8 +54,8 @@ const todo = (state = INITIAL_STATE, action) => {
       }
 
     case UPDATE_TODO_SUCCESS:
-      const { filterType } = state
-      const { _id, name, active } = action.payload
+      const { _id, name, active } = action.payload.todos
+      const { filterType } = action.payload
       let updatedTodos = []
       const shouldTodoRemove =
         (filterType === 'active' && !active) || (filterType === 'done' && active)
@@ -76,5 +84,3 @@ const todo = (state = INITIAL_STATE, action) => {
       return state
   }
 }
-
-export default todo
