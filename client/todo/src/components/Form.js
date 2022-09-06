@@ -7,26 +7,24 @@ class TodoForm extends Component {
     super()
     this.state = {
       todoName: '',
+      error: false,
     }
   }
 
   handleInput = (e) => {
     const input = e.target
-    input.classList.remove('todo__form-input--error')
-    this.setState({ todoName: input.value.trim() })
+    this.setState({ error: false })
+    this.setState({ todoName: input.value })
   }
 
   handleButton = (e) => {
     e.preventDefault()
     const { todoName } = this.state
-    const input = document.querySelector('.todo__form-input')
-
-    if (!todoName) {
-      input.classList.add('todo__form-input--error')
+    if (!todoName.trim()) {
+      this.setState({ error: true })
     }
 
-    if (todoName) {
-      input.classList.remove('todo__form-input--error')
+    if (todoName.trim()) {
       const todoObj = {
         name: todoName,
         active: true,
@@ -37,19 +35,20 @@ class TodoForm extends Component {
     }
 
     this.setState({ todoName: '' })
-    input.value = ''
   }
 
   render() {
+    const { todoName, error } = this.state
     return (
       <div className="todo__form-wrapper">
         <h1 className="todo__heading">todo list</h1>
         <form className="todo__form">
           <input
             type="text"
-            className="todo__form-input"
+            className={error ? 'todo__form-input todo__form-input--error' : 'todo__form-input'}
             placeholder="Add new todo..."
             onChange={this.handleInput}
+            value={todoName}
           />
           <button type="submit" className="todo__form-button" onClick={this.handleButton}>
             submit
