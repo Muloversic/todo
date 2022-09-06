@@ -91,7 +91,6 @@ function* deleteAllTodos() {
 
 function* saga() {
   yield takeEvery([LOAD_TODO_REQUEST, UPDATE_FILTER_REQUEST], fetchTodos)
-  //   yield takeEvery(UPDATE_FILTER_REQUEST, updateFilter)
   yield takeEvery(ADD_TODO_REQUEST, createTodo)
   yield takeEvery(DELETE_TODO_REQUEST, deleteTodo)
   yield takeEvery(UPDATE_TODO_REQUEST, updateTodo)
