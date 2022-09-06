@@ -3,7 +3,7 @@ import {
   ADD_TODO_SUCCESS,
   DELETE_TODO_SUCCESS,
   UPDATE_TODO_SUCCESS,
-  UPDATE_FILTER_SUCCESS,
+  FILTER_UPDATED,
   DELETE_ALL_TODOS_SUCCESS,
 } from '../constants'
 
@@ -15,11 +15,8 @@ const TODOS_FILTER = 'all'
 
 export const filter = (state = TODOS_FILTER, { type, payload }) => {
   switch (type) {
-    case UPDATE_FILTER_SUCCESS:
-      return {
-        ...state,
-        filterType: payload,
-      }
+    case FILTER_UPDATED:
+      return payload
 
     default:
       return state

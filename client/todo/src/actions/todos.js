@@ -1,6 +1,6 @@
 import {
   LOAD_TODO_REQUEST,
-  UPDATE_FILTER_REQUEST,
+  UPDATE_FILTER,
   ADD_TODO_REQUEST,
   DELETE_TODO_REQUEST,
   UPDATE_TODO_REQUEST,
@@ -17,4 +17,4 @@ export const deleteAllTodosRequest = () => ({ type: DELETE_ALL_TODOS_REQUEST })
 
 export const updateTodoRequest = (payload) => ({ type: UPDATE_TODO_REQUEST, payload })
 
-export const updateFilterRequest = (payload) => ({ type: UPDATE_FILTER_REQUEST, payload })
+export const updateFilterRequest = (payload) => ({ type: UPDATE_FILTER, payload })

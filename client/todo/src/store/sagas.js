@@ -3,8 +3,8 @@ import axios from 'axios'
 import {
   LOAD_TODO_REQUEST,
   LOAD_TODO_SUCCESS,
-  UPDATE_FILTER_REQUEST,
-  UPDATE_FILTER_SUCCESS,
+  UPDATE_FILTER,
+  FILTER_UPDATED,
   ADD_TODO_REQUEST,
   ADD_TODO_SUCCESS,
   DELETE_TODO_REQUEST,
@@ -37,7 +37,7 @@ function* fetchTodos({ payload }) {
 
     const { data } = getAllTodos.data.body
     yield put({ type: LOAD_TODO_SUCCESS, payload: data })
-    yield put({ type: UPDATE_FILTER_SUCCESS, payload })
+    yield put({ type: FILTER_UPDATED, payload: payload || 'all' })
   } catch (err) {
     console.log(err)
   }
@@ -90,7 +90,7 @@ function* deleteAllTodos() {
 }
 
 function* saga() {
-  yield takeEvery([LOAD_TODO_REQUEST, UPDATE_FILTER_REQUEST], fetchTodos)
+  yield takeEvery([LOAD_TODO_REQUEST, UPDATE_FILTER], fetchTodos)
   yield takeEvery(ADD_TODO_REQUEST, createTodo)
   yield takeEvery(DELETE_TODO_REQUEST, deleteTodo)
   yield takeEvery(UPDATE_TODO_REQUEST, updateTodo)
