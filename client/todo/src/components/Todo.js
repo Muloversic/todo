@@ -3,51 +3,42 @@ import { connect } from 'react-redux'
 import { deleteTodoRequest, updateTodoRequest } from '../actions/todos.js'
 
 class Todo extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      editing: {
-        targetId: '',
-        inputValue: '',
-      },
+      inputValue: '',
+      error: false,
     }
+  }
+
+  componentDidMount() {
+    const { todo } = this.props
+    this.setState({ inputValue: todo.name })
   }
 
   handleKeyDown = () => {}
 
   editTodo = (e) => {
-    const { editing } = this.state
     const input = e.target
-    this.setState((prevState) => ({
-      ...prevState,
-      editing: { ...editing, inputValue: input.value.trim() },
-    }))
+    this.setState({ inputValue: input.value, error: false })
   }
 
   handleInputKeys = (e) => {
-    const { updateTodoAction } = this.props
-    const { editing } = this.state
-    const elementId = e.target.parentElement.id
-    const input = document.querySelector(`[data-input='${elementId}']`)
-    const textLabel = document.querySelector(`[data-label='${elementId}']`)
-    const allEditBtns = document.querySelectorAll('.todo__edit')
+    const { updateTodoAction, handleCurrentTodo, todo } = this.props
+    const { inputValue } = this.state
     if (e.key === 'Escape') {
-      input.classList.add('todo__element--hidden')
-      textLabel.classList.remove('todo__element--hidden')
-      ;[...allEditBtns].forEach((element) => {
-        element.innerHTML = '&#9998;'
-      })
+      handleCurrentTodo()
+      this.setState({ error: false })
     }
 
-    if (e.key === 'Enter' && input.value.trim() !== '') {
-      input.classList.add('todo__element--hidden')
-      textLabel.classList.remove('todo__element--hidden')
-      ;[...allEditBtns].forEach((element) => {
-        element.innerHTML = '&#9998;'
-      })
-      updateTodoAction({ _id: elementId, name: editing.inputValue })
-    } else {
-      input.classList.add('todo__element--err')
+    if (e.key === 'Enter') {
+      if (!inputValue.trim()) {
+        this.setState({ error: true })
+        return
+      }
+
+      handleCurrentTodo()
+      updateTodoAction({ _id: todo._id, name: inputValue.trim() })
     }
   }
 
@@ -61,80 +52,69 @@ class Todo extends Component {
     deleteTodoAction(todo._id)
   }
 
-  handeEditingMode = (e) => {
-    const { updateTodoAction } = this.props
-    const { editing } = this.state
-    const elementId = e.target.parentElement.id
-    const input = document.querySelector(`[data-input='${elementId}']`)
-    const textLabel = document.querySelector(`[data-label='${elementId}']`)
-    const edtiButton = e.target
-    const allInputs = document.querySelectorAll('.todo__element')
-    const allTextLabels = document.querySelectorAll('.todo__element-text')
-    const allEditBtns = document.querySelectorAll('.todo__edit')
-    if ([...input.classList].includes('todo__element--hidden')) {
-      ;[...allInputs].forEach((element) => element.classList.add('todo__element--hidden'))
-      ;[...allTextLabels].forEach((element) => element.classList.remove('todo__element--hidden'))
-      ;[...allEditBtns].forEach((element) => {
-        element.innerHTML = '&#9998;'
-      })
-
-      this.setState((prevState) => ({
-        ...prevState,
-        editing: { inputValue: input.name, targetId: elementId },
-      }))
-
-      input.classList.remove('todo__element--err')
-      input.classList.remove('todo__element--hidden')
-      textLabel.classList.add('todo__element--hidden')
-      edtiButton.innerHTML = '&#10004;'
-      input.value = input.name
-    } else {
-      submitChanging()
-    }
-
-    function submitChanging() {
-      if (editing.inputValue !== '') {
-        input.classList.add('todo__element--hidden')
-        textLabel.classList.remove('todo__element--hidden')
-        edtiButton.innerHTML = '&#9998;'
-        updateTodoAction({ _id: elementId, name: editing.inputValue })
+  handeEditingMode = () => {
+    const { updateTodoAction, handleCurrentTodo, todoId, todo } = this.props
+    const { inputValue } = this.state
+    if (todoId === todo._id) {
+      if (!inputValue.trim()) {
+        this.setState({ error: true })
+        return
       }
 
-      if (editing.inputValue === '') {
-        input.classList.add('todo__element--err')
-      }
+      handleCurrentTodo()
+      updateTodoAction({ _id: todo._id, name: inputValue.trim() })
+      return
     }
+
+    handleCurrentTodo(todo._id)
+    this.setState({ inputValue: todo.name })
   }
 
   render() {
-    const { todo } = this.props
+    const { todo, isEditing } = this.props
+    const { inputValue, error } = this.state
     return (
       <div className="todo__element-wrapper" id={todo._id} key={todo._id}>
-        <input
-          type="text"
-          className="todo__element todo__element--hidden"
-          name={todo.name}
-          data-input={todo._id}
-          onChange={this.editTodo}
-          onKeyDown={this.handleInputKeys}
-        />
-        <span
-          className={todo.active ? 'todo__element-text' : 'todo__element-text todo__element--done'}
-          onClick={() => this.handleTodoStatus(todo)}
-          onKeyDown={this.handleKeyDown}
-          role="button"
-          tabIndex="0"
-          data-label={todo._id}
-        >
-          {todo.name}
-        </span>
-        <button
-          type="button"
-          className="todo__edit todo__action-element"
-          onClick={this.handeEditingMode}
-        >
-          &#9998;
-        </button>
+        {isEditing ? (
+          <input
+            type="text"
+            className={error ? 'todo__element todo__element--err' : 'todo__element'}
+            name={todo.name}
+            value={inputValue}
+            onChange={this.editTodo}
+            onKeyDown={this.handleInputKeys}
+          />
+        ) : (
+          <span
+            className={
+              todo.active ? 'todo__element-text' : 'todo__element-text todo__element--done'
+            }
+            onClick={() => this.handleTodoStatus(todo)}
+            onKeyDown={this.handleKeyDown}
+            role="button"
+            tabIndex="0"
+          >
+            {todo.name}
+          </span>
+        )}
+
+        {isEditing ? (
+          <button
+            type="button"
+            className="todo__edit todo__action-element"
+            onClick={this.handeEditingMode}
+          >
+            &#10004;
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="todo__edit todo__action-element"
+            onClick={this.handeEditingMode}
+          >
+            &#9998;
+          </button>
+        )}
         <button
           type="button"
           className="todo__delete todo__action-element"

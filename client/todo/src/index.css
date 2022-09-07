@@ -157,6 +157,14 @@ input:focus-visible {
   width: 80%;
 }
 
+.todo__element:focus-visible {
+  border: 1px solid rgb(129, 134, 218);
+}
+
+.todo__element--err:focus-visible {
+  border: 1px solid rgb(197, 0, 0);
+}
+
 .todo__element--hidden {
   display: none;
 }
