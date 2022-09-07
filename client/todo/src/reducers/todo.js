@@ -32,10 +32,14 @@ export const todo = (state = TODOS_STATE, action) => {
       }
 
     case ADD_TODO_SUCCESS:
-      return {
-        ...state,
-        todos: [...state.todos, action.payload],
+      if (action.payload.filterType !== 'done') {
+        return {
+          ...state,
+          todos: [...state.todos, action.payload.todo],
+        }
       }
+
+      break
 
     case DELETE_TODO_SUCCESS:
       const withoutDeletedTodo = state.todos.filter((todo) => todo._id !== action.payload._id)

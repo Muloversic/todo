@@ -45,9 +45,16 @@ function* fetchTodos({ payload }) {
 
 function* createTodo({ payload }) {
   try {
+    const filterType = yield select((state) => state.filter)
     const postTodo = yield call(instance.post, '', payload)
     const { data } = postTodo.data.body
-    yield put({ type: ADD_TODO_SUCCESS, payload: data })
+    yield put({
+      type: ADD_TODO_SUCCESS,
+      payload: {
+        todo: data,
+        filterType,
+      },
+    })
   } catch (err) {
     console.log(err)
   }
@@ -65,7 +72,7 @@ function* deleteTodo({ payload }) {
 
 function* updateTodo({ payload }) {
   try {
-    const filterType = yield select((state) => state.filter.filterType)
+    const filterType = yield select((state) => state.filter)
     const updatedTodo = yield call(instance.patch, `/${payload._id}`, payload)
     const { data } = updatedTodo.data.body
     yield put({
