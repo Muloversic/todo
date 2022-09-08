@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { todo, filter } from './todo'
+import { todo, filter } from './reducers/todo'
 
 const rootReducer = combineReducers({
   todo,

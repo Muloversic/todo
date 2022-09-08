@@ -5,17 +5,17 @@ class TodosContainer extends Component {
   constructor() {
     super()
     this.state = {
-      todoId: null,
+      editingTodoId: null,
     }
   }
 
   handleCurrentTodo = (id) => {
-    this.setState({ todoId: id })
+    this.setState({ editingTodoId: id })
   }
 
   render() {
     const { todos } = this.props
-    const { todoId } = this.state
+    const { editingTodoId } = this.state
     return (
       <div className="todo__items-container">
         {todos.map((todo) => (
@@ -23,7 +23,7 @@ class TodosContainer extends Component {
             todo={todo}
             key={todo._id}
             handleCurrentTodo={this.handleCurrentTodo}
-            todoId={todoId}
+            editingTodoId={editingTodoId}
           />
         ))}
       </div>

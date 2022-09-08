@@ -1,30 +1,19 @@
-import React, { Component, createRef } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { deleteTodoRequest, updateTodoRequest } from '../store/actions/todos.js'
 
 class Todo extends Component {
-  inputRef = createRef()
-
   constructor(props) {
     super(props)
     this.state = {
       inputValue: '',
       error: false,
-      notification: false,
     }
   }
 
   componentDidMount() {
     const { todo } = this.props
     this.setState({ inputValue: todo.name })
-  }
-
-  componentDidUpdate(prevProps) {
-    const { todo } = this.props
-    const prevTodo = prevProps.todo
-    if (todo.active !== prevTodo.active) {
-      setTimeout(() => this.setState({ notification: false }), 3000)
-    }
   }
 
   handleKeyDown = () => {}
@@ -55,7 +44,6 @@ class Todo extends Component {
 
   handleTodoStatus = () => {
     const { updateTodoAction, todo } = this.props
-    this.setState({ notification: true })
     updateTodoAction({ _id: todo._id, active: !todo.active })
   }
 
@@ -65,10 +53,10 @@ class Todo extends Component {
   }
 
   handeEditingMode = () => {
-    const { updateTodoAction, handleCurrentTodo, todoId, todo } = this.props
+    const { updateTodoAction, handleCurrentTodo, editingTodoId, todo } = this.props
     const { inputValue } = this.state
     const name = inputValue.trim()
-    if (todoId === todo._id) {
+    if (editingTodoId === todo._id) {
       if (!name) {
         this.setState({ error: true })
         return
@@ -84,11 +72,11 @@ class Todo extends Component {
   }
 
   render() {
-    const { todo, todoId } = this.props
-    const { inputValue, error, notification } = this.state
+    const { todo, editingTodoId } = this.props
+    const { inputValue, error } = this.state
     return (
       <div className="todo__element-wrapper" id={todo._id} key={todo._id}>
-        {todo._id === todoId ? (
+        {todo._id === editingTodoId ? (
           <input
             type="text"
             ref={this.inputRef}
@@ -98,23 +86,15 @@ class Todo extends Component {
             onKeyDown={this.handleInputKeys}
           />
         ) : (
-          <>
-            {notification ? (
-              <div className="todo__change-info">
-                New active status: {todo.active.toString()}, todo name: {todo.name}
-              </div>
-            ) : null}
-
-            <span
-              className={`todo__element-text ${todo.active ? '' : 'todo__element--done'}`}
-              onClick={this.handleTodoStatus}
-              onKeyDown={this.handleKeyDown}
-              role="button"
-              tabIndex="0"
-            >
-              {todo.name}
-            </span>
-          </>
+          <span
+            className={`todo__element-text ${todo.active ? '' : 'todo__element--done'}`}
+            onClick={this.handleTodoStatus}
+            onKeyDown={this.handleKeyDown}
+            role="button"
+            tabIndex="0"
+          >
+            {todo.name}
+          </span>
         )}
 
         <button
@@ -122,7 +102,7 @@ class Todo extends Component {
           className="todo__edit todo__action-element"
           onClick={this.handeEditingMode}
         >
-          {todo._id === todoId ? <span>&#10004;</span> : <span>&#9998;</span>}
+          {todo._id === editingTodoId ? <span>&#10004;</span> : <span>&#9998;</span>}
         </button>
         <button
           type="button"
