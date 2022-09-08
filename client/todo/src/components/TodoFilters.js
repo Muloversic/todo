@@ -20,33 +20,27 @@ class TodoFilters extends Component {
         <div className="todo__filters-row todo__filters-row--controls">
           <button
             type="button"
-            className={
-              filterType === 'all'
-                ? 'todo__filtres-button todo__filtres-button--active'
-                : 'todo__filtres-button'
-            }
+            className={`todo__filtres-button ${
+              filterType === 'all' ? 'todo__filtres-button--active' : ''
+            }`}
             onClick={this.handleClick('all')}
           >
             All todos
           </button>
           <button
             type="button"
-            className={
-              filterType === 'active'
-                ? 'todo__filtres-button todo__filtres-button--active'
-                : 'todo__filtres-button'
-            }
+            className={`todo__filtres-button ${
+              filterType === 'active' ? 'todo__filtres-button--active' : ''
+            }`}
             onClick={this.handleClick('active')}
           >
             Active todos
           </button>
           <button
             type="button"
-            className={
-              filterType === 'done'
-                ? 'todo__filtres-button todo__filtres-button--active'
-                : 'todo__filtres-button'
-            }
+            className={`todo__filtres-button ${
+              filterType === 'done' ? 'todo__filtres-button--active' : ''
+            }`}
             onClick={this.handleClick('done')}
           >
             Done todos
@@ -54,15 +48,11 @@ class TodoFilters extends Component {
         </div>
         <div className="todo__filters-row">
           <p className="todo__item-counter">Todos counter: {todos.length}</p>
-          <button
-            type="submit"
-            className={
-              todos.length ? 'todo__remove-all' : 'todo__remove-all todo__remove-all--hidden'
-            }
-            onClick={this.deleteAllTodos}
-          >
-            Remove all
-          </button>
+          {todos.length ? (
+            <button type="submit" className="todo__remove-all" onClick={this.deleteAllTodos}>
+              Remove all
+            </button>
+          ) : null}
         </div>
       </div>
     )

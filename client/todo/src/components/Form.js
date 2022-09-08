@@ -11,10 +11,9 @@ class TodoForm extends Component {
     }
   }
 
-  handleInput = (e) => {
-    const input = e.target
+  handleInput = ({ target }) => {
     this.setState({ error: false })
-    this.setState({ todoName: input.value })
+    this.setState({ todoName: target.value })
   }
 
   handleButton = (e) => {
@@ -32,9 +31,8 @@ class TodoForm extends Component {
 
       const { addTodoAction } = this.props
       addTodoAction(todoObj)
+      this.setState({ todoName: '' })
     }
-
-    this.setState({ todoName: '' })
   }
 
   render() {
@@ -45,7 +43,7 @@ class TodoForm extends Component {
         <form className="todo__form">
           <input
             type="text"
-            className={error ? 'todo__form-input todo__form-input--error' : 'todo__form-input'}
+            className={`todo__form-input ${error ? 'todo__form-input--error' : ''}`}
             placeholder="Add new todo..."
             onChange={this.handleInput}
             value={todoName}

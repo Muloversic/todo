@@ -5,7 +5,7 @@ class TodosContainer extends Component {
   constructor() {
     super()
     this.state = {
-      todoId: '',
+      todoId: null,
     }
   }
 
@@ -16,30 +16,18 @@ class TodosContainer extends Component {
   render() {
     const { todos } = this.props
     const { todoId } = this.state
-    const isEditing = true
-    const todoElements = todos.map((todo) => {
-      if (todo._id === todoId) {
-        return (
+    return (
+      <div className="todo__items-container">
+        {todos.map((todo) => (
           <Todo
             todo={todo}
             key={todo._id}
             handleCurrentTodo={this.handleCurrentTodo}
             todoId={todoId}
-            isEditing={isEditing}
           />
-        )
-      }
-
-      return (
-        <Todo
-          todo={todo}
-          key={todo._id}
-          handleCurrentTodo={this.handleCurrentTodo}
-          todoId={todoId}
-        />
-      )
-    })
-    return <div className="todo__items-container">{todoElements}</div>
+        ))}
+      </div>
+    )
   }
 }
 

@@ -26,43 +26,45 @@ class Todo extends Component {
   handleInputKeys = (e) => {
     const { updateTodoAction, handleCurrentTodo, todo } = this.props
     const { inputValue } = this.state
+    const name = inputValue.trim()
     if (e.key === 'Escape') {
-      handleCurrentTodo()
+      handleCurrentTodo(null)
       this.setState({ error: false })
     }
 
     if (e.key === 'Enter') {
-      if (!inputValue.trim()) {
+      if (!name) {
         this.setState({ error: true })
         return
       }
 
-      handleCurrentTodo()
-      updateTodoAction({ _id: todo._id, name: inputValue.trim() })
+      handleCurrentTodo(null)
+      updateTodoAction({ _id: todo._id, name })
     }
   }
 
-  handleTodoStatus = (todo) => {
-    const { updateTodoAction } = this.props
+  handleTodoStatus = () => {
+    const { updateTodoAction, todo } = this.props
     updateTodoAction({ _id: todo._id, active: !todo.active })
   }
 
-  handleDeleteTodo = (todo) => {
-    const { deleteTodoAction } = this.props
+  handleDeleteTodo = () => {
+    const { deleteTodoAction, todo } = this.props
     deleteTodoAction(todo._id)
   }
 
   handeEditingMode = () => {
     const { updateTodoAction, handleCurrentTodo, todoId, todo } = this.props
     const { inputValue } = this.state
+    const name = inputValue.trim()
     if (todoId === todo._id) {
-      if (!inputValue.trim()) {
+      if (!name) {
         this.setState({ error: true })
         return
       }
 
-      handleCurrentTodo()
-      updateTodoAction({ _id: todo._id, name: inputValue.trim() })
+      handleCurrentTodo(null)
+      updateTodoAction({ _id: todo._id, name })
       return
     }
 
@@ -71,14 +73,14 @@ class Todo extends Component {
   }
 
   render() {
-    const { todo, isEditing } = this.props
+    const { todo, todoId } = this.props
     const { inputValue, error } = this.state
     return (
       <div className="todo__element-wrapper" id={todo._id} key={todo._id}>
-        {isEditing ? (
+        {todo._id === todoId ? (
           <input
             type="text"
-            className={error ? 'todo__element todo__element--err' : 'todo__element'}
+            className={`todo__element ${error ? 'todo__element--err' : ''}`}
             name={todo.name}
             value={inputValue}
             onChange={this.editTodo}
@@ -86,10 +88,8 @@ class Todo extends Component {
           />
         ) : (
           <span
-            className={
-              todo.active ? 'todo__element-text' : 'todo__element-text todo__element--done'
-            }
-            onClick={() => this.handleTodoStatus(todo)}
+            className={`todo__element-text ${todo.active ? '' : 'todo__element--done'}`}
+            onClick={this.handleTodoStatus}
             onKeyDown={this.handleKeyDown}
             role="button"
             tabIndex="0"
@@ -98,27 +98,17 @@ class Todo extends Component {
           </span>
         )}
 
-        {isEditing ? (
-          <button
-            type="button"
-            className="todo__edit todo__action-element"
-            onClick={this.handeEditingMode}
-          >
-            &#10004;
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="todo__edit todo__action-element"
-            onClick={this.handeEditingMode}
-          >
-            &#9998;
-          </button>
-        )}
+        <button
+          type="button"
+          className="todo__edit todo__action-element"
+          onClick={this.handeEditingMode}
+        >
+          {todo._id === todoId ? <span>&#10004;</span> : <span>&#9998;</span>}
+        </button>
         <button
           type="button"
           className="todo__delete todo__action-element"
-          onClick={() => this.handleDeleteTodo(todo)}
+          onClick={this.handleDeleteTodo}
         >
           x
         </button>
