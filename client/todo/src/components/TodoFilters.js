@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { updateFilterRequest, deleteAllTodosRequest } from '../actions/todos'
+import { updateFilterRequest, deleteAllTodosRequest } from '../store/actions/todos.js'
 
 class TodoFilters extends Component {
   handleClick = (filter) => () => {

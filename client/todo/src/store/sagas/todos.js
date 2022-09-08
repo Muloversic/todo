@@ -4,7 +4,6 @@ import {
   LOAD_TODO_REQUEST,
   LOAD_TODO_SUCCESS,
   UPDATE_FILTER,
-  FILTER_UPDATED,
   ADD_TODO_REQUEST,
   ADD_TODO_SUCCESS,
   DELETE_TODO_REQUEST,
@@ -13,7 +12,7 @@ import {
   UPDATE_TODO_SUCCESS,
   DELETE_ALL_TODOS_REQUEST,
   DELETE_ALL_TODOS_SUCCESS,
-} from '../constants'
+} from '../../constants'
 
 const instance = axios.create({
   baseURL: 'http://localhost:8080/todos',
@@ -37,7 +36,6 @@ function* fetchTodos({ payload }) {
 
     const { data } = getAllTodos.data.body
     yield put({ type: LOAD_TODO_SUCCESS, payload: data })
-    yield put({ type: FILTER_UPDATED, payload: payload || 'all' })
   } catch (err) {
     console.log(err)
   }
@@ -96,7 +94,7 @@ function* deleteAllTodos() {
   }
 }
 
-function* saga() {
+function* todos() {
   yield takeEvery([LOAD_TODO_REQUEST, UPDATE_FILTER], fetchTodos)
   yield takeEvery(ADD_TODO_REQUEST, createTodo)
   yield takeEvery(DELETE_TODO_REQUEST, deleteTodo)
@@ -104,4 +102,4 @@ function* saga() {
   yield takeEvery(DELETE_ALL_TODOS_REQUEST, deleteAllTodos)
 }
 
-export default saga
+export default todos

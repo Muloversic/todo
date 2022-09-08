@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { loadTodosRequest } from '../actions/todos'
+import { loadTodosRequest } from '../store/actions/todos.js'
 import TodosContainer from './TodosContainer'
 import TodoFilters from './TodoFilters'
 
@@ -21,7 +21,7 @@ class TodoContent extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ todos: state.todo.todos })
+const mapStateToProps = (state) => ({ todos: state.todo })
 
 const mapDispatchToProps = (dispatch) => ({
   loadTodosAction: () => dispatch(loadTodosRequest()),

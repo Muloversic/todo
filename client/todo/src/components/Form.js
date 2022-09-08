@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { addTodoRequest } from '../actions/todos.js'
+import { addTodoRequest } from '../store/actions/todos.js'
 
 class TodoForm extends Component {
   constructor() {

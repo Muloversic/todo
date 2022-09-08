@@ -5,7 +5,7 @@ import {
   DELETE_TODO_REQUEST,
   UPDATE_TODO_REQUEST,
   DELETE_ALL_TODOS_REQUEST,
-} from '../constants'
+} from '../../constants'
 
 export const loadTodosRequest = () => ({ type: LOAD_TODO_REQUEST })
 

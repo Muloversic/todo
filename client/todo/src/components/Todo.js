@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { deleteTodoRequest, updateTodoRequest } from '../actions/todos.js'
+import { deleteTodoRequest, updateTodoRequest } from '../store/actions/todos.js'
 
 class Todo extends Component {
   constructor(props) {

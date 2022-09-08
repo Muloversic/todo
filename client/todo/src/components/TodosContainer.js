@@ -17,7 +17,6 @@ class TodosContainer extends Component {
     const { todos } = this.props
     const { todoId } = this.state
     const isEditing = true
-    console.log(todos)
     const todoElements = todos.map((todo) => {
       if (todo._id === todoId) {
         return (
