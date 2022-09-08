@@ -1,43 +1,34 @@
 export async function responseHelpers(ctx, next) {
   ctx.resolve = (data) => {
     const response = {
-      status: 200,
-      body: {
-        code: 200,
-        data: data || {},
-        success: true,
-      },
+      code: 200,
+      data: data || {},
+      success: true,
     }
 
-    ctx.status = response.status
+    ctx.status = response.code
     ctx.body = response
   }
 
   ctx.notFound = (data) => {
     const response = {
-      status: 404,
-      body: {
-        code: 404,
-        data: data || {},
-        success: false,
-      },
+      code: 404,
+      data: data || {},
+      success: false,
     }
 
-    ctx.status = response.status
+    ctx.status = response.code
     ctx.body = response
   }
 
   ctx.permissionDenied = (data) => {
     const response = {
-      status: 403,
-      body: {
-        code: 403,
-        data: data || {},
-        success: false,
-      },
+      code: 403,
+      data: data || {},
+      success: false,
     }
 
-    ctx.status = response.status
+    ctx.status = response.code
     ctx.body = response
   }
 

@@ -30,11 +30,9 @@ function* fetchTodos({ payload }) {
       filter = { active: false }
     }
 
-    const getAllTodos = yield call(instance.get, '', {
+    const { success, data } = yield call(instance.get, '', {
       params: filter,
     })
-
-    const { data } = getAllTodos.data.body
     yield put({ type: LOAD_TODO_SUCCESS, payload: data })
   } catch (err) {
     console.log(err)
@@ -44,12 +42,12 @@ function* fetchTodos({ payload }) {
 function* createTodo({ payload }) {
   try {
     const filterType = yield select((state) => state.filter)
-    const postTodo = yield call(instance.post, '', payload)
-    const { data } = postTodo.data.body
+    const response = yield call(instance.post, '', payload)
+    const { success, data } = response.data
     yield put({
       type: ADD_TODO_SUCCESS,
       payload: {
-        todo: data,
+        data,
         filterType,
       },
     })
@@ -60,8 +58,8 @@ function* createTodo({ payload }) {
 
 function* deleteTodo({ payload }) {
   try {
-    const deletedTodo = yield call(instance.delete, `/${payload}`)
-    const { data } = deletedTodo.data.body
+    const response = yield call(instance.delete, `/${payload}`)
+    const { success, data } = response.data
     yield put({ type: DELETE_TODO_SUCCESS, payload: data })
   } catch (err) {
     console.log(err)
@@ -71,8 +69,8 @@ function* deleteTodo({ payload }) {
 function* updateTodo({ payload }) {
   try {
     const filterType = yield select((state) => state.filter)
-    const updatedTodo = yield call(instance.patch, `/${payload._id}`, payload)
-    const { data } = updatedTodo.data.body
+    const response = yield call(instance.patch, `/${payload._id}`, payload)
+    const { success, data } = response.data
     yield put({
       type: UPDATE_TODO_SUCCESS,
       payload: {

@@ -21,14 +21,14 @@ export const filter = (state = TODOS_FILTER, { type, payload }) => {
   }
 }
 
-export const todo = (state = TODOS_STATE, {type, payload}) => {
+export const todo = (state = TODOS_STATE, { type, payload }) => {
   switch (type) {
     case LOAD_TODO_SUCCESS:
-      return payload
+      return payload.data
 
     case ADD_TODO_SUCCESS:
       if (payload.filterType !== 'done') {
-        return [...state, payload.todo]
+        return [...state, payload.data]
       }
 
       break
