@@ -1,45 +1,23 @@
-import {
-  LOAD_TODO_SUCCESS,
-  ADD_TODO_SUCCESS,
-  DELETE_TODO_SUCCESS,
-  UPDATE_TODO_SUCCESS,
-  UPDATE_FILTER,
-  DELETE_ALL_TODOS_SUCCESS,
-} from '../../constants'
+import { handleAction, handleActions } from 'redux-actions'
 
 const TODOS_STATE = []
-
 const TODOS_FILTER = 'all'
 
-export const filter = (state = TODOS_FILTER, { type, payload }) => {
-  switch (type) {
-    case UPDATE_FILTER:
-      return payload
+export const filter = handleAction(UPDATE_FILTER, (state, { payload }) => payload, TODOS_FILTER)
 
-    default:
-      return state
-  }
-}
-
-export const todo = (state = TODOS_STATE, { type, payload }) => {
-  switch (type) {
-    case LOAD_TODO_SUCCESS:
-      return payload.data
-
-    case ADD_TODO_SUCCESS:
+export const todo = handleActions(
+  {
+    LOAD_TODO_SUCCESS: (state, { payload }) => payload.data,
+    ADD_TODO_SUCCESS: (state, { payload }) => {
       if (payload.filterType !== 'done') {
         return [...state, payload.data]
       }
 
-      return state
-
-    case DELETE_TODO_SUCCESS:
-      return state.filter((todo) => todo._id !== payload._id)
-
-    case DELETE_ALL_TODOS_SUCCESS:
-      return []
-
-    case UPDATE_TODO_SUCCESS:
+      return TODOS_STATE
+    },
+    DELETE_TODO_SUCCESS: (state, { payload }) => state.filter((todo) => todo._id !== payload._id),
+    DELETE_ALL_TODOS_SUCCESS: () => [],
+    UPDATE_TODO_SUCCESS: (state, { payload }) => {
       const { _id, name, active } = payload.todos
       const { filterType } = payload
       const shouldTodoRemove =
@@ -56,11 +34,9 @@ export const todo = (state = TODOS_STATE, { type, payload }) => {
             name,
           }
         }
-
         return todo
       })
-
-    default:
-      return state
-  }
-}
+    },
+  },
+  TODOS_STATE,
+)

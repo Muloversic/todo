@@ -1,3 +1,4 @@
+import { createAction } from 'redux-actions'
 import {
   LOAD_TODO_REQUEST,
   UPDATE_FILTER,
@@ -7,14 +8,14 @@ import {
   DELETE_ALL_TODOS_REQUEST,
 } from '../../constants'
 
-export const loadTodosRequest = () => ({ type: LOAD_TODO_REQUEST })
+export const loadTodosRequest = createAction(LOAD_TODO_REQUEST)
 
-export const addTodoRequest = (payload) => ({ type: ADD_TODO_REQUEST, payload })
+export const addTodoRequest = createAction(ADD_TODO_REQUEST)
 
-export const deleteTodoRequest = (payload) => ({ type: DELETE_TODO_REQUEST, payload })
+export const deleteTodoRequest = createAction(DELETE_TODO_REQUEST)
 
-export const deleteAllTodosRequest = () => ({ type: DELETE_ALL_TODOS_REQUEST })
+export const deleteAllTodosRequest = createAction(DELETE_ALL_TODOS_REQUEST)
 
-export const updateTodoRequest = (payload) => ({ type: UPDATE_TODO_REQUEST, payload })
+export const updateTodoRequest = createAction(UPDATE_TODO_REQUEST)
 
-export const updateFilterRequest = (payload) => ({ type: UPDATE_FILTER, payload })
+export const updateFilterRequest = createAction(UPDATE_FILTER)
