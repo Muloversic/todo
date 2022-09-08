@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, createRef } from 'react'
 import { connect } from 'react-redux'
 import { deleteTodoRequest, updateTodoRequest } from '../store/actions/todos.js'
 
 class Todo extends Component {
+  inputRef = createRef()
+
   constructor(props) {
     super(props)
     this.state = {
@@ -18,9 +20,8 @@ class Todo extends Component {
 
   handleKeyDown = () => {}
 
-  editTodo = (e) => {
-    const input = e.target
-    this.setState({ inputValue: input.value, error: false })
+  editTodo = ({ target }) => {
+    this.setState({ inputValue: target.value, error: false })
   }
 
   handleInputKeys = (e) => {
@@ -80,6 +81,7 @@ class Todo extends Component {
         {todo._id === todoId ? (
           <input
             type="text"
+            ref={this.inputRef}
             className={`todo__element ${error ? 'todo__element--err' : ''}`}
             name={todo.name}
             value={inputValue}
