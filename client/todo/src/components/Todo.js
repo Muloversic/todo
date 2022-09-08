@@ -10,12 +10,21 @@ class Todo extends Component {
     this.state = {
       inputValue: '',
       error: false,
+      notification: false,
     }
   }
 
   componentDidMount() {
     const { todo } = this.props
     this.setState({ inputValue: todo.name })
+  }
+
+  componentDidUpdate(prevProps) {
+    const { todo } = this.props
+    const prevTodo = prevProps.todo
+    if (todo.active !== prevTodo.active) {
+      setTimeout(() => this.setState({ notification: false }), 3000)
+    }
   }
 
   handleKeyDown = () => {}
@@ -46,6 +55,7 @@ class Todo extends Component {
 
   handleTodoStatus = () => {
     const { updateTodoAction, todo } = this.props
+    this.setState({ notification: true })
     updateTodoAction({ _id: todo._id, active: !todo.active })
   }
 
@@ -75,7 +85,7 @@ class Todo extends Component {
 
   render() {
     const { todo, todoId } = this.props
-    const { inputValue, error } = this.state
+    const { inputValue, error, notification } = this.state
     return (
       <div className="todo__element-wrapper" id={todo._id} key={todo._id}>
         {todo._id === todoId ? (
@@ -83,21 +93,28 @@ class Todo extends Component {
             type="text"
             ref={this.inputRef}
             className={`todo__element ${error ? 'todo__element--err' : ''}`}
-            name={todo.name}
             value={inputValue}
             onChange={this.editTodo}
             onKeyDown={this.handleInputKeys}
           />
         ) : (
-          <span
-            className={`todo__element-text ${todo.active ? '' : 'todo__element--done'}`}
-            onClick={this.handleTodoStatus}
-            onKeyDown={this.handleKeyDown}
-            role="button"
-            tabIndex="0"
-          >
-            {todo.name}
-          </span>
+          <>
+            {notification ? (
+              <div className="todo__change-info">
+                New active status: {todo.active.toString()}, todo name: {todo.name}
+              </div>
+            ) : null}
+
+            <span
+              className={`todo__element-text ${todo.active ? '' : 'todo__element--done'}`}
+              onClick={this.handleTodoStatus}
+              onKeyDown={this.handleKeyDown}
+              role="button"
+              tabIndex="0"
+            >
+              {todo.name}
+            </span>
+          </>
         )}
 
         <button
