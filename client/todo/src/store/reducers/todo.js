@@ -31,7 +31,7 @@ export const todo = (state = TODOS_STATE, { type, payload }) => {
         return [...state, payload.data]
       }
 
-      break
+      return state
 
     case DELETE_TODO_SUCCESS:
       return state.filter((todo) => todo._id !== payload._id)
