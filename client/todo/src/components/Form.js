@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addTodoRequest } from '../store/actions/todos.js'
 
@@ -12,22 +12,25 @@ function TodoForm() {
     setError(false)
   }
 
-  const handleButton = (e) => {
-    e.preventDefault()
-    if (!todoName.trim()) {
-      setError(true)
-    }
-
-    if (todoName.trim()) {
-      const todoObj = {
-        name: todoName,
-        active: true,
+  const handleButton = useCallback(
+    (e) => {
+      e.preventDefault()
+      if (!todoName.trim()) {
+        setError(true)
       }
 
-      addTodoAction(todoObj)
-      setTodoName('')
-    }
-  }
+      if (todoName.trim()) {
+        const todoObj = {
+          name: todoName,
+          active: true,
+        }
+
+        addTodoAction(todoObj)
+        setTodoName('')
+      }
+    },
+    [todoName],
+  )
 
   return (
     <div className="todo__form-wrapper">

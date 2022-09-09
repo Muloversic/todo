@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteTodoRequest, updateTodoRequest } from '../store/actions/todos.js'
 
@@ -10,39 +10,42 @@ function Todo(props) {
   const [error, setError] = useState(false)
   const { todo, editingTodoId, handleCurrentTodo } = props
 
-  const handleKeyDown = () => {}
-  const editTodo = ({ target }) => {
+  const handleKeyDown = useCallback(() => {}, [])
+  const editTodo = useCallback(({ target }) => {
     setInputValue(target.value)
     setError(false)
-  }
+  }, [])
 
-  const handleInputKeys = (e) => {
-    const name = inputValue.trim()
-    if (e.key === 'Escape') {
-      handleCurrentTodo(null)
-      setError(false)
-    }
-
-    if (e.key === 'Enter') {
-      if (!name) {
-        setError(true)
-        return
+  const handleInputKeys = useCallback(
+    (e) => {
+      const name = inputValue.trim()
+      if (e.key === 'Escape') {
+        handleCurrentTodo(null)
+        setError(false)
       }
 
-      handleCurrentTodo(null)
-      updateTodoAction({ _id: todo._id, name })
-    }
-  }
+      if (e.key === 'Enter') {
+        if (!name) {
+          setError(true)
+          return
+        }
 
-  const handleTodoStatus = () => {
+        handleCurrentTodo(null)
+        updateTodoAction({ _id: todo._id, name })
+      }
+    },
+    [inputValue, todo._id],
+  )
+
+  const handleTodoStatus = useCallback(() => {
     updateTodoAction({ _id: todo._id, active: !todo.active })
-  }
+  }, [])
 
-  const handleDeleteTodo = () => {
+  const handleDeleteTodo = useCallback(() => {
     deleteTodoAction(todo._id)
-  }
+  }, [])
 
-  const handeEditingMode = () => {
+  const handeEditingMode = useCallback(() => {
     const name = inputValue.trim()
     if (editingTodoId === todo._id) {
       if (!name) {
@@ -57,21 +60,31 @@ function Todo(props) {
 
     handleCurrentTodo(todo._id)
     setInputValue(todo.name)
-  }
+  }, [inputValue, todo._id, todo.name, editingTodoId])
+
+  const inputStyles = useMemo(
+    () => (error ? 'todo__element' : 'todo__element todo__element--err'),
+    [error],
+  )
+
+  const spanStyles = useMemo(
+    () => (todo.active ? 'todo__element-text' : 'todo__element-text todo__element--done'),
+    [todo.active],
+  )
 
   return (
     <div className="todo__element-wrapper" id={todo._id} key={todo._id}>
       {todo._id === editingTodoId ? (
         <input
           type="text"
-          className={`todo__element ${error ? 'todo__element--err' : ''}`}
+          className={inputStyles}
           value={inputValue}
           onChange={editTodo}
           onKeyDown={handleInputKeys}
         />
       ) : (
         <span
-          className={`todo__element-text ${todo.active ? '' : 'todo__element--done'}`}
+          className={spanStyles}
           onClick={handleTodoStatus}
           onKeyDown={handleKeyDown}
           role="button"

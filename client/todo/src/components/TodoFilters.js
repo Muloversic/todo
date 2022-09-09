@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateFilterRequest, deleteAllTodosRequest } from '../store/actions/todos.js'
 
@@ -9,13 +9,16 @@ function TodoFilters(props) {
   const filterType = useSelector((state) => state.filter)
   const { todos } = props
 
-  const handleClick = (filter) => () => {
-    updateFiltersAction(filter)
-  }
+  const handleClick = useCallback(
+    (filter) => () => {
+      updateFiltersAction(filter)
+    },
+    [],
+  )
 
-  const deleteAllTodos = () => {
+  const deleteAllTodos = useCallback(() => {
     deleteAllTodosAction()
-  }
+  }, [])
 
   return (
     <div className="todo__filters">

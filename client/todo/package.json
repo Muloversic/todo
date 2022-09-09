@@ -83,7 +83,8 @@
       "consistent-return": "off",
       "react/prop-types": "off",
       "no-case-declarations": "off",
-      "no-shadow": "off"
+      "no-shadow": "off",
+	  "react-hooks/exhaustive-deps": "off"
     }
   },
   "browserslist": {
