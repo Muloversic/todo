@@ -35,7 +35,6 @@ function Todo(props) {
   }
 
   const handleTodoStatus = () => {
-    const { updateTodoAction, todo } = props
     updateTodoAction({ _id: todo._id, active: !todo.active })
   }
 
