@@ -1,26 +1,21 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { addTodoRequest } from '../store/actions/todos.js'
 
-class TodoForm extends Component {
-  constructor() {
-    super()
-    this.state = {
-      todoName: '',
-      error: false,
-    }
+function TodoForm() {
+  const dispatch = useDispatch()
+  const addTodoAction = (payload) => dispatch(addTodoRequest(payload))
+  const [todoName, setTodoName] = useState('')
+  const [error, setError] = useState(false)
+  const handleInput = ({ target }) => {
+    setTodoName(target.value)
+    setError(false)
   }
 
-  handleInput = ({ target }) => {
-    this.setState({ error: false })
-    this.setState({ todoName: target.value })
-  }
-
-  handleButton = (e) => {
+  const handleButton = (e) => {
     e.preventDefault()
-    const { todoName } = this.state
     if (!todoName.trim()) {
-      this.setState({ error: true })
+      setError(true)
     }
 
     if (todoName.trim()) {
@@ -29,36 +24,28 @@ class TodoForm extends Component {
         active: true,
       }
 
-      const { addTodoAction } = this.props
       addTodoAction(todoObj)
-      this.setState({ todoName: '' })
+      setTodoName('')
     }
   }
 
-  render() {
-    const { todoName, error } = this.state
-    return (
-      <div className="todo__form-wrapper">
-        <h1 className="todo__heading">todo list</h1>
-        <form className="todo__form">
-          <input
-            type="text"
-            className={`todo__form-input ${error ? 'todo__form-input--error' : ''}`}
-            placeholder="Add new todo..."
-            onChange={this.handleInput}
-            value={todoName}
-          />
-          <button type="submit" className="todo__form-button" onClick={this.handleButton}>
-            submit
-          </button>
-        </form>
-      </div>
-    )
-  }
+  return (
+    <div className="todo__form-wrapper">
+      <h1 className="todo__heading">todo list</h1>
+      <form className="todo__form">
+        <input
+          type="text"
+          className={`todo__form-input ${error ? 'todo__form-input--error' : ''}`}
+          placeholder="Add new todo..."
+          onChange={handleInput}
+          value={todoName}
+        />
+        <button type="submit" className="todo__form-button" onClick={handleButton}>
+          submit
+        </button>
+      </form>
+    </div>
+  )
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  addTodoAction: (payload) => dispatch(addTodoRequest(payload)),
-})
-
-export default connect(null, mapDispatchToProps)(TodoForm)
+export default TodoForm

@@ -1,30 +1,23 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { loadTodosRequest } from '../store/actions/todos.js'
 import TodosContainer from './TodosContainer'
 import TodoFilters from './TodoFilters'
 
-class TodoContent extends Component {
-  componentDidMount() {
-    const { loadTodosAction } = this.props
+function TodoContent() {
+  const dispatch = useDispatch()
+  const loadTodosAction = () => dispatch(loadTodosRequest())
+  const todos = useSelector((state) => state.todo)
+  useEffect(() => {
     loadTodosAction()
-  }
+  }, [])
 
-  render() {
-    const { todos } = this.props
-    return (
-      <>
-        <TodoFilters todos={todos} />
-        <TodosContainer todos={todos} />
-      </>
-    )
-  }
+  return (
+    <>
+      <TodoFilters todos={todos} />
+      <TodosContainer todos={todos} />
+    </>
+  )
 }
 
-const mapStateToProps = (state) => ({ todos: state.todo })
-
-const mapDispatchToProps = (dispatch) => ({
-  loadTodosAction: () => dispatch(loadTodosRequest()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(TodoContent)
+export default TodoContent
