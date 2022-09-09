@@ -12,7 +12,6 @@ function TodoContent() {
     loadTodosAction()
   }, [])
 
-  console.log('render')
   return (
     <>
       <TodoFilters todos={todos} />
