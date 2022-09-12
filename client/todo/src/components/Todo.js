@@ -1,9 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react'
+import { TextField, useTheme } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { deleteTodoRequest, updateTodoRequest } from '../store/actions/todos.js'
 
 function Todo(props) {
   const dispatch = useDispatch()
+  const theme = useTheme()
   const deleteTodoAction = (payload) => dispatch(deleteTodoRequest(payload))
   const updateTodoAction = (payload) => dispatch(updateTodoRequest(payload))
   const [inputValue, setInputValue] = useState('')
@@ -39,7 +41,7 @@ function Todo(props) {
 
   const handleTodoStatus = useCallback(() => {
     updateTodoAction({ _id: todo._id, active: !todo.active })
-  }, [])
+  }, [todo.active])
 
   const handleDeleteTodo = useCallback(() => {
     deleteTodoAction(todo._id)
@@ -62,11 +64,6 @@ function Todo(props) {
     setInputValue(todo.name)
   }, [inputValue, todo._id, todo.name, editingTodoId])
 
-  const inputStyles = useMemo(
-    () => (error ? 'todo__element' : 'todo__element todo__element--err'),
-    [error],
-  )
-
   const spanStyles = useMemo(
     () => (todo.active ? 'todo__element-text' : 'todo__element-text todo__element--done'),
     [todo.active],
@@ -75,12 +72,36 @@ function Todo(props) {
   return (
     <div className="todo__element-wrapper" id={todo._id} key={todo._id}>
       {todo._id === editingTodoId ? (
-        <input
-          type="text"
-          className={inputStyles}
+        <TextField
+          id="outlined-basic"
+          label="Edit todo"
+          variant="outlined"
           value={inputValue}
           onChange={editTodo}
           onKeyDown={handleInputKeys}
+          sx={{
+            '& label.Mui-focused': {
+              color: error ? theme.palette.error.main : theme.palette.common.white,
+              top: 0,
+            },
+            label: {
+              top: inputValue ? 0 : '-10px',
+              color: error ? theme.palette.error.main : theme.palette.common.main,
+            },
+            '& .MuiOutlinedInput-root': {
+              width: '35em',
+              color: theme.palette.common.white,
+              '&.Mui-focused fieldset': {
+                borderColor: error ? theme.palette.error.main : theme.palette.todoInput.main,
+              },
+              input: {
+                padding: '4px 8px 5px 8px',
+              },
+              'fieldset, &:hover fieldset': {
+                borderColor: error ? theme.palette.error.main : theme.palette.common.white,
+              },
+            },
+          }}
         />
       ) : (
         <span

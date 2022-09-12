@@ -11,7 +11,7 @@ const root = createRoot(container)
 
 const theme = createTheme({
   palette: {
-    todoForm: {
+    todoInput: {
       main: 'rgb(74, 226, 214)',
     },
   },

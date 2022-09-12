@@ -4,7 +4,7 @@ import { useTheme } from '@mui/material/styles'
 import { useDispatch } from 'react-redux'
 import { addTodoRequest } from '../store/actions/todos.js'
 
-function TodoForm(props) {
+function TodoForm() {
   const dispatch = useDispatch()
   const theme = useTheme()
   const addTodoAction = (payload) => dispatch(addTodoRequest(payload))
@@ -14,7 +14,7 @@ function TodoForm(props) {
     setTodoName(target.value)
     setError(false)
   }
-  //   console.log(theme)
+
   const handleButton = useCallback(
     (e) => {
       e.preventDefault()
@@ -47,16 +47,16 @@ function TodoForm(props) {
           onChange={handleInput}
           sx={{
             '& label.Mui-focused': {
-              color: error ? theme.palette.error.main : theme.palette.todoForm.main,
+              color: error ? theme.palette.error.main : theme.palette.todoInput.main,
               top: 0,
             },
             label: {
-              top: '-6px',
+              top: todoName ? 0 : '-6px',
               color: error ? theme.palette.error.main : theme.palette.common.main,
             },
             '& .MuiOutlinedInput-root': {
               '&.Mui-focused fieldset': {
-                borderColor: error ? theme.palette.error.main : theme.palette.todoForm.main,
+                borderColor: error ? theme.palette.error.main : theme.palette.todoInput.main,
               },
               input: {
                 padding: '10px 8px',

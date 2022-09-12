@@ -6,15 +6,6 @@ body {
   font-family: Verdana, sans-serif;
 }
 
-input {
-  border: 1px solid #fff;
-  outline: none;
-}
-
-/* input:focus-visible {
-  border: 1px solid rgb(74, 226, 214);
-} */
-
 /* _todo body */
 .todo {
   width: 800px;
@@ -44,17 +35,6 @@ input {
   align-items: center;
   flex-direction: column;
 }
-
-/* .todo__form-input {
-  padding: 10px 8px;
-  width: 450px;
-  border-radius: 5px;
-  font-size: 18px;
-} */
-
-/* .todo__form-input--error {
-  border: 1px solid rgb(197, 0, 0);
-} */
 
 .todo__form-button {
   width: 125px;
@@ -141,29 +121,11 @@ input {
 
 .todo__element-wrapper {
   position: relative;
-  padding: 4px;
+  padding: 7px 4px;
   background-color: rgb(129, 134, 218);
   border-radius: 5px;
-  height: 40px;
+  height: 45px;
 }
-
-.todo__element {
-  border: 1px solid rgb(129, 134, 218);
-  font-family: inherit;
-  font-size: 18px;
-  border-radius: 5px;
-  padding: 4px 8px 5px 8px;
-  color: #fff;
-  width: 80%;
-}
-
-/* .todo__element:focus-visible {
-  border: 1px solid rgb(129, 134, 218);
-}
-
-.todo__element--err:focus-visible {
-  border: 1px solid rgb(197, 0, 0);
-} */
 
 .todo__element-text {
   position: absolute;
@@ -185,10 +147,6 @@ input {
   text-decoration: line-through;
 }
 
-.todo__element--err {
-  border: 1px solid rgb(197, 0, 0);
-}
-
 .todo__action-element {
   position: absolute;
   font-size: 17px;
@@ -197,16 +155,6 @@ input {
   transform: translate(0, -50%);
   cursor: pointer;
   color: #fff;
-}
-
-.todo__element:disabled {
-  background-color: rgb(129, 134, 218);
-  cursor: pointer;
-}
-
-.todo__element {
-  background-color: rgb(211, 211, 211);
-  cursor: auto;
 }
 
 .todo__edit {
