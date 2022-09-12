@@ -20,9 +20,24 @@ const theme = createTheme({
             backgroundColor: 'white',
             marginTop: 15,
             textTransform: 'capitalize',
+            borderRadius: 5,
             '&:hover': {
               backgroundColor: 'rgb(0, 78, 141)',
               color: 'white',
+            },
+          },
+        },
+        {
+          props: { variant: 'cancle' },
+          style: {
+            padding: '5px 50px',
+            backgroundColor: '#d32f2f',
+            color: 'white',
+            marginTop: 15,
+            textTransform: 'capitalize',
+            borderRadius: 5,
+            '&:hover': {
+              backgroundColor: '#ac6666',
             },
           },
         },
@@ -36,6 +51,9 @@ const theme = createTheme({
     button: {
       active: 'rgb(204, 232, 255)',
       main: 'white',
+    },
+    modal: {
+      main: 'rgb(129, 134, 218)',
     },
   },
 })
