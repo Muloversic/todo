@@ -1,62 +1,14 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { ThemeProvider } from '@mui/material/styles'
+import theme from './styles/theme'
 import store from './store/store'
 import App from './App'
 import './index.css'
 
 const container = document.getElementById('root')
 const root = createRoot(container)
-
-const theme = createTheme({
-  components: {
-    MuiButton: {
-      variants: [
-        {
-          props: { variant: 'submit' },
-          style: {
-            padding: '5px 50px',
-            backgroundColor: 'white',
-            marginTop: 15,
-            textTransform: 'capitalize',
-            borderRadius: 5,
-            '&:hover': {
-              backgroundColor: 'rgb(0, 78, 141)',
-              color: 'white',
-            },
-          },
-        },
-        {
-          props: { variant: 'cancle' },
-          style: {
-            padding: '5px 50px',
-            backgroundColor: '#d32f2f',
-            color: 'white',
-            marginTop: 15,
-            textTransform: 'capitalize',
-            borderRadius: 5,
-            '&:hover': {
-              backgroundColor: '#ac6666',
-            },
-          },
-        },
-      ],
-    },
-  },
-  palette: {
-    todoInput: {
-      main: 'rgb(74, 226, 214)',
-    },
-    button: {
-      active: 'rgb(204, 232, 255)',
-      main: 'white',
-    },
-    modal: {
-      main: 'rgb(129, 134, 218)',
-    },
-  },
-})
 
 root.render(
   <React.StrictMode>
