@@ -28,7 +28,12 @@ function TodosContainer({ todos }) {
           setIsDelete={setIsDelete}
         />
       ))}
-      <TodoModal handleClose={handleClose} handleDelete={handleDelete} open={open} />
+      <TodoModal
+        handleClose={handleClose}
+        handleDelete={handleDelete}
+        open={open}
+        title="Delete todo?"
+      />
     </div>
   )
 }
