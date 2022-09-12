@@ -35,7 +35,7 @@ const theme = createTheme(colorTheme, {
           },
         },
         {
-          props: { variant: 'cancle' },
+          props: { variant: 'delete' },
           style: {
             padding: '5px 50px',
             backgroundColor: colorTheme.palette.error.main,

@@ -17,7 +17,7 @@ function TodoModal({ handleDelete, handleClose, open, title, classes }) {
           <Button variant="submit" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="cancle" onClick={handleDelete}>
+          <Button variant="delete" onClick={handleDelete}>
             Delete
           </Button>
         </ButtonGroup>
