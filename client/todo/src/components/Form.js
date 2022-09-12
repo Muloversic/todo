@@ -56,6 +56,7 @@ function TodoForm() {
               color: error ? theme.palette.error.main : theme.palette.common.main,
             },
             '& .MuiOutlinedInput-root': {
+              width: '20em',
               '&.Mui-focused fieldset': {
                 borderColor: error ? theme.palette.error.main : theme.palette.todoInput.main,
               },
