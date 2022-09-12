@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
 import { useDispatch } from 'react-redux'
 import { addTodoRequest } from '../store/actions/todos.js'
@@ -67,9 +68,9 @@ function TodoForm() {
             },
           }}
         />
-        <button type="submit" className="todo__form-button" onClick={handleButton}>
+        <Button type="submit" variant="submit" onClick={handleButton}>
           submit
-        </button>
+        </Button>
       </form>
     </div>
   )
