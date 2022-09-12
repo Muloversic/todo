@@ -1,9 +1,12 @@
 import React, { useCallback } from 'react'
+import Button from '@mui/material/Button'
+import { useTheme } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateFilterRequest, deleteAllTodosRequest } from '../store/actions/todos.js'
 
 function TodoFilters(props) {
   const dispatch = useDispatch()
+  const theme = useTheme()
   const updateFiltersAction = (payload) => dispatch(updateFilterRequest(payload))
   const deleteAllTodosAction = () => dispatch(deleteAllTodosRequest())
   const filterType = useSelector((state) => state.filter)
@@ -23,33 +26,39 @@ function TodoFilters(props) {
   return (
     <div className="todo__filters">
       <div className="todo__filters-row todo__filters-row--controls">
-        <button
-          type="button"
-          className={`todo__filtres-button ${
-            filterType === 'all' ? 'todo__filtres-button--active' : ''
-          }`}
+        <Button
+          type="submit"
+          variant="submit"
           onClick={handleClick('all')}
+          sx={{
+            backgroundColor:
+              filterType === 'all' ? theme.palette.button.active : theme.palette.button.main,
+          }}
         >
           All todos
-        </button>
-        <button
-          type="button"
-          className={`todo__filtres-button ${
-            filterType === 'active' ? 'todo__filtres-button--active' : ''
-          }`}
+        </Button>
+        <Button
+          type="submit"
+          variant="submit"
           onClick={handleClick('active')}
+          sx={{
+            backgroundColor:
+              filterType === 'active' ? theme.palette.button.active : theme.palette.button.main,
+          }}
         >
           Active todos
-        </button>
-        <button
-          type="button"
-          className={`todo__filtres-button ${
-            filterType === 'done' ? 'todo__filtres-button--active' : ''
-          }`}
+        </Button>
+        <Button
+          type="submit"
+          variant="submit"
           onClick={handleClick('done')}
+          sx={{
+            backgroundColor:
+              filterType === 'done' ? theme.palette.button.active : theme.palette.button.main,
+          }}
         >
           Done todos
-        </button>
+        </Button>
       </div>
       <div className="todo__filters-row">
         <p className="todo__item-counter">Todos counter: {todos.length}</p>

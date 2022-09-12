@@ -16,10 +16,10 @@ const theme = createTheme({
         {
           props: { variant: 'submit' },
           style: {
-            border: '1px solid white',
             padding: '5px 50px',
-            backgroundColor: 'rgb(204, 232, 255)',
+            backgroundColor: 'white',
             marginTop: 15,
+            textTransform: 'capitalize',
             '&:hover': {
               backgroundColor: 'rgb(0, 78, 141)',
               color: 'white',
@@ -32,6 +32,10 @@ const theme = createTheme({
   palette: {
     todoInput: {
       main: 'rgb(74, 226, 214)',
+    },
+    button: {
+      active: 'rgb(204, 232, 255)',
+      main: 'white',
     },
   },
 })
