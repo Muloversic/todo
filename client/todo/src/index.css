@@ -11,9 +11,9 @@ input {
   outline: none;
 }
 
-input:focus-visible {
+/* input:focus-visible {
   border: 1px solid rgb(74, 226, 214);
-}
+} */
 
 /* _todo body */
 .todo {
@@ -45,16 +45,16 @@ input:focus-visible {
   flex-direction: column;
 }
 
-.todo__form-input {
+/* .todo__form-input {
   padding: 10px 8px;
   width: 450px;
   border-radius: 5px;
   font-size: 18px;
-}
+} */
 
-.todo__form-input--error {
+/* .todo__form-input--error {
   border: 1px solid rgb(197, 0, 0);
-}
+} */
 
 .todo__form-button {
   width: 125px;
@@ -157,13 +157,13 @@ input:focus-visible {
   width: 80%;
 }
 
-.todo__element:focus-visible {
+/* .todo__element:focus-visible {
   border: 1px solid rgb(129, 134, 218);
 }
 
 .todo__element--err:focus-visible {
   border: 1px solid rgb(197, 0, 0);
-}
+} */
 
 .todo__element-text {
   position: absolute;
