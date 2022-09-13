@@ -1,17 +1,20 @@
 import React, { useState, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteTodoRequest, updateTodoRequest } from '../store/actions/todos.js'
 import Todo from './Todo.js'
 import TodoModal from './TodoModal.js'
 
 function TodosContainer({ todos }) {
+  const dispatch = useDispatch()
+  const deleteTodoAction = (payload) => dispatch(deleteTodoRequest(payload))
   const [editingTodoId, setEditingTodoId] = useState(null)
   const [deleteTodoId, setDeleteTodoId] = useState(null)
-  const [isDelete, setIsDelete] = useState(false)
   const [open, setOpen] = useState(false)
-  const handleClose = useCallback(() => setOpen(false), [open])
+  const handleClose = useCallback(() => setOpen(false), [])
   const handleDelete = useCallback(() => {
+    deleteTodoAction(deleteTodoId)
     setOpen(false)
-    setIsDelete(true)
-  }, [open, isDelete])
+  }, [deleteTodoId])
 
   return (
     <div className="todo__items-container">
@@ -20,12 +23,9 @@ function TodosContainer({ todos }) {
           todo={todo}
           key={todo._id}
           handleCurrentTodo={setEditingTodoId}
-          deleteTodoId={deleteTodoId}
           setDeleteTodoId={setDeleteTodoId}
           editingTodoId={editingTodoId}
           setOpen={setOpen}
-          isDelete={isDelete}
-          setIsDelete={setIsDelete}
         />
       ))}
       <TodoModal

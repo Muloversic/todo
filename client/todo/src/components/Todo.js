@@ -1,21 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { TextField, useTheme } from '@mui/material'
+import React, { useCallback, useMemo, useState } from 'react'
+import { TextField } from '@mui/material'
 import { useDispatch } from 'react-redux'
-import { deleteTodoRequest, updateTodoRequest } from '../store/actions/todos.js'
+import { updateTodoRequest } from '../store/actions/todos.js'
 
-function Todo({
-  todo,
-  editingTodoId,
-  handleCurrentTodo,
-  setOpen,
-  isDelete,
-  setDeleteTodoId,
-  deleteTodoId,
-  setIsDelete,
-}) {
+function Todo({ todo, editingTodoId, handleCurrentTodo, setOpen, setDeleteTodoId }) {
   const dispatch = useDispatch()
-  const theme = useTheme()
-  const deleteTodoAction = (payload) => dispatch(deleteTodoRequest(payload))
   const updateTodoAction = (payload) => dispatch(updateTodoRequest(payload))
   const [inputValue, setInputValue] = useState('')
   const [error, setError] = useState(false)
@@ -49,19 +38,12 @@ function Todo({
 
   const handleTodoStatus = useCallback(() => {
     updateTodoAction({ _id: todo._id, active: !todo.active })
-  }, [todo.active])
+  }, [todo._id, todo.active])
 
   const handleDeleteTodo = useCallback(() => {
     setDeleteTodoId(todo._id)
     setOpen(true)
-  }, [todo._id])
-
-  useEffect(() => {
-    if (isDelete && deleteTodoId === todo._id) {
-      deleteTodoAction(todo._id)
-      setIsDelete(false)
-    }
-  }, [isDelete])
+  }, [])
 
   const handeEditingMode = useCallback(() => {
     const name = inputValue.trim()
