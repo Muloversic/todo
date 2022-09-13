@@ -6,12 +6,12 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 
-function TodoModal({ handleDelete, handleClose, open, title, classes }) {
+function DeleteTodoModal({ handleDelete, handleClose, open, classes }) {
   return (
     <Modal open={open} onClose={handleClose}>
       <Box className={classes.box}>
         <Typography id="modal-modal-title" variant="h6" component="h2" className={classes.heading}>
-          {title}
+          Delete todo?
         </Typography>
         <ButtonGroup aria-label="outlined primary button group" className={classes.buttonGroup}>
           <Button variant="submit" onClick={handleClose}>
@@ -48,4 +48,4 @@ const styles = (theme) => ({
   },
 })
 
-export default withStyles(styles, { withTheme: true })(TodoModal)
+export default withStyles(styles, { withTheme: true })(DeleteTodoModal)

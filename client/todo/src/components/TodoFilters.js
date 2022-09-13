@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateFilterRequest, deleteAllTodosRequest } from '../store/actions/todos.js'
-import TodoModal from './TodoModal.js'
+// import TodoModal from './TodoModal.js'
 
 function TodoFilters({ todos }) {
   const dispatch = useDispatch()
@@ -29,12 +29,12 @@ function TodoFilters({ todos }) {
 
   return (
     <div className="todo__filters">
-      <TodoModal
+      {/* <TodoModal
         handleClose={handleClose}
         handleDelete={handleDelete}
         open={open}
         title="Delete all todos?"
-      />
+      /> */}
       <div className="todo__filters-row todo__filters-row--controls">
         <Button
           type="submit"

@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { deleteTodoRequest, updateTodoRequest } from '../store/actions/todos.js'
+import { deleteTodoRequest } from '../store/actions/todos.js'
 import Todo from './Todo.js'
-import TodoModal from './TodoModal.js'
+import DeleteTodoModal from './DeleteTodoModal.js'
 
 function TodosContainer({ todos }) {
   const dispatch = useDispatch()
@@ -28,12 +28,7 @@ function TodosContainer({ todos }) {
           setOpen={setOpen}
         />
       ))}
-      <TodoModal
-        handleClose={handleClose}
-        handleDelete={handleDelete}
-        open={open}
-        title="Delete todo?"
-      />
+      <DeleteTodoModal handleClose={handleClose} handleDelete={handleDelete} open={open} />
     </div>
   )
 }
