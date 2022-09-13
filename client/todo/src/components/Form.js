@@ -45,27 +45,11 @@ function TodoForm() {
           label="Add new todo..."
           variant="outlined"
           value={todoName}
+          error={error}
           onChange={handleInput}
           sx={{
-            '& label.Mui-focused': {
-              color: error ? theme.palette.error.main : theme.palette.todoInput.main,
-              top: 0,
-            },
-            label: {
-              top: todoName ? 0 : '-6px',
-              color: error ? theme.palette.error.main : theme.palette.common.main,
-            },
             '& .MuiOutlinedInput-root': {
-              width: '20em',
-              '&.Mui-focused fieldset': {
-                borderColor: error ? theme.palette.error.main : theme.palette.todoInput.main,
-              },
-              input: {
-                padding: '10px 8px',
-              },
-              'fieldset, &:hover fieldset': {
-                borderColor: error ? theme.palette.error.main : theme.palette.common.main,
-              },
+              color: theme.palette.common.black,
             },
           }}
         />

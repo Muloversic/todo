@@ -50,6 +50,42 @@ const theme = createTheme(colorTheme, {
         },
       ],
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiInputLabel-root': {
+            top: '-10px',
+          },
+          '& label.Mui-focused:not(.Mui-error)': {
+            color: colorTheme.palette.todoInput.main,
+          },
+          '& label.MuiFormLabel-filled:not(.Mui-focused)': {
+            top: 0,
+          },
+          '& label.Mui-focused:not(.MuiFormLabel-filled)': {
+            top: 0,
+          },
+          '& label.MuiFormLabel-filled.Mui-focused': {
+            top: 0,
+          },
+          '& .MuiOutlinedInput-root:not(.Mui-error)': {
+            '&.Mui-focused fieldset': {
+              borderColor: colorTheme.palette.todoInput.main,
+            },
+            'fieldset, &:hover fieldset': {
+              borderColor: colorTheme.palette.common.white,
+            },
+          },
+          '& .MuiOutlinedInput-root': {
+            width: '35em',
+            color: colorTheme.palette.common.white,
+            input: {
+              padding: '4px 8px 5px 8px',
+            },
+          },
+        },
+      },
+    },
   },
 })
 

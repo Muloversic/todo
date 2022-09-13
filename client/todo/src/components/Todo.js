@@ -95,29 +95,7 @@ function Todo({
           value={inputValue}
           onChange={editTodo}
           onKeyDown={handleInputKeys}
-          sx={{
-            '& label.Mui-focused': {
-              color: error ? theme.palette.error.main : theme.palette.common.white,
-              top: 0,
-            },
-            label: {
-              top: inputValue ? 0 : '-10px',
-              color: error ? theme.palette.error.main : theme.palette.common.main,
-            },
-            '& .MuiOutlinedInput-root': {
-              width: '35em',
-              color: theme.palette.common.white,
-              '&.Mui-focused fieldset': {
-                borderColor: error ? theme.palette.error.main : theme.palette.todoInput.main,
-              },
-              input: {
-                padding: '4px 8px 5px 8px',
-              },
-              'fieldset, &:hover fieldset': {
-                borderColor: error ? theme.palette.error.main : theme.palette.common.white,
-              },
-            },
-          }}
+          error={error}
         />
       ) : (
         <span
