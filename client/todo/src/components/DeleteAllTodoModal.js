@@ -65,10 +65,10 @@ const styles = (theme) => ({
   },
   input: {
     width: '20em',
-    border: '1px solid white',
+    border: `1px solid ${theme.palette.common.white}`,
     marginTop: '10px',
     padding: '5px',
-    color: 'white !important',
+    color: `${theme.palette.common.white} !important`,
     borderRadius: 5,
   },
 })
