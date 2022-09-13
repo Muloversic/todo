@@ -12,48 +12,30 @@ function TodoFilters({ todos }) {
   const deleteAllTodosAction = () => dispatch(deleteAllTodosRequest())
   const filterType = useSelector((state) => state.filter)
   const [open, setOpen] = useState(false)
-  const [error, setError] = useState(false)
-  const [inputValue, setInputValue] = useState('')
+
   const handleClose = useCallback(() => {
-    setInputValue('')
     setOpen(false)
   }, [])
+
   const handleClick = useCallback(
     (filter) => () => {
       updateFiltersAction(filter)
     },
     [],
   )
-  const handleDelete = useCallback(() => {
-    if (inputValue !== 'delete') {
-      setError(true)
-      return
-    }
 
+  const handleDelete = useCallback(() => {
     setOpen(false)
     deleteAllTodosAction()
-    setInputValue('')
-  }, [inputValue])
+  }, [])
 
   const showModal = useCallback(() => {
     setOpen(true)
   }, [])
 
-  const handleInputChange = useCallback(({ target }) => {
-    setError(false)
-    setInputValue(target.value)
-  }, [])
-
   return (
     <div className="todo__filters">
-      <DeleteAllTodoModal
-        handleClose={handleClose}
-        handleDelete={handleDelete}
-        open={open}
-        handleInputChange={handleInputChange}
-        inputValue={inputValue}
-        error={error}
-      />
+      <DeleteAllTodoModal handleClose={handleClose} handleDelete={handleDelete} open={open} />
       <div className="todo__filters-row todo__filters-row--controls">
         <Button
           type="submit"

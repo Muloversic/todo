@@ -1,17 +1,27 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { withStyles } from '@mui/styles'
 import Modal from '@mui/material/Modal'
 import { Box, Typography, Button, ButtonGroup, InputBase } from '@mui/material'
 
-function DeleteAllTodoModal({
-  handleDelete,
-  handleClose,
-  open,
-  handleInputChange,
-  inputValue,
-  error,
-  classes,
-}) {
+function DeleteAllTodoModal({ handleClose, handleDelete, open, classes }) {
+  const [error, setError] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+
+  const handleInputChange = useCallback(({ target }) => {
+    setError(false)
+    setInputValue(target.value)
+  }, [])
+
+  const handleDeleteClick = useCallback(() => {
+    if (inputValue !== 'delete') {
+      setError(true)
+      return
+    }
+
+    setInputValue('')
+    handleDelete()
+  }, [inputValue])
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Box className={classes.box}>
@@ -28,7 +38,7 @@ function DeleteAllTodoModal({
           <Button variant="submit" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="delete" onClick={handleDelete}>
+          <Button variant="delete" onClick={handleDeleteClick}>
             Delete
           </Button>
         </ButtonGroup>
