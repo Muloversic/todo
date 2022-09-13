@@ -86,6 +86,15 @@ const theme = createTheme(colorTheme, {
         },
       },
     },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          '&.Mui-error': {
+            borderColor: colorTheme.palette.error.main,
+          },
+        },
+      },
+    },
   },
 })
 

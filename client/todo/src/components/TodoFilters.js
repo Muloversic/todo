@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateFilterRequest, deleteAllTodosRequest } from '../store/actions/todos.js'
-// import TodoModal from './TodoModal.js'
+import DeleteAllTodoModal from './DeleteAllTodoModal.js'
 
 function TodoFilters({ todos }) {
   const dispatch = useDispatch()
@@ -12,7 +12,12 @@ function TodoFilters({ todos }) {
   const deleteAllTodosAction = () => dispatch(deleteAllTodosRequest())
   const filterType = useSelector((state) => state.filter)
   const [open, setOpen] = useState(false)
-  const handleClose = useCallback(() => setOpen(false), [open])
+  const [error, setError] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+  const handleClose = useCallback(() => {
+    setInputValue('')
+    setOpen(false)
+  }, [])
   const handleClick = useCallback(
     (filter) => () => {
       updateFiltersAction(filter)
@@ -20,21 +25,35 @@ function TodoFilters({ todos }) {
     [],
   )
   const handleDelete = useCallback(() => {
+    if (inputValue !== 'delete') {
+      setError(true)
+      return
+    }
+
     setOpen(false)
     deleteAllTodosAction()
-  }, [open])
+    setInputValue('')
+  }, [inputValue])
+
   const showModal = useCallback(() => {
     setOpen(true)
   }, [])
 
+  const handleInputChange = useCallback(({ target }) => {
+    setError(false)
+    setInputValue(target.value)
+  }, [])
+
   return (
     <div className="todo__filters">
-      {/* <TodoModal
+      <DeleteAllTodoModal
         handleClose={handleClose}
         handleDelete={handleDelete}
         open={open}
-        title="Delete all todos?"
-      /> */}
+        handleInputChange={handleInputChange}
+        inputValue={inputValue}
+        error={error}
+      />
       <div className="todo__filters-row todo__filters-row--controls">
         <Button
           type="submit"
