@@ -4,7 +4,8 @@ import KoaLogger from 'koa-logger'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import cors from '@koa/cors'
-import todosRouter from './router'
+import todosRouter from './routers/todosRouter'
+import usersRouter from './routers/usersRouter'
 import configs from './configs'
 import { responseHelpers } from './helpers'
 
@@ -24,6 +25,7 @@ function runKoa() {
   app.use(bodyParser())
   app.use(KoaLogger())
   app.use(responseHelpers)
+  router.use('', ...usersRouter())
   router.use('/todos', ...todosRouter())
   app.use(router.routes())
   return app

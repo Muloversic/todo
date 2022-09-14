@@ -9,7 +9,7 @@ const instance = axios.create({
 
 function* createUser({ payload }) {
   try {
-    const response = yield call(instance.post, 'login', payload)
+    const response = yield call(instance.post, 'registration', payload)
     console.log(response)
   } catch (e) {
     console.error('Error while registration', e)

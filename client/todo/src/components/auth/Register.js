@@ -86,7 +86,12 @@ const Register = ({ createUserAction }) => {
         return
       }
 
-      createUserAction(userData)
+      const payload = {
+        name: userData.name,
+        password: userData.pass,
+      }
+
+      createUserAction(payload)
 
       setUserData({
         name: '',
