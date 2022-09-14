@@ -22,7 +22,9 @@
   "dependencies": {
     "@koa/cors": "^3.4.1",
     "axios": "^0.27.2",
+    "bcrypt": "^5.0.1",
     "install-peerdeps": "^3.0.3",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",
     "koa-cors": "^0.0.16",
