@@ -4,7 +4,7 @@ import { deleteTodoRequest } from '../store/actions/todos.js'
 import Todo from './Todo.js'
 import DeleteTodoModal from './DeleteTodoModal.js'
 
-function TodosContainer({ todos }) {
+const TodosContainer = ({ todos }) => {
   const dispatch = useDispatch()
   const deleteTodoAction = (payload) => dispatch(deleteTodoRequest(payload))
   const [editingTodoId, setEditingTodoId] = useState(null)

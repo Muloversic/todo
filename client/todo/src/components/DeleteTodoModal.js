@@ -6,25 +6,23 @@ import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import ButtonGroup from '@mui/material/ButtonGroup'
 
-function DeleteTodoModal({ handleDelete, handleClose, open, classes }) {
-  return (
-    <Modal open={open} onClose={handleClose}>
-      <Box className={classes.box}>
-        <Typography id="modal-modal-title" variant="h6" component="h2" className={classes.heading}>
-          Delete todo?
-        </Typography>
-        <ButtonGroup aria-label="outlined primary button group" className={classes.buttonGroup}>
-          <Button variant="submit" onClick={handleClose}>
-            Cancel
-          </Button>
-          <Button variant="delete" onClick={handleDelete}>
-            Delete
-          </Button>
-        </ButtonGroup>
-      </Box>
-    </Modal>
-  )
-}
+const DeleteTodoModal = ({ handleDelete, handleClose, open, classes }) => (
+  <Modal open={open} onClose={handleClose}>
+    <Box className={classes.box}>
+      <Typography id="modal-modal-title" variant="h6" component="h2" className={classes.heading}>
+        Delete todo?
+      </Typography>
+      <ButtonGroup aria-label="outlined primary button group" className={classes.buttonGroup}>
+        <Button variant="submit" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button variant="delete" onClick={handleDelete}>
+          Delete
+        </Button>
+      </ButtonGroup>
+    </Box>
+  </Modal>
+)
 
 const styles = (theme) => ({
   box: {

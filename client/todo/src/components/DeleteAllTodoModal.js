@@ -3,7 +3,7 @@ import { withStyles } from '@mui/styles'
 import Modal from '@mui/material/Modal'
 import { Box, Typography, Button, ButtonGroup, InputBase } from '@mui/material'
 
-function DeleteAllTodoModal({ handleClose, handleDelete, open, classes }) {
+const DeleteAllTodoModal = ({ handleClose, handleDelete, open, classes }) => {
   const [error, setError] = useState(false)
   const [inputValue, setInputValue] = useState('')
 

@@ -3,7 +3,7 @@ import { TextField } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { updateTodoRequest } from '../store/actions/todos.js'
 
-function Todo({ todo, editingTodoId, handleCurrentTodo, setOpen, setDeleteTodoId }) {
+const Todo = ({ todo, editingTodoId, handleCurrentTodo, setOpen, setDeleteTodoId }) => {
   const dispatch = useDispatch()
   const updateTodoAction = (payload) => dispatch(updateTodoRequest(payload))
   const [inputValue, setInputValue] = useState('')

@@ -4,7 +4,7 @@ import { loadTodosRequest } from '../store/actions/todos.js'
 import TodosContainer from './TodosContainer'
 import TodoFilters from './TodoFilters'
 
-function TodoContent() {
+const TodoContent = () => {
   const dispatch = useDispatch()
   const loadTodosAction = () => dispatch(loadTodosRequest())
   const todos = useSelector((state) => state.todo)

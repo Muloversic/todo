@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles'
 import { useDispatch } from 'react-redux'
 import { addTodoRequest } from '../store/actions/todos.js'
 
-function TodoForm() {
+const TodoForm = () => {
   const dispatch = useDispatch()
   const theme = useTheme()
   const addTodoAction = (payload) => dispatch(addTodoRequest(payload))
