@@ -19,3 +19,5 @@ function* createUser({ payload }) {
 function* user() {
   yield takeEvery(CREATE_USER_REQUEST, createUser)
 }
+
+export default user

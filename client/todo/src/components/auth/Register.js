@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from 'react'
+import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
+import { createUserRequest } from '../../store/actions/user'
 
-const Register = () => {
+const Register = ({ createUserAction }) => {
   const theme = useTheme()
   const [userData, setUserData] = useState({
     name: '',
@@ -84,6 +86,8 @@ const Register = () => {
         return
       }
 
+      createUserAction(userData)
+
       setUserData({
         name: '',
         pass: '',
@@ -145,4 +149,8 @@ const Register = () => {
   )
 }
 
-export default Register
+const mapDispatchToProps = (dispatch) => ({
+  createUserAction: (payload) => dispatch(createUserRequest(payload)),
+})
+
+export default connect(null, mapDispatchToProps)(Register)
