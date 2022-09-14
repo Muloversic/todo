@@ -168,3 +168,11 @@ body {
   border: 0;
   right: 5%;
 }
+
+.register-form {
+  padding-top: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

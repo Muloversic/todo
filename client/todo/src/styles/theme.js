@@ -13,6 +13,9 @@ const colorTheme = createTheme({
     modal: {
       main: 'rgb(129, 134, 218)',
     },
+    register: {
+      main: 'rgb(127, 155, 153)',
+    },
   },
 })
 
