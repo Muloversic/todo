@@ -7,6 +7,11 @@ const instance = axios.create({
   timeout: 1000,
 })
 
+instance.interceptors.request.use((config) => {
+  config.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+  return config
+})
+
 function* createUser({ payload }) {
   try {
     const response = yield call(instance.post, 'registration', payload)
