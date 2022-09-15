@@ -46,3 +46,21 @@ export function generateTokens(payload) {
     refreshToken,
   }
 }
+
+export function validateAccessToken(token) {
+  try {
+    const userData = jwt.verify(token, configs.JWT_ACCESS_SECRET)
+    return userData
+  } catch (e) {
+    return null
+  }
+}
+
+export function validateRefreshToken(token) {
+  try {
+    const userData = jwt.verify(token, configs.JWT_REFRESH_SECRET)
+    return userData
+  } catch (e) {
+    return null
+  }
+}
