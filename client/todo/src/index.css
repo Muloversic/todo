@@ -176,3 +176,12 @@ body {
   align-items: center;
   flex-direction: column;
 }
+
+.auth-link {
+  margin-top: 20px;
+  color: #fff;
+}
+
+.auth-link:hover {
+  color: rgb(74, 226, 214);
+}

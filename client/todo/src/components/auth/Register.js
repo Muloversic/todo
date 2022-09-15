@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
 import { createUserRequest } from '../../store/actions/user'
@@ -148,6 +149,7 @@ const Register = ({ createUserAction }) => {
           <Button variant="submit" type="submit">
             Create an account
           </Button>
+          <Link to="/login" className='auth-link'>Already have an account?</Link>
         </form>
       </Box>
     </Container>
