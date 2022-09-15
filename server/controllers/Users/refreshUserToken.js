@@ -14,7 +14,7 @@ const refreshUserToken = async (ctx) => {
     const userData = validateRefreshToken(refreshToken)
     if (!userData) {
       console.log('No authorized user')
-      ctx.notFound('No authorized user 401')
+      ctx.permissionDenied('No authorized user 401')
       return
     }
 

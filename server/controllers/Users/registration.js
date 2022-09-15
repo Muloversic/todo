@@ -7,20 +7,20 @@ const registerUser = async (ctx) => {
     const { username, password } = ctx.request.body
     if (!username || username.trim() === '') {
       console.log('invalid username came while registration')
-      ctx.notFound('invalid username')
+      ctx.permissionDenied('invalid username')
       return
     }
 
     if (!password || password.length < 4 || password.length > 13) {
       console.log('invalid user password came while registration')
-      ctx.notFound('invalid user password')
+      ctx.permissionDenied('invalid user password')
       return
     }
 
     const candidate = await UserModel.findOne({ username })
     if (candidate) {
       console.log('User already exists')
-      ctx.notFound('User already exists')
+      ctx.permissionDenied('User already exists')
       return
     }
 

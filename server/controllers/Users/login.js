@@ -7,13 +7,13 @@ const loginUser = async (ctx) => {
     const { username, password } = ctx.request.body
     if (!username || username.trim() === '') {
       console.log('invalid username came while login')
-      ctx.notFound('invalid username')
+      ctx.permissionDenied('invalid username')
       return
     }
 
     if (!password || password.length < 4 || password.length > 13) {
       console.log('invalid user password came while login')
-      ctx.notFound('invalid user password')
+      ctx.permissionDenied('invalid user password')
       return
     }
 
@@ -27,7 +27,7 @@ const loginUser = async (ctx) => {
     const isValidPassword = bcrypt.compareSync(password, user.password)
     if (!isValidPassword) {
       console.log('Password is not valid')
-      ctx.notFound('Password is not valid')
+      ctx.permissionDenied('Password is not valid')
       return
     }
 
