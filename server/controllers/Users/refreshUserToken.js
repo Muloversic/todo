@@ -1,9 +1,10 @@
-import { validateRefreshToken } from '../../helpers'
+import { validateRefreshToken, generateTokens } from '../../helpers'
 import UserModel from '../../models/userModel'
 
 const refreshUserToken = async (ctx) => {
   try {
-    const { refreshToken } = ctx.request.body
+    console.log(ctx.query)
+    const { refreshToken } = ctx.query
     if (!refreshToken) {
       console.log('No token came')
       ctx.notFound('No token came')
