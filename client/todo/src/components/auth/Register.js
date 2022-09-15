@@ -6,7 +6,7 @@ import { createUserRequest } from '../../store/actions/user'
 const Register = ({ createUserAction }) => {
   const theme = useTheme()
   const [userData, setUserData] = useState({
-    name: '',
+    username: '',
     pass: '',
     repeatPass: '',
   })
@@ -19,7 +19,7 @@ const Register = ({ createUserAction }) => {
 
   const handleFormChange = useCallback(({ target }) => {
     setErrorMessage(``)
-    if (target.name === 'name') {
+    if (target.name === 'username') {
       setErrorMessage((prevState) => ({
         ...prevState,
         nameErr: '',
@@ -27,7 +27,7 @@ const Register = ({ createUserAction }) => {
 
       setUserData((prevState) => ({
         ...prevState,
-        name: target.value,
+        username: target.value,
       }))
     }
 
@@ -59,10 +59,10 @@ const Register = ({ createUserAction }) => {
   const handleFromSubmit = useCallback(
     (e) => {
       e.preventDefault()
-      if (userData.name.trim() === '') {
+      if (userData.username.trim() === '') {
         setErrorMessage((prevState) => ({
           ...prevState,
-          nameErr: `User nickname field can't be empty`,
+          nameErr: `Username field can't be empty`,
         }))
 
         return
@@ -87,14 +87,14 @@ const Register = ({ createUserAction }) => {
       }
 
       const payload = {
-        name: userData.name,
+        username: userData.username,
         password: userData.pass,
       }
 
       createUserAction(payload)
 
       setUserData({
-        name: '',
+        username: '',
         pass: '',
         repeatPass: '',
       })
@@ -106,7 +106,7 @@ const Register = ({ createUserAction }) => {
         serverErr: '',
       })
     },
-    [userData.name, userData.pass, userData.repeatPass],
+    [userData.username, userData.pass, userData.repeatPass],
   )
 
   return (
@@ -114,12 +114,12 @@ const Register = ({ createUserAction }) => {
       <Box sx={{ bgcolor: theme.palette.register.main, height: '100vh' }}>
         <form className="register-form" onChange={handleFormChange} onSubmit={handleFromSubmit}>
           <TextField
-            label="Nickname"
+            label="Username"
             variant="outlined"
             margin="normal"
             required
-            name="name"
-            value={userData.name}
+            name="username"
+            value={userData.username}
             error={!!errorMessage.nameErr}
             helperText={errorMessage.nameErr}
           />

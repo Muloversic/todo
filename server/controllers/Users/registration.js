@@ -4,10 +4,10 @@ import UserModel from '../../models/userModel'
 
 const registerUser = async (ctx) => {
   try {
-    const { name, password } = ctx.request.body
-    if (!name || name.trim() === '') {
-      console.log('invalid user nickname came while registration')
-      ctx.notFound('invalid user nickname')
+    const { username, password } = ctx.request.body
+    if (!username || username.trim() === '') {
+      console.log('invalid username came while registration')
+      ctx.notFound('invalid username')
       return
     }
 
@@ -17,7 +17,7 @@ const registerUser = async (ctx) => {
       return
     }
 
-    const candidate = await UserModel.findOne({ nickname: name })
+    const candidate = await UserModel.findOne({ username })
     if (candidate) {
       console.log('User already exists')
       ctx.notFound('User already exists')
@@ -25,8 +25,8 @@ const registerUser = async (ctx) => {
     }
 
     const hashPasword = bcrypt.hashSync(password, 7)
-    const user = await UserModel.create({ nickname: name, password: hashPasword })
-    const { nickname, _id } = user
+    const user = await UserModel.create({ username, password: hashPasword })
+    const { username: nickname, _id } = user
     const tokens = generateTokens({ nickname, _id })
     ctx.resolve({
       ...tokens,

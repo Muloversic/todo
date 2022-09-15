@@ -1,12 +1,13 @@
 import bcrypt from 'bcrypt'
 import UserModel from '../../models/userModel'
+import { generateTokens } from '../../helpers'
 
 const loginUser = async (ctx) => {
   try {
-    const { name, password } = ctx.request.body
-    if (!name || name.trim() === '') {
-      console.log('invalid user nickname came while login')
-      ctx.notFound('invalid user nickname')
+    const { username, password } = ctx.request.body
+    if (!username || username.trim() === '') {
+      console.log('invalid username came while login')
+      ctx.notFound('invalid username')
       return
     }
 
@@ -16,7 +17,7 @@ const loginUser = async (ctx) => {
       return
     }
 
-    const user = await UserModel.findOne({ nickname: name })
+    const user = await UserModel.findOne({ username })
     if (!user) {
       console.log('User not found')
       ctx.notFound('User not found')
@@ -29,9 +30,14 @@ const loginUser = async (ctx) => {
       ctx.notFound('Password is not valid')
       return
     }
-    // const user = new UserModel({ nickname: name, password: hashPasword })
-    // await user.save()
-    ctx.resolve('user was created')
+
+    const { username: nickname, _id } = user
+    const tokens = generateTokens({ nickname, _id })
+    ctx.resolve({
+      ...tokens,
+      nickname,
+      _id,
+    })
   } catch (err) {
     console.log('create user:', err.message)
     ctx.notFound(err.message)
