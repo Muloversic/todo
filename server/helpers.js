@@ -64,3 +64,34 @@ export function validateRefreshToken(token) {
     return null
   }
 }
+
+export function authMiddleware(ctx, next) {
+  try {
+    const authorizationHeader = ctx.headers.authorization
+    if (!authorizationHeader) {
+      console.log('No authorized user middleware')
+      ctx.notFound('No authorized user 401')
+      return
+    }
+
+    const accessToken = authorizationHeader.split(' ')[1]
+    if (!accessToken) {
+      console.log('No authorized user middleware')
+      ctx.notFound('No authorized user 401')
+      return
+    }
+
+    const userData = validateAccessToken(accessToken)
+    if (!userData) {
+      console.log('No authorized user middleware')
+      ctx.notFound('No authorized user 401')
+      return
+    }
+
+    ctx.state.user = userData
+    next()
+  } catch (e) {
+    console.log('No authorized user')
+    ctx.notFound('No authorized user 401')
+  }
+}
