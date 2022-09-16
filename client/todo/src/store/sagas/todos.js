@@ -12,6 +12,7 @@ import {
   UPDATE_TODO_SUCCESS,
   DELETE_ALL_TODOS_REQUEST,
   DELETE_ALL_TODOS_SUCCESS,
+  LOGIN_USER_SUCCESS,
 } from '../../constants'
 
 const instance = axios.create({
@@ -28,6 +29,37 @@ instance.interceptors.request.use((config) => {
   config.headers.authorization = `Bearer ${userStore.token}`
   return config
 })
+
+instance.interceptors.response.use(
+  (confing) => confing,
+  async (error) => {
+    const originalRequest = error.config
+    const userStore = JSON.parse(localStorage.getItem('userStore'))
+    if (error.response.status === 401 && error.config && !error.config._isRetry) {
+      try {
+        originalRequest._isRetry = true
+        const response = await axios.get('http://localhost:8080/refresh', {
+          params: userStore.refreshToken,
+        })
+        const { data } = response.data
+        const { refreshToken, accessToken } = data
+        localStorage.setItem(
+          'userStore',
+          JSON.stringify({
+            refreshToken,
+            token: accessToken,
+            authenticated: true,
+          }),
+        )
+        return instance.request(originalRequest)
+      } catch (err) {
+        console.log('No auth', err)
+      }
+    }
+
+    throw error
+  },
+)
 
 function* fetchTodos({ payload }) {
   try {

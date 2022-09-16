@@ -1,10 +1,11 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
 import { loginUserRequest } from '../../store/actions/user'
 
-const Login = ({ loginUserAction, userIdentity, loginUserErr }) => {
+const Login = ({ loginUserAction, loginUserErr }) => {
+  const navigate = useNavigate()
   const theme = useTheme()
   const [userData, setUserData] = useState({
     username: '',
@@ -81,6 +82,8 @@ const Login = ({ loginUserAction, userIdentity, loginUserErr }) => {
         passErr: '',
         serverErr: '',
       })
+
+      navigate('/todos')
     },
     [userData.username, userData.pass],
   )

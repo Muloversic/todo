@@ -1,12 +1,36 @@
 import React from 'react'
+import { Button } from '@mui/material'
+import { connect } from 'react-redux'
+import { useNavigate } from 'react-router'
 import TodoForm from './Form'
 import TodoContent from './TodoContent'
+import { logoutUserRequest } from '../store/actions/user'
 
-const TodoApp = () => (
-  <div className="todo">
-    <TodoForm />
-    <TodoContent />
-  </div>
-)
+const TodoApp = ({ userIdentity, logoutUserAction }) => {
+  console.log(userIdentity)
+  const navigate = useNavigate()
+  const handleLogoutClick = (e) => {
+    e.preventDefault()
+    navigate('/login')
+  }
+  return (
+    <div className="todo">
+      <div>
+        <p>{}</p>
+        <Button onClick={handleLogoutClick}>Logout</Button>
+      </div>
+      <TodoForm />
+      <TodoContent />
+    </div>
+  )
+}
 
-export default TodoApp
+const mapDispatchToProps = (dispatch) => ({
+  logoutUserAction: (payload) => dispatch(logoutUserRequest(payload)),
+})
+
+const mapStateToProps = (state) => ({
+  userIdentity: state.user.indentity,
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoApp)

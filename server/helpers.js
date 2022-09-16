@@ -26,7 +26,7 @@ export async function responseHelpers(ctx, next) {
 
   ctx.permissionDenied = (data) => {
     const response = {
-      code: 403,
+      code: 401,
       data: data || {},
       success: false,
     }
@@ -70,21 +70,21 @@ export async function authMiddleware(ctx, next) {
     const authorizationHeader = ctx.headers.authorization
     if (!authorizationHeader) {
       console.log('No authorized user middleware')
-      ctx.notFound('No authorized user 401')
+      ctx.permissionDenied('No authorized user 401')
       return
     }
 
     const accessToken = authorizationHeader.split(' ')[1]
     if (!accessToken) {
       console.log('No authorized user middleware')
-      ctx.notFound('No authorized user 401')
+      ctx.permissionDenied('No authorized user 401')
       return
     }
 
     const userData = validateAccessToken(accessToken)
     if (!userData) {
       console.log('No authorized user middleware')
-      ctx.notFound('No authorized user 401')
+      ctx.permissionDenied('No authorized user 401')
       return
     }
 
