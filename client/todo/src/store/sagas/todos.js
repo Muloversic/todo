@@ -12,7 +12,6 @@ import {
   UPDATE_TODO_SUCCESS,
   DELETE_ALL_TODOS_REQUEST,
   DELETE_ALL_TODOS_SUCCESS,
-  LOGIN_USER_SUCCESS,
 } from '../../constants'
 
 const instance = axios.create({

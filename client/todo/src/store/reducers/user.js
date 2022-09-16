@@ -5,6 +5,7 @@ import {
   LOGIN_USER_ERROR,
   CREATE_USER_ERROR,
   LOGOUT_USER_SUCCESS,
+  CHECK_AUTH_SUCCESS,
 } from '../../constants'
 
 const USER_STATE = {
@@ -61,6 +62,25 @@ export const user = handleActions(
         indentity: {},
         authenticated: false,
         errorMessage: '',
+      }
+    },
+    [CHECK_AUTH_SUCCESS]: (state, { payload }) => {
+      const { nickname: username, _id, refreshToken, accessToken } = payload
+      localStorage.setItem(
+        'userStore',
+        JSON.stringify({
+          refreshToken,
+          token: accessToken,
+          authenticated: true,
+        }),
+      )
+      return {
+        ...state,
+        authenticated: true,
+        indentity: {
+          username,
+          _id,
+        },
       }
     },
   },

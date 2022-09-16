@@ -9,6 +9,8 @@ import {
   LOGIN_USER_ERROR,
   LOGOUT_USER_REQUEST,
   LOGOUT_USER_SUCCESS,
+  CHECK_AUTH_REQUEST,
+  CHECK_AUTH_SUCCESS,
 } from '../../constants'
 
 const instance = axios.create({
@@ -66,10 +68,26 @@ function* logoutUser({ payload }) {
   }
 }
 
+function* checkUserAuth({ payload }) {
+  try {
+    const response = yield call(instance.get, 'refresh', {
+      params: payload,
+    })
+    const { success, data } = response.data // refreshToken
+    yield put({
+      type: CHECK_AUTH_SUCCESS,
+      payload: data,
+    })
+  } catch (err) {
+    console.error('Error while checking auth', err)
+  }
+}
+
 function* user() {
   yield takeEvery(CREATE_USER_REQUEST, createUser)
   yield takeEvery(LOGIN_USER_REQUEST, loginUser)
   yield takeEvery(LOGOUT_USER_REQUEST, logoutUser)
+  yield takeEvery(CHECK_AUTH_REQUEST, checkUserAuth)
 }
 
 export default user

@@ -8,9 +8,13 @@ const TodoContent = () => {
   const dispatch = useDispatch()
   const loadTodosAction = () => dispatch(loadTodosRequest())
   const todos = useSelector((state) => state.todo)
+  const user = useSelector((state) => state.user)
   useEffect(() => {
-    loadTodosAction()
-  }, [])
+    console.log(user)
+    if (user.authenticated) {
+      loadTodosAction()
+    }
+  }, [user])
 
   return (
     <>
