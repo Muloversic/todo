@@ -5,6 +5,7 @@ import {
   CREATE_USER_REQUEST,
   LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
+  LOGIN_USER_ERROR,
 } from '../../constants'
 
 const instance = axios.create({
@@ -13,7 +14,12 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use((config) => {
-  config.headers.authorization = `Bearer ${localStorage.getItem('token')}`
+  const userStore = localStorage.getItem('userStore')
+  if (!userStore) {
+    return config
+  }
+
+  config.headers.authorization = `Bearer ${userStore.token}`
   return config
 })
 
@@ -29,9 +35,19 @@ function* createUser({ payload }) {
 function* loginUser({ payload }) {
   try {
     const response = yield call(instance.post, 'login', payload)
-    console.log(response)
-  } catch (e) {
-    console.error('Error while registration', e)
+    const { success, data } = response.data
+    yield put({
+      type: LOGIN_USER_SUCCESS,
+      payload: data,
+    })
+  } catch (err) {
+    const { data } = err.response.data
+    yield put({
+      type: LOGIN_USER_ERROR,
+      payload: data,
+    })
+
+    console.error('Error while registration', err)
   }
 }
 

@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
 import { loginUserRequest } from '../../store/actions/user'
 
-const Login = ({ loginUserAction }) => {
+const Login = ({ loginUserAction, userIdentity, loginUserErr }) => {
   const theme = useTheme()
   const [userData, setUserData] = useState({
     username: '',
@@ -71,19 +71,35 @@ const Login = ({ loginUserAction }) => {
 
       loginUserAction(payload)
 
-      setUserData({
-        username: '',
-        pass: '',
-      })
+      //   setUserData({
+      //     username: '',
+      //     pass: '',
+      //   })
 
-      setErrorMessage({
-        nameErr: '',
-        passErr: '',
-        serverErr: '',
-      })
+      //   setErrorMessage({
+      //     nameErr: '',
+      //     passErr: '',
+      //     serverErr: '',
+      //   })
     },
     [userData.username, userData.pass],
   )
+
+  useEffect(() => {
+    if (loginUserErr.username) {
+      setErrorMessage((prevState) => ({
+        ...prevState,
+        nameErr: loginUserErr.username,
+      }))
+    }
+
+    if (loginUserErr.password) {
+      setErrorMessage((prevState) => ({
+        ...prevState,
+        passErr: loginUserErr.password,
+      }))
+    }
+  }, [loginUserErr])
 
   return (
     <Container fixed>
@@ -124,4 +140,9 @@ const mapDispatchToProps = (dispatch) => ({
   loginUserAction: (payload) => dispatch(loginUserRequest(payload)),
 })
 
-export default connect(null, mapDispatchToProps)(Login)
+const mapStateToProps = (state) => ({
+  userIdentity: state.user.indentity,
+  loginUserErr: state.user.errorMessage,
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
