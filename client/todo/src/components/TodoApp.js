@@ -11,12 +11,16 @@ const TodoApp = ({ userIdentity, logoutUserAction }) => {
   const navigate = useNavigate()
   const handleLogoutClick = (e) => {
     e.preventDefault()
+    const userStore = JSON.parse(localStorage.getItem('userStore'))
+    const { refreshToke } = userStore
+    logoutUserAction(refreshToke)
     navigate('/login')
   }
+
   return (
     <div className="todo">
       <div>
-        <p>{}</p>
+        <p>User: {userIdentity.username}</p>
         <Button onClick={handleLogoutClick}>Logout</Button>
       </div>
       <TodoForm />

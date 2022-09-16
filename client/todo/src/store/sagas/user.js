@@ -7,6 +7,8 @@ import {
   LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
+  LOGOUT_USER_REQUEST,
+  LOGOUT_USER_SUCCESS,
 } from '../../constants'
 
 const instance = axios.create({
@@ -47,13 +49,27 @@ function* loginUser({ payload }) {
       payload: data,
     })
 
-    console.error('Error while registration', err)
+    console.error('Error while login', err)
+  }
+}
+
+function* logoutUser({ payload }) {
+  try {
+    const response = yield call(instance.post, 'logout', payload)
+    const { success, data } = response.data // refreshToken
+    yield put({
+      type: LOGOUT_USER_SUCCESS,
+      payload: data,
+    })
+  } catch (err) {
+    console.error('Error while logout', err)
   }
 }
 
 function* user() {
   yield takeEvery(CREATE_USER_REQUEST, createUser)
   yield takeEvery(LOGIN_USER_REQUEST, loginUser)
+  yield takeEvery(LOGOUT_USER_REQUEST, logoutUser)
 }
 
 export default user

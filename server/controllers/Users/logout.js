@@ -5,7 +5,7 @@ const logoutUser = async (ctx) => {
   try {
     const { refreshToken } = ctx.request.body
     // delete token
-    ctx.resolve('logout')
+    ctx.resolve(refreshToken)
   } catch (err) {
     console.log('logout user:', err.message)
     ctx.notFound(err.message)
