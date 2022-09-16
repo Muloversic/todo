@@ -3,8 +3,8 @@ import UserModel from '../../models/userModel'
 
 const refreshUserToken = async (ctx) => {
   try {
-    console.log(ctx.query)
     const { refreshToken } = ctx.query
+    console.log(ctx.query[0])
     if (!refreshToken) {
       console.log('No token came')
       ctx.notFound('No token came')

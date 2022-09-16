@@ -14,6 +14,25 @@ const USER_STATE = {
 
 export const user = handleActions(
   {
+    [CREATE_USER_SUCCESS]: (state, { payload }) => {
+      const { nickname: username, _id, refreshToken, accessToken } = payload
+      localStorage.setItem(
+        'userStore',
+        JSON.stringify({
+          refreshToken,
+          token: accessToken,
+          authenticated: true,
+        }),
+      )
+      return {
+        ...state,
+        authenticated: true,
+        indentity: {
+          username,
+          _id,
+        },
+      }
+    },
     [LOGIN_USER_SUCCESS]: (state, { payload }) => {
       const { nickname: username, _id, refreshToken, accessToken } = payload
       localStorage.setItem(
@@ -33,7 +52,8 @@ export const user = handleActions(
         },
       }
     },
-    [LOGIN_USER_ERROR]: (state, { payload }) => ({ errorMessage: payload }),
+    [LOGIN_USER_ERROR]: (state, { payload }) => ({ errorMessage: payload, authenticated: false }),
+    [CREATE_USER_ERROR]: (state, { payload }) => ({ errorMessage: payload, authenticated: false }),
   },
   USER_STATE,
 )

@@ -19,6 +19,16 @@ const instance = axios.create({
   timeout: 1000,
 })
 
+instance.interceptors.request.use((config) => {
+  const userStore = JSON.parse(localStorage.getItem('userStore'))
+  if (!userStore) {
+    return config
+  }
+
+  config.headers.authorization = `Bearer ${userStore.token}`
+  return config
+})
+
 function* fetchTodos({ payload }) {
   try {
     let filter = {}

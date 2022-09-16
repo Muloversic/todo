@@ -65,7 +65,7 @@ export function validateRefreshToken(token) {
   }
 }
 
-export function authMiddleware(ctx, next) {
+export async function authMiddleware(ctx, next) {
   try {
     const authorizationHeader = ctx.headers.authorization
     if (!authorizationHeader) {
@@ -89,7 +89,7 @@ export function authMiddleware(ctx, next) {
     }
 
     ctx.state.user = userData
-    next()
+    await next()
   } catch (e) {
     console.log('No authorized user')
     ctx.notFound('No authorized user 401')

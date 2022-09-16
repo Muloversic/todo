@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
 import { createUserRequest } from '../../store/actions/user'
 
-const Register = ({ createUserAction }) => {
+const Register = ({ createUserAction, loginUserErr }) => {
   const theme = useTheme()
   const [userData, setUserData] = useState({
     username: '',
@@ -94,11 +94,11 @@ const Register = ({ createUserAction }) => {
 
       createUserAction(payload)
 
-      setUserData({
-        username: '',
-        pass: '',
-        repeatPass: '',
-      })
+      //   setUserData({
+      //     username: '',
+      //     pass: '',
+      //     repeatPass: '',
+      //   })
 
       setErrorMessage({
         nameErr: '',
@@ -109,6 +109,22 @@ const Register = ({ createUserAction }) => {
     },
     [userData.username, userData.pass, userData.repeatPass],
   )
+
+  useEffect(() => {
+    if (loginUserErr.username) {
+      setErrorMessage((prevState) => ({
+        ...prevState,
+        nameErr: loginUserErr.username,
+      }))
+    }
+
+    if (loginUserErr.password) {
+      setErrorMessage((prevState) => ({
+        ...prevState,
+        passErr: loginUserErr.password,
+      }))
+    }
+  }, [loginUserErr])
 
   return (
     <Container fixed>
@@ -149,7 +165,9 @@ const Register = ({ createUserAction }) => {
           <Button variant="submit" type="submit">
             Create an account
           </Button>
-          <Link to="/login" className='auth-link'>Already have an account?</Link>
+          <Link to="/login" className="auth-link">
+            Already have an account?
+          </Link>
         </form>
       </Box>
     </Container>
@@ -160,4 +178,9 @@ const mapDispatchToProps = (dispatch) => ({
   createUserAction: (payload) => dispatch(createUserRequest(payload)),
 })
 
-export default connect(null, mapDispatchToProps)(Register)
+const mapStateToProps = (state) => ({
+  userIdentity: state.user.indentity,
+  loginUserErr: state.user.errorMessage,
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

@@ -76,11 +76,11 @@ const Login = ({ loginUserAction, userIdentity, loginUserErr }) => {
       //     pass: '',
       //   })
 
-      //   setErrorMessage({
-      //     nameErr: '',
-      //     passErr: '',
-      //     serverErr: '',
-      //   })
+      setErrorMessage({
+        nameErr: '',
+        passErr: '',
+        serverErr: '',
+      })
     },
     [userData.username, userData.pass],
   )
