@@ -13,7 +13,7 @@ const TodoContent = () => {
   useEffect(() => {
     setIsLoad(true)
     if (isLoad) {
-      loadTodosAction({ userId: user.indentity._id, filterType: '' })
+      loadTodosAction({ userId: user.indentity._id, filterType: null })
     }
 
     return () => {
