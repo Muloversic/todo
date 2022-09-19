@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
-import TodoApp from './components/TodoApp'
+import TodoApp from './components/todos/TodoApp'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
 import { checkAuthRequest } from './store/actions/user'

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { deleteTodoRequest } from '../store/actions/todos.js'
+import { deleteTodoRequest } from '../../store/actions/todos.js'
 import Todo from './Todo.js'
 import DeleteTodoModal from './DeleteTodoModal.js'
 

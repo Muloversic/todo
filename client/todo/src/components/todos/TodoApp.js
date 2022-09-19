@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { useNavigate } from 'react-router'
 import TodoForm from './Form'
 import TodoContent from './TodoContent'
-import { logoutUserRequest } from '../store/actions/user'
+import { logoutUserRequest } from '../../store/actions/user'
 
 const TodoApp = ({ userIdentity, logoutUserAction }) => {
   const navigate = useNavigate()

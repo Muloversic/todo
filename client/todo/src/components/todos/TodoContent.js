@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { loadTodosRequest } from '../store/actions/todos.js'
+import { loadTodosRequest } from '../../store/actions/todos.js'
 import TodosContainer from './TodosContainer'
 import TodoFilters from './TodoFilters'
 

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateFilterRequest, deleteAllTodosRequest } from '../store/actions/todos.js'
+import { updateFilterRequest, deleteAllTodosRequest } from '../../store/actions/todos.js'
 import DeleteAllTodoModal from './DeleteAllTodoModal.js'
 
 const TodoFilters = ({ todos }) => {

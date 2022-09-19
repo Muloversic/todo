@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { TextField } from '@mui/material'
 import { useDispatch } from 'react-redux'
-import { updateTodoRequest } from '../store/actions/todos.js'
+import { updateTodoRequest } from '../../store/actions/todos.js'
 
 const Todo = ({ todo, editingTodoId, handleCurrentTodo, setOpen, setDeleteTodoId }) => {
   const dispatch = useDispatch()
