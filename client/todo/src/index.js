@@ -1,4 +1,5 @@
 import React from 'react'
+import { Routes, Route, BrowserRouter, Navigate, useNavigate } from 'react-router-dom'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { ThemeProvider } from '@mui/material/styles'
@@ -14,7 +15,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ThemeProvider>
     </Provider>
   </React.StrictMode>,
