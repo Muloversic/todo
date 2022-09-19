@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateFilterRequest, deleteAllTodosRequest } from '../../store/actions/todos.js'
 import DeleteAllTodoModal from './DeleteAllTodoModal.js'
 
-const TodoFilters = ({ todos }) => {
+const TodoFilters = ({ todos, user }) => {
   const dispatch = useDispatch()
   const theme = useTheme()
   const updateFiltersAction = (payload) => dispatch(updateFilterRequest(payload))
   const deleteAllTodosAction = () => dispatch(deleteAllTodosRequest())
-  const user = useSelector((state) => state.user)
   const filterType = useSelector((state) => state.filter)
   const [open, setOpen] = useState(false)
 
