@@ -4,9 +4,10 @@ import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
 import { createUserRequest } from '../../store/actions/user'
 
-const Register = ({ createUserAction, loginUserErr }) => {
+const Register = ({ createUserAction, loginUserErr, isUserAuthenticated }) => {
   const navigate = useNavigate()
   const theme = useTheme()
+  const [isRedirect, setIsRedirect] = useState(false)
   const [userData, setUserData] = useState({
     username: '',
     pass: '',
@@ -16,7 +17,6 @@ const Register = ({ createUserAction, loginUserErr }) => {
     nameErr: '',
     passErr: '',
     repeatPassErr: '',
-    serverErr: '',
   })
 
   const handleFormChange = useCallback(({ target }) => {
@@ -94,22 +94,12 @@ const Register = ({ createUserAction, loginUserErr }) => {
       }
 
       createUserAction(payload)
-
-      //   setUserData({
-      //     username: '',
-      //     pass: '',
-      //     repeatPass: '',
-      //   })
-
+      setIsRedirect(true)
       setErrorMessage({
         nameErr: '',
         passErr: '',
         repeatPassErr: '',
-        serverErr: '',
       })
-
-      navigate('/todos')
-      console.log('')
     },
     [userData.username, userData.pass, userData.repeatPass],
   )
@@ -120,6 +110,8 @@ const Register = ({ createUserAction, loginUserErr }) => {
         ...prevState,
         nameErr: loginUserErr.username,
       }))
+
+      return
     }
 
     if (loginUserErr.password) {
@@ -127,8 +119,15 @@ const Register = ({ createUserAction, loginUserErr }) => {
         ...prevState,
         passErr: loginUserErr.password,
       }))
+
+      return
     }
-  }, [loginUserErr])
+
+    if (isRedirect && !loginUserErr) {
+      navigate('/todos')
+      setIsRedirect(false)
+    }
+  }, [isUserAuthenticated])
 
   return (
     <Container fixed>
@@ -183,7 +182,7 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 const mapStateToProps = (state) => ({
-  userIdentity: state.user.indentity,
+  isUserAuthenticated: state.user.authenticated,
   loginUserErr: state.user.errorMessage,
 })
 

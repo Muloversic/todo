@@ -20,7 +20,7 @@ const registerUser = async (ctx) => {
     const candidate = await UserModel.findOne({ username })
     if (candidate) {
       console.log('User already exists')
-      ctx.notFound({ username: 'User already exists' })
+      ctx.permissionDenied({ username: 'User already exists' })
       return
     }
 

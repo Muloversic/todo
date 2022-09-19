@@ -26,13 +26,14 @@ export const user = handleActions(
           authenticated: true,
         }),
       )
+
       return {
-        ...state,
-        authenticated: true,
         indentity: {
           username,
           _id,
         },
+        authenticated: true,
+        errorMessage: '',
       }
     },
     [LOGIN_USER_SUCCESS]: (state, { payload }) => {
@@ -45,17 +46,26 @@ export const user = handleActions(
           authenticated: true,
         }),
       )
+
       return {
-        ...state,
-        authenticated: true,
         indentity: {
           username,
           _id,
         },
+        authenticated: true,
+        errorMessage: '',
       }
     },
-    [LOGIN_USER_ERROR]: (state, { payload }) => ({ errorMessage: payload, authenticated: false }),
-    [CREATE_USER_ERROR]: (state, { payload }) => ({ errorMessage: payload, authenticated: false }),
+    [LOGIN_USER_ERROR]: (state, { payload }) => ({
+      ...state,
+      errorMessage: payload,
+      authenticated: false,
+    }),
+    [CREATE_USER_ERROR]: (state, { payload }) => ({
+      ...state,
+      errorMessage: payload,
+      authenticated: false,
+    }),
     [LOGOUT_USER_SUCCESS]: () => {
       localStorage.removeItem('userStore')
       return {
