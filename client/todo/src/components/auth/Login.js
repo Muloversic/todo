@@ -15,7 +15,6 @@ const Login = ({ loginUserAction, loginUserErr, isUserAuthenticated }) => {
   const [errorMessage, setErrorMessage] = useState({
     nameErr: '',
     passErr: '',
-    serverErr: '',
   })
 
   const handleFormChange = useCallback(({ target }) => {
@@ -76,7 +75,6 @@ const Login = ({ loginUserAction, loginUserErr, isUserAuthenticated }) => {
       setErrorMessage({
         nameErr: '',
         passErr: '',
-        serverErr: '',
       })
     },
     [userData.username, userData.pass],
