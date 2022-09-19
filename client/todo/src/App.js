@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Routes, Route, BrowserRouter, Link } from 'react-router-dom'
+import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import TodoApp from './components/TodoApp'
 import Login from './components/auth/Login'
@@ -24,21 +24,8 @@ const App = ({ authenticated, checkAuthAction }) => {
     <BrowserRouter>
       <Routes>
         <Route index element={<Register />} />
-        <Route path="login" element={<Login />} />
-        <Route
-          path="todos"
-          element={
-            isLogged ? (
-              <TodoApp />
-            ) : (
-              <div>
-                No access
-                <Link to="/login">Login</Link>
-              </div>
-            )
-          }
-        />
-        {/* <Route path="todos" element={<TodoApp />} /> */}
+        <Route path="login" element={isLogged ? <Navigate to="/todos" /> : <Login />} />
+        <Route path="todos" element={isLogged ? <TodoApp /> : <Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   )

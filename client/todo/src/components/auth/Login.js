@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
 import { loginUserRequest } from '../../store/actions/user'
 
-const Login = ({ loginUserAction, loginUserErr }) => {
+const Login = ({ loginUserAction, loginUserErr, isUserAuthenticated }) => {
+  const [isRedirect, setIsRedirect] = useState(false)
   const navigate = useNavigate()
   const theme = useTheme()
   const [userData, setUserData] = useState({
@@ -71,19 +72,12 @@ const Login = ({ loginUserAction, loginUserErr }) => {
       }
 
       loginUserAction(payload)
-
-      //   setUserData({
-      //     username: '',
-      //     pass: '',
-      //   })
-
+      setIsRedirect(true)
       setErrorMessage({
         nameErr: '',
         passErr: '',
         serverErr: '',
       })
-
-      navigate('/todos')
     },
     [userData.username, userData.pass],
   )
@@ -94,6 +88,7 @@ const Login = ({ loginUserAction, loginUserErr }) => {
         ...prevState,
         nameErr: loginUserErr.username,
       }))
+      return
     }
 
     if (loginUserErr.password) {
@@ -101,8 +96,14 @@ const Login = ({ loginUserAction, loginUserErr }) => {
         ...prevState,
         passErr: loginUserErr.password,
       }))
+      return
     }
-  }, [loginUserErr])
+
+    if (isRedirect && !loginUserErr) {
+      navigate('/todos')
+      setIsRedirect(false)
+    }
+  }, [loginUserErr, isUserAuthenticated])
 
   return (
     <Container fixed>
@@ -144,7 +145,7 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 const mapStateToProps = (state) => ({
-  userIdentity: state.user.indentity,
+  isUserAuthenticated: state.user.authenticated,
   loginUserErr: state.user.errorMessage,
 })
 
