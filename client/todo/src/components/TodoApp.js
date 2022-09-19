@@ -7,21 +7,22 @@ import TodoContent from './TodoContent'
 import { logoutUserRequest } from '../store/actions/user'
 
 const TodoApp = ({ userIdentity, logoutUserAction }) => {
-  console.log(userIdentity)
   const navigate = useNavigate()
   const handleLogoutClick = (e) => {
     e.preventDefault()
     const userStore = JSON.parse(localStorage.getItem('userStore'))
-    const { refreshToke } = userStore
-    logoutUserAction(refreshToke)
+    const { refreshToken } = userStore
+    logoutUserAction(refreshToken)
     navigate('/login')
   }
 
   return (
     <div className="todo">
-      <div>
-        <p>User: {userIdentity.username}</p>
-        <Button onClick={handleLogoutClick}>Logout</Button>
+      <div className="todo__user">
+        <p className="todo__user-name">User: {userIdentity.username}</p>
+        <Button onClick={handleLogoutClick} variant="submit" sx={{ m: 0 }}>
+          Logout
+        </Button>
       </div>
       <TodoForm />
       <TodoContent />

@@ -185,3 +185,14 @@ body {
 .auth-link:hover {
   color: rgb(74, 226, 214);
 }
+
+.todo__user {
+  display: flex;
+  align-items: center;
+  background-color: rgb(129, 134, 218);
+}
+
+.todo__user-name {
+  color: #fff;
+  margin:  15px;
+}
