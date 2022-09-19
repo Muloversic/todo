@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Routes, Route, BrowserRouter, Navigate, useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import TodoApp from './components/TodoApp'
 import Login from './components/auth/Login'
