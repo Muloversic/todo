@@ -19,7 +19,7 @@ const TodoContent = () => {
     return () => {
       setIsLoad(false)
     }
-  }, [])
+  }, [user])
 
   return (
     <>
