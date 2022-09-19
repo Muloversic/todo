@@ -2,9 +2,10 @@ import Todo from '../../models/todoModel'
 
 const getAllTodos = async (ctx) => {
   try {
-    const { active } = ctx.query
-    const filter = {}
-    if (active) {
+    const { userId } = ctx.query
+    const { active } = JSON.parse(ctx.query.filter)
+    const filter = { userId }
+    if (typeof active === 'boolean') {
       filter.active = active
     }
 

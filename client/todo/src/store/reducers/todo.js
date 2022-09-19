@@ -11,7 +11,11 @@ import {
 const TODOS_STATE = []
 const TODOS_FILTER = 'all'
 
-export const filter = handleAction(UPDATE_FILTER, (state, { payload }) => payload, TODOS_FILTER)
+export const filter = handleAction(
+  UPDATE_FILTER,
+  (state, { payload }) => payload.filter,
+  TODOS_FILTER,
+)
 
 export const todo = handleActions(
   {

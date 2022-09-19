@@ -2,13 +2,14 @@ import React, { useCallback, useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { addTodoRequest } from '../../store/actions/todos.js'
 
 const TodoForm = () => {
   const dispatch = useDispatch()
   const theme = useTheme()
   const addTodoAction = (payload) => dispatch(addTodoRequest(payload))
+  const user = useSelector((state) => state.user.indentity)
   const [todoName, setTodoName] = useState('')
   const [error, setError] = useState(false)
   const handleInput = ({ target }) => {
@@ -27,6 +28,7 @@ const TodoForm = () => {
         const todoObj = {
           name: todoName,
           active: true,
+          userId: user._id,
         }
 
         addTodoAction(todoObj)

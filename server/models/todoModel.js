@@ -4,6 +4,7 @@ const Todo = new mongoose.Schema(
   {
     name: { type: String, required: true },
     active: { type: Boolean, required: true },
+    userId: { type: String, required: true },
   },
   { timestamps: true, versionKey: false },
 )

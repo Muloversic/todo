@@ -10,6 +10,7 @@ const TodoFilters = ({ todos }) => {
   const theme = useTheme()
   const updateFiltersAction = (payload) => dispatch(updateFilterRequest(payload))
   const deleteAllTodosAction = () => dispatch(deleteAllTodosRequest())
+  const user = useSelector((state) => state.user)
   const filterType = useSelector((state) => state.filter)
   const [open, setOpen] = useState(false)
 
@@ -19,7 +20,7 @@ const TodoFilters = ({ todos }) => {
 
   const handleClick = useCallback(
     (filter) => () => {
-      updateFiltersAction(filter)
+      updateFiltersAction({ filter, userId: user.indentity._id })
     },
     [],
   )

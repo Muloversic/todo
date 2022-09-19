@@ -62,18 +62,23 @@ instance.interceptors.response.use(
 
 function* fetchTodos({ payload }) {
   try {
+    const { userId, filter: filterType } = payload
     let filter = {}
-    if (payload === 'active') {
+    if (filterType === 'active') {
       filter = { active: true }
     }
 
-    if (payload === 'done') {
+    if (filterType === 'done') {
       filter = { active: false }
     }
 
     const { success, data } = yield call(instance.get, '', {
-      params: filter,
+      params: {
+        filter,
+        userId,
+      },
     })
+
     yield put({ type: LOAD_TODO_SUCCESS, payload: data })
   } catch (err) {
     console.log(err)
