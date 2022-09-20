@@ -7,6 +7,7 @@ import {
   CHECK_AUTH_SUCCESS,
   CLEAR_USER_ERROR,
   CLEAR_USER_STATE,
+  SET_USER,
 } from '../../constants'
 
 const USER_STATE = {
@@ -44,6 +45,16 @@ export const user = handleActions(
         },
         authenticated: true,
         errorMessage: '',
+      }
+    },
+    [SET_USER]: (state, { payload }) => {
+      const { nickname: username, _id } = payload
+      return {
+        indentity: {
+          username,
+          _id,
+        },
+        authenticated: true,
       }
     },
     [LOGIN_USER_SUCCESS]: (state, { payload }) => {

@@ -8,8 +8,7 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
-  CHECK_AUTH_REQUEST,
-  CHECK_AUTH_SUCCESS,
+  SET_USER,
   CLEAR_USER_STATE,
 } from '../../constants'
 
@@ -58,18 +57,13 @@ function* logoutUser({ payload }) {
   })
 }
 
-function* checkUserAuth({ payload }) {
-  try {
-    const response = yield call(instance.get, 'auth/refresh', {
-      params: payload,
-    })
-    const { success, data } = response.data // refreshToken
+function* checkUserAuth() {
+  const userStore = JSON.parse(localStorage.getItem('userStore'))
+  if (userStore) {
     yield put({
-      type: CHECK_AUTH_SUCCESS,
-      payload: data,
+      type: SET_USER,
+      payload: userStore,
     })
-  } catch (err) {
-    console.error('Error while checking auth', err)
   }
 }
 
@@ -77,7 +71,9 @@ function* user() {
   yield takeEvery(CREATE_USER_REQUEST, registerUser)
   yield takeEvery(LOGIN_USER_REQUEST, loginUser)
   yield takeEvery(LOGOUT_USER, logoutUser)
-  yield takeEvery(CHECK_AUTH_REQUEST, checkUserAuth)
+  //   yield takeEvery(CHECK_AUTH_REQUEST, checkUserAuth)
+
+  yield checkUserAuth()
 }
 
 export default user
