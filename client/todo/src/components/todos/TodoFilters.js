@@ -19,7 +19,7 @@ const TodoFilters = ({ todos, user }) => {
 
   const handleClick = useCallback(
     (filter) => () => {
-      updateFiltersAction({ filter, userId: user.indentity._id })
+      updateFiltersAction(filter)
     },
     [],
   )

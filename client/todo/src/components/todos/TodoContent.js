@@ -6,15 +6,15 @@ import TodoFilters from './TodoFilters'
 
 const TodoContent = () => {
   const dispatch = useDispatch()
-  const loadTodosAction = (payload) => dispatch(loadTodosRequest(payload))
+  const loadTodosAction = () => dispatch(loadTodosRequest())
   const todos = useSelector((state) => state.todo)
   const user = useSelector((state) => state.user)
   const [isLoad, setIsLoad] = useState(false)
   useEffect(() => {
     setIsLoad(true)
-    if (isLoad) {
-      loadTodosAction({ userId: user.indentity._id, filterType: null })
-    }
+    loadTodosAction()
+    // if (isLoad) {
+    // }
 
     return () => {
       setIsLoad(false)

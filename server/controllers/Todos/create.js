@@ -2,8 +2,8 @@ import Todo from '../../models/todoModel'
 
 const postTodo = async (ctx) => {
   try {
-    const { name, active, userId } = ctx.request.body
-
+    const { name, active } = ctx.request.body
+    const { _id: userId } = ctx.state.user
     if (!(name && name.trim()) || typeof active !== 'boolean') {
       console.log('invalid data came while creating new todo')
       ctx.notFound('invalid data')
