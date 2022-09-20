@@ -1,4 +1,4 @@
-import { call, put, takeEvery, select, take } from 'redux-saga/effects'
+import { call, put, takeEvery } from 'redux-saga/effects'
 import axios from 'axios'
 import {
   CREATE_USER_SUCCESS,
@@ -7,10 +7,10 @@ import {
   LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
-  LOGOUT_USER_REQUEST,
-  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER,
   CHECK_AUTH_REQUEST,
   CHECK_AUTH_SUCCESS,
+  CLEAR_USER_STATE,
 } from '../../constants'
 
 const instance = axios.create({
@@ -56,16 +56,11 @@ function* loginUser({ payload }) {
 }
 
 function* logoutUser({ payload }) {
-  try {
-    const response = yield call(instance.post, 'logout', payload)
-    const { success, data } = response.data // refreshToken
-    yield put({
-      type: LOGOUT_USER_SUCCESS,
-      payload: data,
-    })
-  } catch (err) {
-    console.error('Error while logout', err)
-  }
+  yield localStorage.clear()
+  yield payload('/')
+  yield put({
+    type: CLEAR_USER_STATE,
+  })
 }
 
 function* checkUserAuth({ payload }) {
@@ -86,7 +81,7 @@ function* checkUserAuth({ payload }) {
 function* user() {
   yield takeEvery(CREATE_USER_REQUEST, createUser)
   yield takeEvery(LOGIN_USER_REQUEST, loginUser)
-  yield takeEvery(LOGOUT_USER_REQUEST, logoutUser)
+  yield takeEvery(LOGOUT_USER, logoutUser)
   yield takeEvery(CHECK_AUTH_REQUEST, checkUserAuth)
 }
 

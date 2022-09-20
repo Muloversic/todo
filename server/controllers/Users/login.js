@@ -6,28 +6,28 @@ const loginUser = async (ctx) => {
   try {
     const { username, password } = ctx.request.body
     if (!username || username.trim() === '') {
-      console.log('invalid username came while login')
-      ctx.permissionDenied({ username: 'invalid username' })
+      console.log('invalid username or password came while login')
+      ctx.permissionDenied('invalid username or password')
       return
     }
 
     if (!password || password.length < 4 || password.length > 13) {
-      console.log('invalid user password came while login')
-      ctx.permissionDenied({ password: 'Password is not valid' })
+      console.log('invalid username or password came while login')
+      ctx.permissionDenied('invalid username or password')
       return
     }
 
     const user = await UserModel.findOne({ username })
     if (!user) {
       console.log('User not found')
-	  ctx.notFound({ username: 'User not found' })
+      ctx.notFound('User not found')
       return
     }
 
     const isValidPassword = bcrypt.compareSync(password, user.password)
     if (!isValidPassword) {
-      console.log('Password is not valid')
-      ctx.permissionDenied({ password: 'Password is not valid' })
+      console.log('invalid username or password')
+      ctx.permissionDenied('invalid username or password')
       return
     }
 

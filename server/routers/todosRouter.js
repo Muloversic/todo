@@ -4,10 +4,12 @@ import deleteTodo from '../controllers/Todos/delete'
 import getAllTodos from '../controllers/Todos/getAll'
 import deleteAllTodo from '../controllers/Todos/deleteAll'
 import updateTodo from '../controllers/Todos/update'
+import { authMiddleware } from '../helpers'
 
 export default function configureRoutes() {
   const router = Router()
 
+  router.use(authMiddleware)
   router.get('/', getAllTodos)
   router.post('/', postTodo)
   router.patch('/:id', updateTodo)

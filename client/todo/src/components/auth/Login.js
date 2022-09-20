@@ -1,47 +1,27 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
-import { loginUserRequest } from '../../store/actions/user'
+import { loginUserRequest, clearUserError } from '../../store/actions/user'
 
-const Login = ({ loginUserAction, loginUserErr, isUserAuthenticated }) => {
-  const [isRedirect, setIsRedirect] = useState(false)
-  const navigate = useNavigate()
-  const theme = useTheme()
-  const [userData, setUserData] = useState({
+const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
+  const defaultUserState = {
     username: '',
     pass: '',
-  })
-  const [errorMessage, setErrorMessage] = useState({
-    nameErr: '',
-    passErr: '',
-  })
+  }
+
+  const theme = useTheme()
+  const [userData, setUserData] = useState(defaultUserState)
+  const [errorMessage, setErrorMessage] = useState(defaultUserState)
 
   const handleFormChange = useCallback(({ target }) => {
-    setErrorMessage(``)
-    if (target.name === 'username') {
-      setErrorMessage((prevState) => ({
-        ...prevState,
-        nameErr: '',
-      }))
-
-      setUserData((prevState) => ({
-        ...prevState,
-        username: target.value,
-      }))
-    }
-
-    if (target.name === 'pass') {
-      setErrorMessage((prevState) => ({
-        ...prevState,
-        passErr: '',
-      }))
-
-      setUserData((prevState) => ({
-        ...prevState,
-        pass: target.value,
-      }))
-    }
+    clearUserErrorAction()
+    const { name, value } = target
+    setErrorMessage(defaultUserState)
+    setUserData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
   }, [])
 
   const handleFromSubmit = useCallback(
@@ -71,37 +51,13 @@ const Login = ({ loginUserAction, loginUserErr, isUserAuthenticated }) => {
       }
 
       loginUserAction(payload)
-      setIsRedirect(true)
       setErrorMessage({
         nameErr: '',
         passErr: '',
       })
     },
-    [userData.username, userData.pass],
+    [userData],
   )
-
-  useEffect(() => {
-    if (loginUserErr.username) {
-      setErrorMessage((prevState) => ({
-        ...prevState,
-        nameErr: loginUserErr.username,
-      }))
-      return
-    }
-
-    if (loginUserErr.password) {
-      setErrorMessage((prevState) => ({
-        ...prevState,
-        passErr: loginUserErr.password,
-      }))
-      return
-    }
-
-    if (isRedirect && !loginUserErr) {
-      navigate('/todos')
-      setIsRedirect(false)
-    }
-  }, [loginUserErr, isUserAuthenticated])
 
   return (
     <Container fixed>
@@ -114,8 +70,8 @@ const Login = ({ loginUserAction, loginUserErr, isUserAuthenticated }) => {
             required
             name="username"
             value={userData.username}
-            error={!!errorMessage.nameErr}
-            helperText={errorMessage.nameErr}
+            error={!!errorMessage.nameErr || !!loginUserErr}
+            helperText={errorMessage.nameErr || loginUserErr}
           />
           <TextField
             label="Password"
@@ -125,8 +81,8 @@ const Login = ({ loginUserAction, loginUserErr, isUserAuthenticated }) => {
             required
             name="pass"
             value={userData.pass}
-            error={!!errorMessage.passErr}
-            helperText={errorMessage.passErr}
+            error={!!errorMessage.passErr || !!loginUserErr}
+            helperText={errorMessage.passErr || loginUserErr}
           />
           <Button variant="submit" type="submit">
             Login
@@ -140,11 +96,12 @@ const Login = ({ loginUserAction, loginUserErr, isUserAuthenticated }) => {
 
 const mapDispatchToProps = (dispatch) => ({
   loginUserAction: (payload) => dispatch(loginUserRequest(payload)),
+  clearUserErrorAction: () => dispatch(clearUserError()),
 })
 
 const mapStateToProps = (state) => ({
   isUserAuthenticated: state.user.authenticated,
-  loginUserErr: state.user.errorMessage,
+  loginUserErr: state.userError,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

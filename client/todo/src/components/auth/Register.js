@@ -1,61 +1,28 @@
-import React, { useCallback, useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
-import { createUserRequest } from '../../store/actions/user'
+import { createUserRequest, clearUserError } from '../../store/actions/user'
 
-const Register = ({ createUserAction, loginUserErr, isUserAuthenticated }) => {
-  const navigate = useNavigate()
-  const theme = useTheme()
-  const [isRedirect, setIsRedirect] = useState(false)
-  const [userData, setUserData] = useState({
+const Register = ({ createUserAction, registerUserErr, clearUserErrorAction }) => {
+  const defaultUserState = {
     username: '',
     pass: '',
     repeatPass: '',
-  })
-  const [errorMessage, setErrorMessage] = useState({
-    nameErr: '',
-    passErr: '',
-    repeatPassErr: '',
-  })
+  }
+
+  const theme = useTheme()
+  const [userData, setUserData] = useState(defaultUserState)
+  const [errorMessage, setErrorMessage] = useState(defaultUserState)
 
   const handleFormChange = useCallback(({ target }) => {
-    setErrorMessage(``)
-    if (target.name === 'username') {
-      setErrorMessage((prevState) => ({
-        ...prevState,
-        nameErr: '',
-      }))
-
-      setUserData((prevState) => ({
-        ...prevState,
-        username: target.value,
-      }))
-    }
-
-    if (target.name === 'pass') {
-      setErrorMessage((prevState) => ({
-        ...prevState,
-        passErr: '',
-      }))
-
-      setUserData((prevState) => ({
-        ...prevState,
-        pass: target.value,
-      }))
-    }
-
-    if (target.name === 'repeatPass') {
-      setErrorMessage((prevState) => ({
-        ...prevState,
-        repeatPassErr: '',
-      }))
-
-      setUserData((prevState) => ({
-        ...prevState,
-        repeatPass: target.value,
-      }))
-    }
+    const { name, value } = target
+    clearUserErrorAction()
+    setErrorMessage(defaultUserState)
+    setUserData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
   }, [])
 
   const handleFromSubmit = useCallback(
@@ -94,40 +61,14 @@ const Register = ({ createUserAction, loginUserErr, isUserAuthenticated }) => {
       }
 
       createUserAction(payload)
-      setIsRedirect(true)
       setErrorMessage({
         nameErr: '',
         passErr: '',
         repeatPassErr: '',
       })
     },
-    [userData.username, userData.pass, userData.repeatPass],
+    [userData],
   )
-
-  useEffect(() => {
-    if (loginUserErr.username) {
-      setErrorMessage((prevState) => ({
-        ...prevState,
-        nameErr: loginUserErr.username,
-      }))
-
-      return
-    }
-
-    if (loginUserErr.password) {
-      setErrorMessage((prevState) => ({
-        ...prevState,
-        passErr: loginUserErr.password,
-      }))
-
-      return
-    }
-
-    if (isRedirect && !loginUserErr) {
-      navigate('/todos')
-      setIsRedirect(false)
-    }
-  }, [isUserAuthenticated])
 
   return (
     <Container fixed>
@@ -140,8 +81,8 @@ const Register = ({ createUserAction, loginUserErr, isUserAuthenticated }) => {
             required
             name="username"
             value={userData.username}
-            error={!!errorMessage.nameErr}
-            helperText={errorMessage.nameErr}
+            error={!!errorMessage.nameErr || !!registerUserErr}
+            helperText={errorMessage.nameErr || registerUserErr}
           />
           <TextField
             label="Password"
@@ -151,8 +92,8 @@ const Register = ({ createUserAction, loginUserErr, isUserAuthenticated }) => {
             required
             name="pass"
             value={userData.pass}
-            error={!!errorMessage.passErr}
-            helperText={errorMessage.passErr}
+            error={!!errorMessage.passErr || !!registerUserErr}
+            helperText={errorMessage.passErr || registerUserErr}
           />
           <TextField
             label="Repeat password"
@@ -162,8 +103,8 @@ const Register = ({ createUserAction, loginUserErr, isUserAuthenticated }) => {
             required
             name="repeatPass"
             value={userData.repeatPass}
-            error={!!errorMessage.repeatPassErr}
-            helperText={errorMessage.repeatPassErr}
+            error={!!errorMessage.repeatPassErr || !!registerUserErr}
+            helperText={errorMessage.repeatPassErr || registerUserErr}
           />
           <Button variant="submit" type="submit">
             Create an account
@@ -179,11 +120,12 @@ const Register = ({ createUserAction, loginUserErr, isUserAuthenticated }) => {
 
 const mapDispatchToProps = (dispatch) => ({
   createUserAction: (payload) => dispatch(createUserRequest(payload)),
+  clearUserErrorAction: () => dispatch(clearUserError()),
 })
 
 const mapStateToProps = (state) => ({
   isUserAuthenticated: state.user.authenticated,
-  loginUserErr: state.user.errorMessage,
+  registerUserErr: state.userError,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register)
