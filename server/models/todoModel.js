@@ -1,12 +1,12 @@
-import mongoose from 'mongoose'
+import { Schema, model } from 'mongoose'
 
-const Todo = new mongoose.Schema(
+const Todo = new Schema(
   {
     name: { type: String, required: true },
     active: { type: Boolean, required: true },
-    userId: { type: String, required: true },
+    userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
   },
   { timestamps: true, versionKey: false },
 )
 
-export default mongoose.model('Todo', Todo)
+export default model('Todo', Todo)
