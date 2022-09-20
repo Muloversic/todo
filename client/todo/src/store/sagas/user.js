@@ -15,7 +15,7 @@ import {
 
 function* registerUser({ payload }) {
   try {
-    const response = yield call(instance.post, 'registration', payload)
+    const response = yield call(instance.post, 'auth/registration', payload)
     const { success, data } = response.data
     yield put({
       type: CREATE_USER_SUCCESS,
@@ -33,7 +33,7 @@ function* registerUser({ payload }) {
 
 function* loginUser({ payload }) {
   try {
-    const response = yield call(instance.post, 'login', payload)
+    const response = yield call(instance.post, 'auth/login', payload)
     const { success, data } = response.data
     yield put({
       type: LOGIN_USER_SUCCESS,
@@ -60,7 +60,7 @@ function* logoutUser({ payload }) {
 
 function* checkUserAuth({ payload }) {
   try {
-    const response = yield call(instance.get, 'refresh', {
+    const response = yield call(instance.get, 'auth/refresh', {
       params: payload,
     })
     const { success, data } = response.data // refreshToken

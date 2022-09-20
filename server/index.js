@@ -25,7 +25,7 @@ function runKoa() {
   app.use(bodyParser())
   app.use(KoaLogger())
   app.use(responseHelpers)
-  router.use('', ...usersRouter())
+  router.use('/auth', ...usersRouter())
   router.use('/todos', ...todosRouter())
   app.use(router.routes())
   return app
