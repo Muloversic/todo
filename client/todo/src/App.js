@@ -12,7 +12,7 @@ const App = ({ authenticated, checkAuthAction }) => {
   useEffect(() => {
     const userStore = JSON.parse(localStorage.getItem('userStore'))
     if (userStore) {
-      checkAuthAction(userStore.refreshToken)
+      //   checkAuthAction(userStore.refreshToken)
     }
 
     if (authenticated) {

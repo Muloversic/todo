@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import axios from 'axios'
+import instance from '../../api/api'
 import {
   CREATE_USER_SUCCESS,
   CREATE_USER_REQUEST,
@@ -13,12 +13,7 @@ import {
   CLEAR_USER_STATE,
 } from '../../constants'
 
-const instance = axios.create({
-  baseURL: 'http://localhost:8080',
-  timeout: 1000,
-})
-
-function* createUser({ payload }) {
+function* registerUser({ payload }) {
   try {
     const response = yield call(instance.post, 'registration', payload)
     const { success, data } = response.data
@@ -79,7 +74,7 @@ function* checkUserAuth({ payload }) {
 }
 
 function* user() {
-  yield takeEvery(CREATE_USER_REQUEST, createUser)
+  yield takeEvery(CREATE_USER_REQUEST, registerUser)
   yield takeEvery(LOGIN_USER_REQUEST, loginUser)
   yield takeEvery(LOGOUT_USER, logoutUser)
   yield takeEvery(CHECK_AUTH_REQUEST, checkUserAuth)

@@ -1,5 +1,5 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects'
-import axios from 'axios'
+import instance from '../../api/api'
 import {
   LOAD_TODO_REQUEST,
   LOAD_TODO_SUCCESS,
@@ -14,52 +14,6 @@ import {
   DELETE_ALL_TODOS_SUCCESS,
 } from '../../constants'
 
-const instance = axios.create({
-  baseURL: 'http://localhost:8080/todos',
-  timeout: 1000,
-})
-
-instance.interceptors.request.use((config) => {
-  const userStore = JSON.parse(localStorage.getItem('userStore'))
-  if (!userStore) {
-    return config
-  }
-
-  config.headers.authorization = `Bearer ${userStore.token}`
-  return config
-})
-
-instance.interceptors.response.use(
-  (confing) => confing,
-  async (error) => {
-    const originalRequest = error.config
-    const userStore = JSON.parse(localStorage.getItem('userStore'))
-    if (error.response.status === 401 && error.config && !error.config._isRetry) {
-      try {
-        originalRequest._isRetry = true
-        const response = await axios.get('http://localhost:8080/refresh', {
-          params: userStore.refreshToken,
-        })
-        const { data } = response.data
-        const { refreshToken, accessToken } = data
-        localStorage.setItem(
-          'userStore',
-          JSON.stringify({
-            refreshToken,
-            token: accessToken,
-            authenticated: true,
-          }),
-        )
-        return instance.request(originalRequest)
-      } catch (err) {
-        console.log('No auth', err)
-      }
-    }
-
-    throw error
-  },
-)
-
 function* fetchTodos({ payload }) {
   try {
     let filter = {}
@@ -71,7 +25,7 @@ function* fetchTodos({ payload }) {
       filter = { active: false }
     }
 
-    const { success, data } = yield call(instance.get, '', {
+    const { success, data } = yield call(instance.get, 'todos', {
       params: filter,
     })
 
@@ -84,7 +38,7 @@ function* fetchTodos({ payload }) {
 function* createTodo({ payload }) {
   try {
     const filterType = yield select((state) => state.filter)
-    const response = yield call(instance.post, '', payload)
+    const response = yield call(instance.post, 'todos', payload)
     const { success, data } = response.data
     yield put({
       type: ADD_TODO_SUCCESS,
@@ -100,7 +54,7 @@ function* createTodo({ payload }) {
 
 function* deleteTodo({ payload }) {
   try {
-    const response = yield call(instance.delete, `/${payload}`)
+    const response = yield call(instance.delete, `todos/${payload}`)
     const { success, data } = response.data
     yield put({ type: DELETE_TODO_SUCCESS, payload: data })
   } catch (err) {
@@ -111,7 +65,7 @@ function* deleteTodo({ payload }) {
 function* updateTodo({ payload }) {
   try {
     const filterType = yield select((state) => state.filter)
-    const response = yield call(instance.patch, `/${payload._id}`, payload)
+    const response = yield call(instance.patch, `todos/${payload._id}`, payload)
     const { success, data } = response.data
     yield put({
       type: UPDATE_TODO_SUCCESS,
@@ -127,7 +81,7 @@ function* updateTodo({ payload }) {
 
 function* deleteAllTodos() {
   try {
-    const deleteTodo = yield call(instance.delete, '')
+    const deleteTodo = yield call(instance.delete, 'todos')
     yield put({ type: DELETE_ALL_TODOS_SUCCESS })
   } catch (err) {
     console.log(err)
