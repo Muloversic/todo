@@ -8,7 +8,7 @@ export default function configureRoutes() {
 
   router.post('/registration', registerUser)
   router.post('/login', loginUser)
-  router.get('/refresh', refreshUserToken)
+  router.post('/refresh', refreshUserToken)
 
   return [router.routes(), router.allowedMethods()]
 }
