@@ -4,6 +4,7 @@ import UserModel from '../../models/userModel'
 const refreshUserToken = async (ctx) => {
   try {
     const refreshToken = ctx.query[0]
+    console.log(refreshToken)
     if (!refreshToken) {
       console.log('No token came')
       ctx.notFound('No token came')
@@ -19,7 +20,8 @@ const refreshUserToken = async (ctx) => {
 
     const user = await UserModel.findById(userData._id)
     const { username: nickname, _id } = user
-    const tokens = generateTokens({ nickname, _id })
+    const isNewRefresh = false
+    const tokens = generateTokens({ nickname, _id }, isNewRefresh)
     ctx.resolve({
       ...tokens,
       nickname,

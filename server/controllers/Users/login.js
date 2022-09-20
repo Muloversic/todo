@@ -32,7 +32,8 @@ const loginUser = async (ctx) => {
     }
 
     const { username: nickname, _id } = user
-    const tokens = generateTokens({ nickname, _id })
+    const isNewRefresh = true
+    const tokens = generateTokens({ nickname, _id }, isNewRefresh)
     ctx.resolve({
       ...tokens,
       nickname,

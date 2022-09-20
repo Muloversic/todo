@@ -23,15 +23,15 @@ instance.interceptors.response.use(
     if (error.response.status === 401 && error.config && !error.config._isRetry) {
       try {
         originalRequest._isRetry = true
-        const response = await axios.get('http://localhost:8080/refresh', {
+        const response = await axios.get('http://localhost:8080/auth/refresh', {
           params: userStore.refreshToken,
         })
         const { data } = response.data
-        const { refreshToken, accessToken } = data
+        const { accessToken } = data
         localStorage.setItem(
           'userStore',
           JSON.stringify({
-            refreshToken,
+            ...userStore,
             token: accessToken,
             authenticated: true,
           }),

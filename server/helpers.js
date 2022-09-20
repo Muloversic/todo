@@ -1,12 +1,18 @@
 import jwt from 'jsonwebtoken'
 import configs from './configs'
 
-export function generateTokens(payload) {
-  const accessToken = jwt.sign(payload, configs.JWT_ACCESS_SECRET, { expiresIn: '15min' })
-  const refreshToken = jwt.sign(payload, configs.JWT_REFRESH_SECRET, { expiresIn: '30d' })
+export function generateTokens(payload, isNewRefresh) {
+  const accessToken = jwt.sign(payload, configs.JWT_ACCESS_SECRET, { expiresIn: '15s' })
+  if (isNewRefresh) {
+    const refreshToken = jwt.sign(payload, configs.JWT_REFRESH_SECRET, { expiresIn: '30d' })
+    return {
+      accessToken,
+      refreshToken,
+    }
+  }
+
   return {
     accessToken,
-    refreshToken,
   }
 }
 
