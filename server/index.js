@@ -7,7 +7,7 @@ import cors from '@koa/cors'
 import todosRouter from './routers/todosRouter'
 import usersRouter from './routers/usersRouter'
 import configs from './configs'
-import { responseHelpers, authMiddleware } from './helpers'
+import { responseHelpers } from './middlewares'
 
 const connectDb = async () => {
   try {

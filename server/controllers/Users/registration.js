@@ -17,14 +17,15 @@ const registerUser = async (ctx) => {
       return
     }
 
-    const candidate = await UserModel.findOne({ username })
-    if (candidate) {
+    const isUserExists = await UserModel.findOne({ username })
+    if (isUserExists) {
       console.log('User already exists')
       ctx.permissionDenied('User already exists')
       return
     }
 
-    const hashPasword = bcrypt.hashSync(password, 7)
+    const salt = bcrypt.genSaltSync(7)
+    const hashPasword = bcrypt.hashSync(password, salt)
     const user = await UserModel.create({ username, password: hashPasword })
     const { username: nickname, _id } = user
     const tokens = generateTokens({ nickname, _id })
