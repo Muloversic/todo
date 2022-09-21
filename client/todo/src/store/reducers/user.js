@@ -37,11 +37,11 @@ export const user = handleActions(
       }
     },
     [SET_USER]: (state, { payload }) => {
-      const { nickname: username, _id } = payload
+      const { username, userId } = payload
       return {
         indentity: {
           username,
-          _id,
+          userId,
         },
         authenticated: true,
       }
@@ -54,7 +54,6 @@ export const user = handleActions(
           _id,
         },
         authenticated: true,
-        errorMessage: '',
       }
     },
     [CLEAR_USER_STATE]: () => USER_STATE,

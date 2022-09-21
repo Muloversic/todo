@@ -8,8 +8,9 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
-  SET_USER,
   CLEAR_USER_STATE,
+  SET_NAVIGATE,
+  SET_USER,
 } from '../../constants'
 
 function* registerUser({ payload }) {
@@ -23,13 +24,15 @@ function* registerUser({ payload }) {
     const response = yield call(instance.post, 'auth/registration', userData)
     const { success, data } = response.data
     const { refreshToken, accessToken } = data
-    instance.navigate = navigate
+    // instance.navigate = navigate
     localStorage.setItem(
       'userStore',
       JSON.stringify({
         refreshToken,
         token: accessToken,
         authenticated: true,
+        username: data.nickname,
+        userId: data._id,
       }),
     )
 
@@ -55,7 +58,7 @@ function* loginUser({ payload }) {
       password,
     }
 
-    instance.navigate = navigate
+    // instance.navigate = navigate
     const response = yield call(instance.post, 'auth/login', userData)
     const { success, data } = response.data
     const { refreshToken, accessToken } = data
@@ -65,6 +68,8 @@ function* loginUser({ payload }) {
         refreshToken,
         token: accessToken,
         authenticated: true,
+        username: data.nickname,
+        userId: data._id,
       }),
     )
 
@@ -91,6 +96,10 @@ function* logoutUser({ payload }) {
   })
 }
 
+function setNavigate({ payload }) {
+  instance.navigate = payload
+}
+
 function* checkUserAuth() {
   const userStore = JSON.parse(localStorage.getItem('userStore'))
   if (userStore) {
@@ -105,6 +114,7 @@ function* user() {
   yield takeEvery(CREATE_USER_REQUEST, registerUser)
   yield takeEvery(LOGIN_USER_REQUEST, loginUser)
   yield takeEvery(LOGOUT_USER, logoutUser)
+  yield takeEvery(SET_NAVIGATE, setNavigate)
 
   yield checkUserAuth()
 }

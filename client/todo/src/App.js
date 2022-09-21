@@ -4,15 +4,16 @@ import { connect } from 'react-redux'
 import TodoApp from './components/todos/TodoApp'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
+import { setNavigate } from './store/actions/user'
 
-const App = ({ authenticated }) => {
+const App = ({ authenticated, setNavigateUserAction }) => {
   const navigate = useNavigate()
-
   useEffect(() => {
-    if (authenticated) {
-      navigate('/todos')
-    }
-  }, [authenticated])
+    // if (authenticated) {
+    //   navigate('/todos')
+    // }
+    setNavigateUserAction(navigate)
+  }, [])
 
   return (
     <Routes>
@@ -27,4 +28,8 @@ const mapStateToProps = (state) => ({
   authenticated: state.user.authenticated,
 })
 
-export default connect(mapStateToProps, null)(App)
+const mapDispatchToProps = (dispatch) => ({
+  setNavigateUserAction: (payload) => dispatch(setNavigate(payload)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

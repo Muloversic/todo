@@ -10,7 +10,6 @@ const TodoContent = () => {
   const todos = useSelector((state) => state.todo)
   const user = useSelector((state) => state.user)
   useEffect(() => {
-    setIsLoad(true)
     loadTodosAction()
   }, [user])
 

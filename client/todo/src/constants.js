@@ -30,3 +30,5 @@ export const CLEAR_USER_STATE = 'CLEAR_USER_STATE'
 export const CLEAR_USER_ERROR = 'CLEAR_USER_ERROR'
 
 export const SET_USER = 'SET_USER'
+
+export const SET_NAVIGATE = 'SET_NAVIGATE'

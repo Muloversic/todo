@@ -1,4 +1,6 @@
 import axios from 'axios'
+import store from '../store/store'
+import { CLEAR_USER_STATE } from '../constants'
 
 const instance = axios.create({
   baseURL: 'http://localhost:8080',
@@ -46,6 +48,7 @@ instance.interceptors.response.use(
       } catch (err) {
         instance.navigate('/')
         localStorage.clear()
+        store.dispatch({ type: CLEAR_USER_STATE })
         return Promise.reject(err)
       }
     }
