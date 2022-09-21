@@ -15,19 +15,20 @@ export const filter = handleAction(UPDATE_FILTER, (state, { payload }) => payloa
 
 export const todo = handleActions(
   {
-    [LOAD_TODO_SUCCESS]: (state, { payload }) => payload.data,
+    [LOAD_TODO_SUCCESS]: (state, { payload }) => payload.todos,
     [ADD_TODO_SUCCESS]: (state, { payload }) => {
+      console.log(payload)
       if (payload.filterType !== 'done') {
-        return [...state, payload.todo.data]
+        return [...state, payload.todo.newTodo]
       }
 
       return TODOS_STATE
     },
     [DELETE_TODO_SUCCESS]: (state, { payload }) =>
-      state.filter((todo) => todo._id !== payload.data._id),
+      state.filter((todo) => todo._id !== payload.todo._id),
     [DELETE_ALL_TODOS_SUCCESS]: () => [],
     [UPDATE_TODO_SUCCESS]: (state, { payload }) => {
-      const { _id, name, active } = payload.todos.data
+      const { _id, name, active } = payload.todos.updatedTodo
       const { filterType } = payload
       const shouldTodoRemove =
         (filterType === 'active' && !active) || (filterType === 'done' && active)

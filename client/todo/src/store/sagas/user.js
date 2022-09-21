@@ -45,8 +45,9 @@ function* registerUser({ payload }) {
 
 function* loginUser({ payload }) {
   try {
-    const response = yield call(instance.post, 'auth/login', payload)
-    const { success, data } = response.data
+    const { success, data } = yield call(instance.post, 'auth/login', payload)
+    // console.log(response)
+    // const { success, data } = response.data
     const { refreshToken, accessToken } = data
     localStorage.setItem(
       'userStore',

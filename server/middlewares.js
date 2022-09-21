@@ -35,7 +35,7 @@ export async function responseHelpers(ctx, next) {
   ctx.resolve = (data) => {
     const response = {
       code: 200,
-      data: data || {},
+      ...data,
       success: true,
     }
 

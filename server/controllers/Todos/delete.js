@@ -19,7 +19,7 @@ const deleteTodo = async (ctx) => {
 
     const todo = await Todo.findByIdAndDelete(id)
     console.log('todo was deleted')
-    ctx.resolve(todo)
+    ctx.resolve({ todo })
   } catch (err) {
     console.log('error while deleting todo:', err.message)
     ctx.notFound(err.message)

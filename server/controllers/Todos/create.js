@@ -12,7 +12,7 @@ const postTodo = async (ctx) => {
 
     const newTodo = await Todo.create({ name, active, userId })
     console.log('New todo was created')
-    ctx.resolve(newTodo)
+    ctx.resolve({ newTodo })
   } catch (err) {
     console.log('post todo error:', err.message)
     ctx.notFound(err.message)
