@@ -19,9 +19,14 @@ instance.interceptors.response.use(
   (confing) => confing,
   async (error) => {
     const originalRequest = error.config
-    console.log(error.request.responseURL)
+    const reguestURL = error.request.responseURL
     const userStore = JSON.parse(localStorage.getItem('userStore'))
-    if (error.response.status === 401 && error.config && !error.config._isRetry) {
+    if (
+      error.response.status === 401 &&
+      error.config &&
+      !error.config._isRetry &&
+      (error.config.url !== 'login' || error.config.url !== '')
+    ) {
       try {
         originalRequest._isRetry = true
         const response = await axios.post('http://localhost:8080/auth/refresh', {
