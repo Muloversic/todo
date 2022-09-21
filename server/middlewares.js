@@ -40,7 +40,7 @@ export async function responseHelpers(ctx, next) {
     }
 
     ctx.status = response.code
-    ctx.body = response
+    ctx.response.body = response
   }
 
   ctx.notFound = (data) => {
