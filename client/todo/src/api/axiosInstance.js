@@ -19,12 +19,12 @@ instance.interceptors.response.use(
   (confing) => confing,
   async (error) => {
     const originalRequest = error.config
-    const reguestURL = error.request.responseURL
     const userStore = JSON.parse(localStorage.getItem('userStore'))
     if (
       error.response.status === 401 &&
       error.config &&
       !error.config._isRetry &&
+      userStore &&
       (error.config.url !== 'login' || error.config.url !== '')
     ) {
       try {
