@@ -4,7 +4,6 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   CREATE_USER_ERROR,
-  CHECK_AUTH_SUCCESS,
   CLEAR_USER_ERROR,
   CLEAR_USER_STATE,
   SET_USER,
@@ -28,23 +27,13 @@ export const userError = handleActions(
 export const user = handleActions(
   {
     [CREATE_USER_SUCCESS]: (state, { payload }) => {
-      const { nickname: username, _id, refreshToken, accessToken } = payload
-      localStorage.setItem(
-        'userStore',
-        JSON.stringify({
-          refreshToken,
-          token: accessToken,
-          authenticated: true,
-        }),
-      )
-
+      const { nickname: username, _id } = payload
       return {
         indentity: {
           username,
           _id,
         },
         authenticated: true,
-        errorMessage: '',
       }
     },
     [SET_USER]: (state, { payload }) => {
@@ -58,16 +47,7 @@ export const user = handleActions(
       }
     },
     [LOGIN_USER_SUCCESS]: (state, { payload }) => {
-      const { nickname: username, _id, refreshToken, accessToken } = payload
-      localStorage.setItem(
-        'userStore',
-        JSON.stringify({
-          refreshToken,
-          token: accessToken,
-          authenticated: true,
-        }),
-      )
-
+      const { nickname: username, _id } = payload
       return {
         indentity: {
           username,
@@ -78,25 +58,6 @@ export const user = handleActions(
       }
     },
     [CLEAR_USER_STATE]: () => USER_STATE,
-    [CHECK_AUTH_SUCCESS]: (state, { payload }) => {
-      const { nickname: username, _id, refreshToken, accessToken } = payload
-      localStorage.setItem(
-        'userStore',
-        JSON.stringify({
-          refreshToken,
-          token: accessToken,
-          authenticated: true,
-        }),
-      )
-      return {
-        ...state,
-        authenticated: true,
-        indentity: {
-          username,
-          _id,
-        },
-      }
-    },
   },
   USER_STATE,
 )

@@ -16,6 +16,16 @@ function* registerUser({ payload }) {
   try {
     const response = yield call(instance.post, 'auth/registration', payload)
     const { success, data } = response.data
+    const { refreshToken, accessToken } = data
+    localStorage.setItem(
+      'userStore',
+      JSON.stringify({
+        refreshToken,
+        token: accessToken,
+        authenticated: true,
+      }),
+    )
+
     yield put({
       type: CREATE_USER_SUCCESS,
       payload: data,
@@ -34,6 +44,16 @@ function* loginUser({ payload }) {
   try {
     const response = yield call(instance.post, 'auth/login', payload)
     const { success, data } = response.data
+    const { refreshToken, accessToken } = data
+    localStorage.setItem(
+      'userStore',
+      JSON.stringify({
+        refreshToken,
+        token: accessToken,
+        authenticated: true,
+      }),
+    )
+
     yield put({
       type: LOGIN_USER_SUCCESS,
       payload: data,
@@ -71,7 +91,6 @@ function* user() {
   yield takeEvery(CREATE_USER_REQUEST, registerUser)
   yield takeEvery(LOGIN_USER_REQUEST, loginUser)
   yield takeEvery(LOGOUT_USER, logoutUser)
-  //   yield takeEvery(CHECK_AUTH_REQUEST, checkUserAuth)
 
   yield checkUserAuth()
 }

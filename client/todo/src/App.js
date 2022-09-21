@@ -4,17 +4,11 @@ import { connect } from 'react-redux'
 import TodoApp from './components/todos/TodoApp'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
-import { checkAuthRequest } from './store/actions/user'
 
-const App = ({ authenticated, checkAuthAction }) => {
+const App = ({ authenticated }) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const userStore = JSON.parse(localStorage.getItem('userStore'))
-    if (userStore) {
-      //   checkAuthAction(userStore.refreshToken)
-    }
-
     if (authenticated) {
       navigate('/todos')
     }
@@ -33,8 +27,4 @@ const mapStateToProps = (state) => ({
   authenticated: state.user.authenticated,
 })
 
-const mapDispatchToProps = (dispatch) => ({
-  checkAuthAction: (payload) => dispatch(checkAuthRequest(payload)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, null)(App)
