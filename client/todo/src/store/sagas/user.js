@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import instance from '../../api/api'
+import instance from '../../api/axiosInstance'
 import {
   CREATE_USER_SUCCESS,
   CREATE_USER_REQUEST,
@@ -14,9 +14,16 @@ import {
 
 function* registerUser({ payload }) {
   try {
-    const response = yield call(instance.post, 'auth/registration', payload)
+    const { username, password, navigate } = payload
+    const userData = {
+      username,
+      password,
+    }
+
+    const response = yield call(instance.post, 'auth/registration', userData)
     const { success, data } = response.data
     const { refreshToken, accessToken } = data
+    instance.navigate = navigate
     localStorage.setItem(
       'userStore',
       JSON.stringify({
@@ -42,7 +49,14 @@ function* registerUser({ payload }) {
 
 function* loginUser({ payload }) {
   try {
-    const response = yield call(instance.post, 'auth/login', payload)
+    const { username, password, navigate } = payload
+    const userData = {
+      username,
+      password,
+    }
+
+    instance.navigate = navigate
+    const response = yield call(instance.post, 'auth/login', userData)
     const { success, data } = response.data
     const { refreshToken, accessToken } = data
     localStorage.setItem(

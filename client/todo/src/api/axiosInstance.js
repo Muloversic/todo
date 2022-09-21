@@ -19,6 +19,7 @@ instance.interceptors.response.use(
   (confing) => confing,
   async (error) => {
     const originalRequest = error.config
+    console.log(error.request.responseURL)
     const userStore = JSON.parse(localStorage.getItem('userStore'))
     if (error.response.status === 401 && error.config && !error.config._isRetry) {
       try {
@@ -38,7 +39,8 @@ instance.interceptors.response.use(
         )
         return instance.request(originalRequest)
       } catch (err) {
-        console.log('No auth', err)
+        instance.navigate('/')
+        localStorage.clear()
         return Promise.reject(err)
       }
     }

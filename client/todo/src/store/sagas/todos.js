@@ -1,5 +1,5 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects'
-import instance from '../../api/api'
+import instance from '../../api/axiosInstance'
 import {
   LOAD_TODO_REQUEST,
   LOAD_TODO_SUCCESS,
