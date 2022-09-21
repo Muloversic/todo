@@ -65,5 +65,16 @@ export async function responseHelpers(ctx, next) {
     ctx.body = response
   }
 
+  ctx.noAccess = (data) => {
+    const response = {
+      code: 403,
+      data: data || {},
+      success: false,
+    }
+
+    ctx.status = response.code
+    ctx.body = response
+  }
+
   await next()
 }

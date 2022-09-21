@@ -5,10 +5,17 @@ const updateTodo = async (ctx) => {
     const { name, active } = ctx.request.body
     const payload = name ? { name } : { active }
     const { id } = ctx.params
+    const { _id: userId } = ctx.state.user
     const gotTodo = await Todo.findById(id)
     if (!gotTodo) {
       console.log('todo was not found by id while updating')
       ctx.notFound('todo was not found')
+      return
+    }
+
+    if (gotTodo.userId.toString() !== userId) {
+      console.log('user not allowed to modify not his todos')
+      ctx.noAccess('No permission to modify others todos')
       return
     }
 

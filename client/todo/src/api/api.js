@@ -39,10 +39,11 @@ instance.interceptors.response.use(
         return instance.request(originalRequest)
       } catch (err) {
         console.log('No auth', err)
+        return Promise.reject(err)
       }
     }
 
-    throw error
+    return Promise.reject(error)
   },
 )
 
