@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
@@ -72,6 +72,7 @@ const Register = ({ createUserAction, registerUserErr, clearUserErrorAction }) =
     [userData],
   )
 
+  useEffect(() => () => clearUserErrorAction(), [])
   return (
     <Container fixed>
       <Box sx={{ bgcolor: theme.palette.register.main, height: '100vh' }}>

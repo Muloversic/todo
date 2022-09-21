@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
@@ -60,6 +60,8 @@ const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
     },
     [userData],
   )
+
+  useEffect(() => () => clearUserErrorAction(), [])
 
   return (
     <Container fixed>
