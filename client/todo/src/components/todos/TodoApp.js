@@ -1,10 +1,8 @@
 import React from 'react'
 import { Button } from '@mui/material'
-import { connect } from 'react-redux'
 import { useNavigate } from 'react-router'
 import TodoForm from './Form'
 import TodoContent from './TodoContent'
-import { logoutUserRequest } from '../../store/actions/user'
 
 const TodoApp = ({ userIdentity, logoutUserAction }) => {
   const navigate = useNavigate()
@@ -27,12 +25,4 @@ const TodoApp = ({ userIdentity, logoutUserAction }) => {
   )
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  logoutUserAction: (payload) => dispatch(logoutUserRequest(payload)),
-})
-
-const mapStateToProps = (state) => ({
-  userIdentity: state.user.indentity,
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(TodoApp)
+export default TodoApp

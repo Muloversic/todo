@@ -1,8 +1,6 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
-import { createUserRequest, clearUserError } from '../../store/actions/user'
 
 const Register = ({ createUserAction, registerUserErr, clearUserErrorAction }) => {
   const defaultUserState = {
@@ -119,14 +117,4 @@ const Register = ({ createUserAction, registerUserErr, clearUserErrorAction }) =
   )
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  createUserAction: (payload) => dispatch(createUserRequest(payload)),
-  clearUserErrorAction: () => dispatch(clearUserError()),
-})
-
-const mapStateToProps = (state) => ({
-  isUserAuthenticated: state.user.authenticated,
-  registerUserErr: state.userError,
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Register)
+export default Register

@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
 import { useTheme, Box, Container, TextField, Button } from '@mui/material'
-import { loginUserRequest, clearUserError } from '../../store/actions/user'
 
 const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
   const defaultUserState = {
@@ -96,14 +94,4 @@ const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
   )
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  loginUserAction: (payload) => dispatch(loginUserRequest(payload)),
-  clearUserErrorAction: () => dispatch(clearUserError()),
-})
-
-const mapStateToProps = (state) => ({
-  isUserAuthenticated: state.user.authenticated,
-  loginUserErr: state.userError,
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default Login

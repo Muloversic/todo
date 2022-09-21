@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
-import TodoApp from './components/todos/TodoApp'
-import Login from './components/auth/Login'
-import Register from './components/auth/Register'
+import Todos from './pages/Todos'
+import Login from './pages/Login'
+import Registration from './pages/Registration'
 import { setNavigate } from './store/actions/user'
 
 const App = ({ authenticated, setNavigateUserAction }) => {
@@ -18,9 +18,9 @@ const App = ({ authenticated, setNavigateUserAction }) => {
 
   return (
     <Routes>
-      <Route index element={<Register />} />
+      <Route index element={<Registration />} />
       <Route path="login" element={authenticated ? <Navigate to="/todos" /> : <Login />} />
-      <Route path="todos" element={authenticated ? <TodoApp /> : <Navigate to="/" />} />
+      <Route path="todos" element={authenticated ? <Todos /> : <Navigate to="/" />} />
     </Routes>
   )
 }
