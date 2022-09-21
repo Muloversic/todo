@@ -10,10 +10,7 @@ const TodoApp = ({ userIdentity, logoutUserAction }) => {
   const navigate = useNavigate()
   const handleLogoutClick = (e) => {
     e.preventDefault()
-    // const userStore = JSON.parse(localStorage.getItem('userStore'))
-    // const { refreshToken } = userStore
     logoutUserAction(navigate)
-    // navigate('/login')
   }
 
   return (

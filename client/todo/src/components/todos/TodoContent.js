@@ -9,21 +9,14 @@ const TodoContent = () => {
   const loadTodosAction = () => dispatch(loadTodosRequest())
   const todos = useSelector((state) => state.todo)
   const user = useSelector((state) => state.user)
-  const [isLoad, setIsLoad] = useState(false)
   useEffect(() => {
     setIsLoad(true)
     loadTodosAction()
-    // if (isLoad) {
-    // }
-
-    return () => {
-      setIsLoad(false)
-    }
   }, [user])
 
   return (
     <>
-      <TodoFilters todos={todos} user={user} />
+      <TodoFilters todos={todos} />
       <TodosContainer todos={todos} />
     </>
   )
