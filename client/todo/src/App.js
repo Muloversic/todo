@@ -9,11 +9,12 @@ import { setNavigate } from './store/actions/user'
 const App = ({ authenticated, setNavigateUserAction }) => {
   const navigate = useNavigate()
   useEffect(() => {
-    // if (authenticated) {
-    //   navigate('/todos')
-    // }
+    if (authenticated) {
+      navigate('/todos')
+    }
+
     setNavigateUserAction(navigate)
-  }, [])
+  }, [authenticated])
 
   return (
     <Routes>
