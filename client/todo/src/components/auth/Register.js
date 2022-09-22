@@ -47,7 +47,7 @@ const Register = ({ createUserAction, registerUserErr, clearUserErrorAction }) =
       if (userData.pass !== userData.repeatPass) {
         setErrorMessage((prevState) => ({
           ...prevState,
-          repeatPassErr: `Passwords should match`,
+          passErr: `Passwords should match`,
         }))
 
         return
@@ -91,8 +91,8 @@ const Register = ({ createUserAction, registerUserErr, clearUserErrorAction }) =
             required
             name="pass"
             value={userData.pass}
-            error={!!errorMessage.passErr || !!registerUserErr}
-            helperText={errorMessage.passErr || registerUserErr}
+            error={!!errorMessage.passErr}
+            helperText={errorMessage.passErr}
           />
           <TextField
             label="Repeat password"
@@ -102,8 +102,8 @@ const Register = ({ createUserAction, registerUserErr, clearUserErrorAction }) =
             required
             name="repeatPass"
             value={userData.repeatPass}
-            error={!!errorMessage.repeatPassErr || !!registerUserErr}
-            helperText={errorMessage.repeatPassErr || registerUserErr}
+            error={!!errorMessage.passErr}
+            helperText={errorMessage.passErr}
           />
           <Button variant="submit" type="submit">
             Create an account

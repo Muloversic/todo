@@ -14,14 +14,13 @@ const USER_STATE = {
   authenticated: false,
 }
 
-const USER_ERROR = ''
 export const userError = handleActions(
   {
     [LOGIN_USER_ERROR]: (state, { payload }) => payload,
     [CREATE_USER_ERROR]: (state, { payload }) => payload,
-    [CLEAR_USER_ERROR]: (state, { payload }) => USER_ERROR,
+    [CLEAR_USER_ERROR]: (state, { payload }) => '',
   },
-  USER_ERROR,
+  '',
 )
 
 export const user = handleActions(

@@ -1,14 +1,12 @@
 import React from 'react'
 import { Button } from '@mui/material'
-import { useNavigate } from 'react-router'
 import TodoForm from './Form'
 import TodoContent from './TodoContent'
 
-const TodoApp = ({ userIdentity, logoutUserAction }) => {
-  const navigate = useNavigate()
+const TodoContainer = ({ userIdentity, logoutUserAction }) => {
   const handleLogoutClick = (e) => {
     e.preventDefault()
-    logoutUserAction(navigate)
+    logoutUserAction()
   }
 
   return (
@@ -25,4 +23,4 @@ const TodoApp = ({ userIdentity, logoutUserAction }) => {
   )
 }
 
-export default TodoApp
+export default TodoContainer

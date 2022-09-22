@@ -72,9 +72,8 @@ function* loginUser({ payload }) {
   }
 }
 
-function* logoutUser({ payload }) {
+function* logoutUser() {
   yield localStorage.clear()
-  yield payload('/')
   yield put({
     type: CLEAR_USER_STATE,
   })

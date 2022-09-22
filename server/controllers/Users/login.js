@@ -19,8 +19,8 @@ const loginUser = async (ctx) => {
 
     const user = await UserModel.findOne({ username })
     if (!user) {
-      console.log('User not found')
-      ctx.notFound('User not found')
+      console.log('invalid username or password came while login')
+      ctx.notFound('invalid username or password')
       return
     }
 

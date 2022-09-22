@@ -27,15 +27,14 @@ instance.interceptors.response.use(
       error.config &&
       !error.config._isRetry &&
       userStore &&
-      (error.config.url !== 'login' || error.config.url !== '')
+      (error.config.url !== 'login' || error.config.url !== 'registration')
     ) {
       try {
         originalRequest._isRetry = true
         const response = await axios.post('http://localhost:8080/auth/refresh', {
           refreshToken: userStore.refreshToken,
         })
-        const { data } = response.data
-        const { accessToken } = data
+        const { accessToken } = response.data
         localStorage.setItem(
           'userStore',
           JSON.stringify({
@@ -46,7 +45,6 @@ instance.interceptors.response.use(
         )
         return instance.request(originalRequest)
       } catch (err) {
-        instance.navigate('/')
         localStorage.clear()
         store.dispatch({ type: CLEAR_USER_STATE })
         return Promise.reject(err)

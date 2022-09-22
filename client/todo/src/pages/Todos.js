@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { logoutUserRequest } from '../store/actions/user'
-import TodoApp from '../components/todos/TodoApp'
+import TodoContainer from '../components/todos/TodoContainer'
 
 const TodosPage = ({ userIdentity, logoutUserAction }) => (
-  <TodoApp userIdentity={userIdentity} logoutUserAction={logoutUserAction} />
+  <TodoContainer userIdentity={userIdentity} logoutUserAction={logoutUserAction} />
 )
 
 const mapDispatchToProps = (dispatch) => ({
