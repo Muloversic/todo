@@ -17,7 +17,6 @@ const refreshUserToken = async (ctx) => {
       return
     }
 
-    console.log(userData)
     const user = await UserModel.findById(userData._id)
     const { username: nickname, _id } = user
     const isNewRefresh = false

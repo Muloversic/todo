@@ -23,6 +23,7 @@
     "@koa/cors": "^3.4.1",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
+    "engine.io-parser": "^5.0.4",
     "install-peerdeps": "^3.0.3",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
@@ -30,6 +31,7 @@
     "koa-cors": "^0.0.16",
     "koa-logger": "^3.2.1",
     "koa-router": "^12.0.0",
-    "mongoose": "^6.5.2"
+    "mongoose": "^6.5.2",
+    "socket.io": "^4.5.2"
   }
 }

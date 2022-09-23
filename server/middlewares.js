@@ -76,5 +76,11 @@ export async function responseHelpers(ctx, next) {
     ctx.body = response
   }
 
+  ctx.sendIvent = (payload) => {
+    const socket = ctx.socketIO
+    const successEvent = socket.emit('myEvent', payload)
+    console.log(successEvent)
+  }
+
   await next()
 }

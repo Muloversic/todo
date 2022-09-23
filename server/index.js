@@ -4,6 +4,8 @@ import KoaLogger from 'koa-logger'
 import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import cors from '@koa/cors'
+import { createServer } from 'http'
+import { Server } from 'socket.io'
 import todosRouter from './routers/todosRouter'
 import usersRouter from './routers/usersRouter'
 import configs from './configs'
@@ -32,9 +34,24 @@ function runKoa() {
 }
 
 function serve() {
-  const server = runKoa()
+  const app = runKoa()
+  const httpServer = createServer(app.callback())
+  const io = new Server(httpServer, {
+    cors: {
+      origin: '*',
+    },
+  })
+
+  io.on('connection', (socket) => {
+    app.context.socketIO = socket
+  })
+
+  io.on('connect_error', (err) => {
+    console.log(`connect_error due to ${err.message}`)
+  })
+
   connectDb()
-  server.listen(configs.PORT, () => {
+  httpServer.listen(configs.PORT, () => {
     console.log(`Server is running on http://localhost:${configs.PORT}`)
   })
 }
