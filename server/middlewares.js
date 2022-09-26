@@ -1,4 +1,5 @@
 import { validateAccessToken } from './helpers'
+import configs from './configs'
 
 export async function authMiddleware(ctx, next) {
   try {
@@ -76,11 +77,17 @@ export async function responseHelpers(ctx, next) {
     ctx.body = response
   }
 
-  ctx.sendIvent = (payload) => {
-    const socket = ctx.socketIO
-    const successEvent = socket.emit('myEvent', payload)
-    console.log(successEvent)
-  }
-
   await next()
+}
+
+export function sendEvent(client) {
+  return async (ctx, next) => {
+    ctx.sendEvent = (event, data) => {
+      const { _id } = data.creator
+      client.to(_id).emit('NOTIFICATION_SENT', event)
+      //   console.log(client.sockets.adapter.rooms, 'event sent')
+    }
+
+    await next()
+  }
 }

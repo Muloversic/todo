@@ -5,11 +5,11 @@ import bodyParser from 'koa-bodyparser'
 import Router from 'koa-router'
 import cors from '@koa/cors'
 import { createServer } from 'http'
-import { Server } from 'socket.io'
+import sockets from 'socket.io'
 import todosRouter from './routers/todosRouter'
 import usersRouter from './routers/usersRouter'
 import configs from './configs'
-import { responseHelpers } from './middlewares'
+import { responseHelpers, sendEvent } from './middlewares'
 
 const connectDb = async () => {
   try {
@@ -20,10 +20,13 @@ const connectDb = async () => {
   }
 }
 
+const io = sockets(4000)
+
 function runKoa() {
   const app = new Koa()
   const router = Router()
   app.use(cors())
+  app.use(sendEvent(io))
   app.use(bodyParser())
   app.use(KoaLogger())
   app.use(responseHelpers)
@@ -36,14 +39,10 @@ function runKoa() {
 function serve() {
   const app = runKoa()
   const httpServer = createServer(app.callback())
-  const io = new Server(httpServer, {
-    cors: {
-      origin: '*',
-    },
-  })
-
   io.on('connection', (socket) => {
-    app.context.socketIO = socket
+    socket.on('auth', (userId) => {
+      socket.join(userId)
+    })
   })
 
   io.on('connect_error', (err) => {

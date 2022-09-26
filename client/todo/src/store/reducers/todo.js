@@ -17,7 +17,6 @@ export const todo = handleActions(
   {
     [LOAD_TODO_SUCCESS]: (state, { payload }) => payload.todos,
     [ADD_TODO_SUCCESS]: (state, { payload }) => {
-      console.log(payload)
       if (payload.filterType !== 'done') {
         return [...state, payload.todo.newTodo]
       }

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { io } from 'socket.io-client'
 import Todos from './pages/Todos'
 import Login from './pages/Login'
 import Registration from './pages/Registration'
@@ -17,13 +16,6 @@ const App = ({ authenticated, setNavigateUserAction }) => {
 
     setNavigateUserAction(navigate)
   }, [authenticated])
-
-  useEffect(() => {
-    const socket = io('http://localhost:8080')
-    socket.on('myEvent', (data) => {
-      console.log('myEvent', data)
-    })
-  }, [])
 
   return (
     <Routes>

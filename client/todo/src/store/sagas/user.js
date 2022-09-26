@@ -1,5 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import instance from '../../api/axiosInstance'
+import socketClient from '../sockets/socketClient'
 import {
   CREATE_USER_SUCCESS,
   CREATE_USER_REQUEST,
@@ -17,6 +18,7 @@ function* registerUser({ payload }) {
   try {
     const { success, data } = yield call(instance.post, 'auth/registration', payload)
     const { refreshToken, accessToken } = data
+    // socketClient.emit('auth', data._id)
     localStorage.setItem(
       'userStore',
       JSON.stringify({
@@ -46,6 +48,7 @@ function* loginUser({ payload }) {
   try {
     const { success, data } = yield call(instance.post, 'auth/login', payload)
     const { refreshToken, accessToken } = data
+    // socketClient.emit('auth', data._id)
     localStorage.setItem(
       'userStore',
       JSON.stringify({
@@ -86,6 +89,8 @@ function setNavigate({ payload }) {
 function* checkUserAuth() {
   const userStore = JSON.parse(localStorage.getItem('userStore'))
   if (userStore) {
+    console.log('check user auth')
+    socketClient.emit('auth', userStore.userId)
     yield put({
       type: SET_USER,
       payload: userStore,

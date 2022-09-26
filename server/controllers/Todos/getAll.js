@@ -12,7 +12,7 @@ const getAllTodos = async (ctx) => {
     const todos = await Todo.find(filter)
     console.log('all todos were got')
     ctx.resolve({ todos })
-    ctx.sendIvent({ todos })
+    ctx.sendEvent({ type: 0, data: { todos } }, { creator: ctx.state.user })
   } catch (err) {
     console.log('error while trying to get all todos:', err.message)
     ctx.notFound(err.message)
