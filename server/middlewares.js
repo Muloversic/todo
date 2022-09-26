@@ -1,5 +1,5 @@
 import { validateAccessToken } from './helpers'
-import configs from './configs'
+import { NOTIFICATION_SENT } from './constants'
 
 export async function authMiddleware(ctx, next) {
   try {
@@ -84,7 +84,7 @@ export function sendEvent(client) {
   return async (ctx, next) => {
     ctx.sendEvent = (event, data) => {
       const { _id } = data.creator
-      client.to(_id).emit('NOTIFICATION_SENT', event)
+      client.to(_id).emit(NOTIFICATION_SENT, event)
       //   console.log(client.sockets.adapter.rooms, 'event sent')
     }
 
