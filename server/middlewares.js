@@ -85,7 +85,7 @@ export function sendEvent(client) {
     ctx.sendEvent = (event, data) => {
       const { _id } = data.creator
       client.to(_id).emit(NOTIFICATION_SENT, event)
-      //   console.log(client.sockets.adapter.rooms, 'event sent')
+      console.log(client.sockets.adapter.rooms, 'event sent')
     }
 
     await next()

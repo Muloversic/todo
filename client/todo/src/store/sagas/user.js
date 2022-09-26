@@ -18,7 +18,7 @@ function* registerUser({ payload }) {
   try {
     const { success, data } = yield call(instance.post, 'auth/registration', payload)
     const { refreshToken, accessToken } = data
-    // socketClient.emit('auth', data._id)
+    socketClient.emit('auth', data._id)
     localStorage.setItem(
       'userStore',
       JSON.stringify({
@@ -48,7 +48,7 @@ function* loginUser({ payload }) {
   try {
     const { success, data } = yield call(instance.post, 'auth/login', payload)
     const { refreshToken, accessToken } = data
-    // socketClient.emit('auth', data._id)
+    socketClient.emit('auth', data._id)
     localStorage.setItem(
       'userStore',
       JSON.stringify({
