@@ -34,7 +34,7 @@ instance.interceptors.response.use(
         const response = await axios.post('http://localhost:8080/auth/refresh', {
           refreshToken: userStore.refreshToken,
         })
-        const { accessToken } = response.data
+        const { accessToken } = response.data.data
         localStorage.setItem(
           'userStore',
           JSON.stringify({

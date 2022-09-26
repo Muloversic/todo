@@ -42,37 +42,31 @@ export async function responseHelpers(ctx, next) {
     }
   }
 
-  ctx.notFound = (data) => {
-    const response = {
+  ctx.notFound = (data = {}) => {
+    ctx.response.status = 404
+    ctx.response.body = {
       code: 404,
-      data: data || {},
+      data,
       success: false,
     }
-
-    ctx.status = response.code
-    ctx.body = response
   }
 
-  ctx.permissionDenied = (data) => {
-    const response = {
-      code: 401,
-      data: data || {},
+  ctx.permissionDenied = (data = {}) => {
+    ctx.response.status = 401
+    ctx.response.body = {
+      code: 4041,
+      data,
       success: false,
     }
-
-    ctx.status = response.code
-    ctx.body = response
   }
 
-  ctx.noAccess = (data) => {
-    const response = {
+  ctx.noAccess = (data = {}) => {
+    ctx.response.status = 403
+    ctx.response.body = {
       code: 403,
-      data: data || {},
+      data,
       success: false,
     }
-
-    ctx.status = response.code
-    ctx.body = response
   }
 
   await next()
@@ -82,7 +76,6 @@ export function sendEvent(client) {
   return async (ctx, next) => {
     ctx.sendEvent = (event, creator) => {
       client.to(creator._id).emit(NOTIFICATION_SENT, event)
-      //   console.log(client.sockets.adapter.rooms, 'event sent')
     }
 
     await next()
