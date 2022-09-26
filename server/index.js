@@ -43,6 +43,10 @@ function serve() {
     socket.on('auth', (userId) => {
       socket.join(userId)
     })
+
+    socket.on('logout', (room) => {
+      socket.leave(room)
+    })
   })
 
   io.on('connect_error', (err) => {

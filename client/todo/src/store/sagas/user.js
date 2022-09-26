@@ -84,6 +84,8 @@ function* loginUser({ payload }) {
 }
 
 function* logoutUser() {
+  const userStore = JSON.parse(localStorage.getItem('userStore'))
+  socketClient.emit('logout', userStore.userId)
   yield localStorage.clear()
   yield put({
     type: CLEAR_USER_STATE,
