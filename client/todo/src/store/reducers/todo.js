@@ -15,10 +15,10 @@ export const filter = handleAction(UPDATE_FILTER, (state, { payload }) => payloa
 
 export const todo = handleActions(
   {
-    [LOAD_TODO_SUCCESS]: (state, { payload }) => payload.todos,
+    [LOAD_TODO_SUCCESS]: (state, { payload }) => payload,
     [ADD_TODO_SUCCESS]: (state, { payload }) => {
       if (payload.filterType !== 'done') {
-        return [...state, payload.todo.newTodo]
+        return [...state, payload.todo]
       }
 
       return TODOS_STATE
@@ -27,7 +27,7 @@ export const todo = handleActions(
       state.filter((todo) => todo._id !== payload.todo._id),
     [DELETE_ALL_TODOS_SUCCESS]: () => [],
     [UPDATE_TODO_SUCCESS]: (state, { payload }) => {
-      const { _id, name, active } = payload.todos.updatedTodo
+      const { _id, name, active } = payload.todo
       const { filterType } = payload
       const shouldTodoRemove =
         (filterType === 'active' && !active) || (filterType === 'done' && active)

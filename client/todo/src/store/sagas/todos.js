@@ -1,5 +1,5 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects'
-import instance from '../../api/axiosInstance'
+import api from '../../api/api'
 import {
   LOAD_TODO_REQUEST,
   LOAD_TODO_SUCCESS,
@@ -25,11 +25,11 @@ function* fetchTodos({ payload }) {
       filter = { active: false }
     }
 
-    const { success, data } = yield call(instance.get, 'todos', {
+    const { success, data } = yield call(api, 'todos', {
       params: filter,
     })
 
-    // yield put({ type: LOAD_TODO_SUCCESS, payload: data })
+    yield put({ type: LOAD_TODO_SUCCESS, payload: data })
   } catch (err) {
     console.log(err)
   }
@@ -38,7 +38,11 @@ function* fetchTodos({ payload }) {
 function* createTodo({ payload }) {
   try {
     const filterType = yield select((state) => state.filter)
-    const { success, data } = yield call(instance.post, 'todos', payload)
+    const { success, data } = yield call(api, 'todos', {
+      method: 'POST',
+      data: payload,
+    })
+
     // yield put({
     //   type: ADD_TODO_SUCCESS,
     //   payload: {
@@ -53,7 +57,10 @@ function* createTodo({ payload }) {
 
 function* deleteTodo({ payload }) {
   try {
-    const { success, data } = yield call(instance.delete, `todos/${payload}`)
+    const { success, data } = yield call(api, `todos/${payload}`, {
+      method: 'DELETE',
+    })
+
     // yield put({ type: DELETE_TODO_SUCCESS, payload: data })
   } catch (err) {
     console.log(err)
@@ -63,7 +70,11 @@ function* deleteTodo({ payload }) {
 function* updateTodo({ payload }) {
   try {
     const filterType = yield select((state) => state.filter)
-    const { success, data } = yield call(instance.patch, `todos/${payload._id}`, payload)
+    const { success, data } = yield call(api, `todos/${payload._id}`, {
+      method: 'PATCH',
+      data: payload,
+    })
+
     // yield put({
     //   type: UPDATE_TODO_SUCCESS,
     //   payload: {
@@ -78,7 +89,10 @@ function* updateTodo({ payload }) {
 
 function* deleteAllTodos() {
   try {
-    const deleteTodo = yield call(instance.delete, 'todos')
+    const deleteTodo = yield call(api, 'todos', {
+      method: 'DELETE',
+    })
+
     // yield put({ type: DELETE_ALL_TODOS_SUCCESS })
   } catch (err) {
     console.log(err)

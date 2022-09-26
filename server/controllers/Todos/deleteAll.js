@@ -5,8 +5,8 @@ const deleteAllTodo = async (ctx) => {
     const { _id: userId } = ctx.state.user
     const todos = await Todo.deleteMany({ userId })
     console.log('all todos were deleted')
-    ctx.sendEvent({ type: 3, data: todos }, { creator: ctx.state.user })
-    ctx.resolve(todos)
+    ctx.sendEvent({ type: 3 }, ctx.state.user)
+    ctx.resolve({})
   } catch (err) {
     console.log('delete all todo err:', err.message)
     ctx.notFound(err.message)

@@ -19,8 +19,8 @@ const deleteTodo = async (ctx) => {
 
     const todo = await Todo.findByIdAndDelete(id)
     console.log('todo was deleted')
+    ctx.sendEvent({ type: 2, data: { todo } }, ctx.state.user)
     ctx.resolve({ todo })
-    ctx.sendEvent({ type: 2, data: { todo } }, { creator: ctx.state.user })
   } catch (err) {
     console.log('error while deleting todo:', err.message)
     ctx.notFound(err.message)

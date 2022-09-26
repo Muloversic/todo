@@ -33,15 +33,13 @@ export async function authMiddleware(ctx, next) {
 }
 
 export async function responseHelpers(ctx, next) {
-  ctx.resolve = (data) => {
-    const response = {
+  ctx.resolve = (data = {}) => {
+    ctx.response.status = 200
+    ctx.response.body = {
       code: 200,
-      ...data,
+      data,
       success: true,
     }
-
-    ctx.status = response.code
-    ctx.response.body = response
   }
 
   ctx.notFound = (data) => {
@@ -82,10 +80,9 @@ export async function responseHelpers(ctx, next) {
 
 export function sendEvent(client) {
   return async (ctx, next) => {
-    ctx.sendEvent = (event, data) => {
-      const { _id } = data.creator
-      client.to(_id).emit(NOTIFICATION_SENT, event)
-      console.log(client.sockets.adapter.rooms, 'event sent')
+    ctx.sendEvent = (event, creator) => {
+      client.to(creator._id).emit(NOTIFICATION_SENT, event)
+      //   console.log(client.sockets.adapter.rooms, 'event sent')
     }
 
     await next()

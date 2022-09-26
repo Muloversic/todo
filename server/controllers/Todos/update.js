@@ -21,8 +21,8 @@ const updateTodo = async (ctx) => {
 
     const updatedTodo = await Todo.findByIdAndUpdate(id, payload, { new: true })
     console.log('todo was updated')
-    ctx.resolve({ updatedTodo })
-    ctx.sendEvent({ type: 4, data: { updatedTodo } }, { creator: ctx.state.user })
+    ctx.sendEvent({ type: 4, data: updatedTodo }, ctx.state.user)
+    ctx.resolve(updatedTodo)
   } catch (err) {
     console.log('error while updating todo:', err.message)
     ctx.notFound(err.message)
