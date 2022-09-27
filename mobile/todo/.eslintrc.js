@@ -1,4 +1,53 @@
 module.exports = {
-  root: true,
-  extends: '@react-native-community',
-};
+  parser: 'babel-eslint',
+  plugins: ['react', 'react-native'],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+      modules: true,
+    },
+  },
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'airbnb-base'],
+  rules: {
+    'no-unused-vars': 'off',
+    'no-console': 'off',
+    'no-undef': 'off',
+    semi: ['error', 'never'],
+    'no-trailing-spaces': 'error',
+    'max-len': 'error',
+    quotes: [
+      2,
+      'single',
+      {
+        avoidEscape: true,
+        allowTemplateLiterals: true,
+      },
+    ],
+    'comma-dangle': 'error',
+    'no-unused-expressions': 'off',
+    'class-methods-use-this': 'off',
+    'no-param-reassign': 'off',
+    'no-underscore-dangle': 'off',
+    'import/extensions': 'off',
+    'import/prefer-default-export': 'off',
+    'import/no-named-as-default': 'off',
+    'import/no-named-as-default-member': 'off',
+    'react/prefer-stateless-function': 'off',
+    'react/jsx-filename-extension': 'off',
+    'default-param-last': 'off',
+    'consistent-return': 'off',
+    'react/prop-types': 'off',
+    'import/no-cycle': 'off',
+    'react/function-component-definition': [
+      'error',
+      {
+        namedComponents: ['function-declaration', 'arrow-function'],
+        unnamedComponents: 'arrow-function',
+      },
+    ],
+    'no-case-declarations': 'off',
+    'no-shadow': 'off',
+    'react-hooks/exhaustive-deps': 'off',
+    'object-curly-newline': 'off',
+  },
+}
