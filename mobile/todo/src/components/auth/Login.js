@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-native'
-import { View, TouchableHighlight, Animated, Text } from 'react-native'
+import { View, TouchableHighlight, TouchableOpacity, Text } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 import { Input, Button } from '@rneui/themed'
+import authStyles from '../../styles/auth'
 
 const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
   const defaultUserState = {
@@ -13,82 +14,79 @@ const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
   const [userData, setUserData] = useState(defaultUserState)
   const [errorMessage, setErrorMessage] = useState(defaultUserState)
 
-  const handleFormChange = useCallback(({ target }) => {
+  const handleFormChange = useCallback((text, name) => {
     clearUserErrorAction()
-    const { name, value } = target
     setErrorMessage(defaultUserState)
     setUserData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: text,
     }))
   }, [])
 
-  const handleFromSubmit = useCallback(
-    (e) => {
-      e.preventDefault()
-      if (userData.username.trim() === '') {
-        setErrorMessage((prevState) => ({
-          ...prevState,
-          nameErr: `Username field can't be empty`,
-        }))
+  const handleFromSubmit = useCallback(() => {
+    if (userData.username.trim() === '') {
+      setErrorMessage((prevState) => ({
+        ...prevState,
+        nameErr: `Username field can't be empty`,
+      }))
 
-        return
-      }
+      return
+    }
 
-      if (userData.pass.length < 4 || userData.pass.length > 13) {
-        setErrorMessage((prevState) => ({
-          ...prevState,
-          passErr: `Password should not be less than 4 symbols and not more than 13 symbols`,
-        }))
+    if (userData.pass.length < 4 || userData.pass.length > 13) {
+      setErrorMessage((prevState) => ({
+        ...prevState,
+        passErr: `Password should not be less than 4 symbols and not more than 13 symbols`,
+      }))
 
-        return
-      }
+      return
+    }
 
-      const payload = {
-        username: userData.username,
-        password: userData.pass,
-      }
+    const payload = {
+      username: userData.username,
+      password: userData.pass,
+    }
 
-      loginUserAction(payload)
-      setErrorMessage({
-        nameErr: '',
-        passErr: '',
-      })
-    },
-    [userData],
-  )
+    loginUserAction(payload)
+    setErrorMessage({
+      nameErr: '',
+      passErr: '',
+    })
+  }, [userData])
 
   useEffect(() => () => clearUserErrorAction(), [])
 
   return (
     <SafeAreaView>
-      <View>
+      <View style={authStyles.wrapper}>
+        <Text style={authStyles.title}>Login</Text>
         <Input
           label="Username"
-          variant="outlined"
-          required
-          name="username"
           value={userData.username}
-          error={!!errorMessage.nameErr || !!loginUserErr}
-          helperText={errorMessage.nameErr || loginUserErr}
-          onChange={handleFormChange}
+          labelStyle={{ color: 'black' }}
+          inputContainerStyle={{
+            borderBottomColor: errorMessage.nameErr
+              ? authStyles.inputError
+              : authStyles.inputCommonColor,
+          }}
+          errorMessage={errorMessage.nameErr || loginUserErr}
+          onChangeText={(text) => handleFormChange(text, 'username')}
         />
         <Input
           label="Password"
-          variant="outlined"
-          type="password"
-          required
-          name="pass"
+          labelStyle={{ color: 'black' }}
+          inputContainerStyle={{
+            borderBottomColor: errorMessage.passErr
+              ? authStyles.inputError
+              : authStyles.inputCommonColor,
+          }}
+          errorMessage={errorMessage.passErr || loginUserErr}
           value={userData.pass}
-          error={!!errorMessage.passErr || !!loginUserErr}
-          helperText={errorMessage.passErr || loginUserErr}
-          onChange={handleFormChange}
+          onChangeText={(text) => handleFormChange(text, 'pass')}
         />
-        <TouchableHighlight>
-          <Button variant="submit" type="submit" onClick={handleFromSubmit}>
-            Login
-          </Button>
-        </TouchableHighlight>
+        <TouchableOpacity onPress={handleFromSubmit} style={authStyles.submitButton}>
+          <Text style={authStyles.submitButtonText}>Create an account</Text>
+        </TouchableOpacity>
         <TouchableHighlight>
           <Link to="/" className="auth-link">
             <Text>{`Don't have an account?`}</Text>
