@@ -1,14 +1,19 @@
 import React from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { NativeRouter } from 'react-router-native'
+import { Provider } from 'react-redux'
+import store from './src/store/store'
 
-const App = () => (
-  <SafeAreaView>
-    <ScrollView>
-      <View>
-        <Text>Some text goes here</Text>
-      </View>
-    </ScrollView>
-  </SafeAreaView>
+import App from './src/App'
+
+const mainApp = () => (
+  <NativeRouter>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </SafeAreaProvider>
+  </NativeRouter>
 )
 
-export default App
+export default mainApp

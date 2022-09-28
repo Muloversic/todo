@@ -1,11 +1,8 @@
 module.exports = {
-  parser: 'babel-eslint',
-  plugins: ['react', 'react-native'],
+  plugins: ['react', 'react-native', 'prettier'],
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-      modules: true,
-    },
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
   extends: ['eslint:recommended', 'plugin:react/recommended', 'airbnb-base'],
   rules: {
@@ -49,5 +46,7 @@ module.exports = {
     'no-shadow': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'object-curly-newline': 'off',
+    'linebreak-style': 'off',
+    'operator-linebreak': 'off',
   },
 }

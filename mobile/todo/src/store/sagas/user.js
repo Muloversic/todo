@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
-import instance from '../../api/axiosInstance'
+import { AsyncStorage } from 'react-native'
 import api from '../../api/api'
 import socketClient from '../sockets/socketClient'
 import {
@@ -23,7 +23,8 @@ function* registerUser({ payload }) {
     })
     const { refreshToken, accessToken } = data
     socketClient.emit('auth', data._id)
-    localStorage.setItem(
+    yield call(
+      AsyncStorage.setItem,
       'userStore',
       JSON.stringify({
         refreshToken,
@@ -33,6 +34,16 @@ function* registerUser({ payload }) {
         userId: data._id,
       }),
     )
+    // localStorage.setItem(
+    //   'userStore',
+    //   JSON.stringify({
+    //     refreshToken,
+    //     token: accessToken,
+    //     authenticated: true,
+    //     username: data.nickname,
+    //     userId: data._id,
+    //   }),
+    // )
 
     yield put({
       type: CREATE_USER_SUCCESS,
@@ -57,7 +68,8 @@ function* loginUser({ payload }) {
 
     const { refreshToken, accessToken } = data
     socketClient.emit('auth', data._id)
-    localStorage.setItem(
+    yield call(
+      AsyncStorage.setItem,
       'userStore',
       JSON.stringify({
         refreshToken,
@@ -67,6 +79,16 @@ function* loginUser({ payload }) {
         userId: data._id,
       }),
     )
+    // localStorage.setItem(
+    //   'userStore',
+    //   JSON.stringify({
+    //     refreshToken,
+    //     token: accessToken,
+    //     authenticated: true,
+    //     username: data.nickname,
+    //     userId: data._id,
+    //   }),
+    // )
 
     yield put({
       type: LOGIN_USER_SUCCESS,
@@ -84,18 +106,19 @@ function* loginUser({ payload }) {
 }
 
 function* logoutUser() {
-  const userStore = JSON.parse(localStorage.getItem('userStore'))
+  //   const userStore = JSON.parse(localStorage.getItem('userStore'))
+  const userStore = JSON.parse(AsyncStorage.getItem('userStore'))
   socketClient.emit('logout', userStore.userId)
-  yield localStorage.clear()
+  yield AsyncStorage.clear()
   yield put({
     type: CLEAR_USER_STATE,
   })
 }
 
 function* checkUserAuth() {
-  const userStore = JSON.parse(localStorage.getItem('userStore'))
+  //   const userStore = JSON.parse(localStorage.getItem('userStore'))
+  const userStore = JSON.parse(AsyncStorage.getItem('userStore'))
   if (userStore) {
-    console.log('check user auth')
     socketClient.emit('auth', userStore.userId)
     yield put({
       type: SET_USER,
@@ -105,11 +128,10 @@ function* checkUserAuth() {
 }
 
 function* user() {
-  yield takeEvery(CREATE_USER_REQUEST, registerUser)
-  yield takeEvery(LOGIN_USER_REQUEST, loginUser)
-  yield takeEvery(LOGOUT_USER, logoutUser)
-
-  yield checkUserAuth()
+  //   yield takeEvery(CREATE_USER_REQUEST, registerUser)
+  //   yield takeEvery(LOGIN_USER_REQUEST, loginUser)
+  //   yield takeEvery(LOGOUT_USER, logoutUser)
+  //   yield checkUserAuth()
 }
 
 export default user
