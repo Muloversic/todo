@@ -10,7 +10,6 @@ const instance = axios.create({
 
 instance.interceptors.request.use(async (config) => {
   const userStore = JSON.parse(await AsyncStorage.getItem('userStore'))
-  console.log(userStore)
   if (!userStore) {
     return config
   }
@@ -48,7 +47,6 @@ instance.interceptors.response.use(
         return instance.request(originalRequest)
       } catch (err) {
         await AsyncStorage.clear()
-        // localStorage.clear()
         store.dispatch({ type: CLEAR_USER_STATE })
         return Promise.reject(err)
       }

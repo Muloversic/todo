@@ -85,7 +85,7 @@ const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
           onChangeText={(text) => handleFormChange(text, 'pass')}
         />
         <TouchableOpacity onPress={handleFromSubmit} style={authStyles.submitButton}>
-          <Text style={authStyles.submitButtonText}>Create an account</Text>
+          <Text style={authStyles.submitButtonText}>Login</Text>
         </TouchableOpacity>
         <TouchableHighlight>
           <Link to="/" className="auth-link">

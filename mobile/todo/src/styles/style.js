@@ -100,11 +100,6 @@ export const todoItemStyles = StyleSheet.create({
     marginTop: 10,
     paddingRight: 20,
   },
-  itemText: {
-    fontSize: 18,
-    color: '#fff',
-    width: '60%',
-  },
   actionElem: {
     fontSize: 20,
     color: 'white',

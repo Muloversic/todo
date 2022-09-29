@@ -18,7 +18,15 @@ const Todo = ({ todo, handleDelete }) => {
 
   return (
     <View style={todoItemStyles.wrapper} id={todo._id} key={todo._id}>
-      <Text onPress={handleTodoStatus} style={todoItemStyles.itemText}>
+      <Text
+        onPress={handleTodoStatus}
+        style={{
+          fontSize: 18,
+          color: '#fff',
+          width: '60%',
+          textDecorationLine: todo.active ? 'none' : 'line-through',
+        }}
+      >
         {todo.name}
       </Text>
       <TouchableOpacity onPress={handleDeleteTodo}>
