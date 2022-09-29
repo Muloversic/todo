@@ -1,20 +1,14 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateFilterRequest, deleteAllTodosRequest } from '../../store/actions/todos.js'
 import { todoFilterStyles } from '../../styles/style'
-// import DeleteAllTodoModal from './DeleteAllTodoModal.js'
 
 const TodoFilters = ({ todos }) => {
   const dispatch = useDispatch()
   const updateFiltersAction = (payload) => dispatch(updateFilterRequest(payload))
   const deleteAllTodosAction = () => dispatch(deleteAllTodosRequest())
   const filterType = useSelector((state) => state.filter)
-  //   const [open, setOpen] = useState(false)
-
-  //   const handleClose = useCallback(() => {
-  //     setOpen(false)
-  //   }, [])
 
   const handleClick = useCallback(
     (filter) => () => {
@@ -24,14 +18,8 @@ const TodoFilters = ({ todos }) => {
   )
 
   const handleDelete = useCallback(() => {
-    // setOpen(false)
     deleteAllTodosAction()
   }, [])
-
-  //   const showModal = useCallback(() => {
-  //     setOpen(true)
-  //   }, [])
-
   return (
     <View style={todoFilterStyles.wrapper}>
       <View style={todoFilterStyles.filtersRow}>

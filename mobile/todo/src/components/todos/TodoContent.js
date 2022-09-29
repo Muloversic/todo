@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { loadTodosRequest } from '../../store/actions/todos.js'
-// import TodosContainer from './TodosContainer'
+import TodosContainer from './TodosContainer'
 import TodoFilters from './TodoFilters'
 
 const TodoContent = () => {
@@ -16,7 +16,7 @@ const TodoContent = () => {
   return (
     <>
       <TodoFilters todos={todos} />
-      {/* <TodosContainer todos={todos} /> */}
+      <TodosContainer todos={todos} />
     </>
   )
 }

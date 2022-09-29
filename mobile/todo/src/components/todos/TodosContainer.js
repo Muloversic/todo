@@ -1,35 +1,23 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
+import { View } from 'react-native'
 import { deleteTodoRequest } from '../../store/actions/todos.js'
 import Todo from './Todo.js'
-import DeleteTodoModal from './DeleteTodoModal.js'
+import { todoItemStyles } from '../../styles/style.js'
 
 const TodosContainer = ({ todos }) => {
   const dispatch = useDispatch()
   const deleteTodoAction = (payload) => dispatch(deleteTodoRequest(payload))
-  const [editingTodoId, setEditingTodoId] = useState(null)
-  const [deleteTodoId, setDeleteTodoId] = useState(null)
-  const [open, setOpen] = useState(false)
-  const handleClose = useCallback(() => setOpen(false), [])
-  const handleDelete = useCallback(() => {
+  const handleDelete = useCallback((deleteTodoId) => {
     deleteTodoAction(deleteTodoId)
-    setOpen(false)
-  }, [deleteTodoId])
+  }, [])
 
   return (
-    <div className="todo__items-container">
+    <View style={todoItemStyles.todosContainer}>
       {todos.map((todo) => (
-        <Todo
-          todo={todo}
-          key={todo._id}
-          handleCurrentTodo={setEditingTodoId}
-          setDeleteTodoId={setDeleteTodoId}
-          editingTodoId={editingTodoId}
-          setOpen={setOpen}
-        />
+        <Todo key={todo._id} todo={todo} handleDelete={handleDelete} />
       ))}
-      <DeleteTodoModal handleClose={handleClose} handleDelete={handleDelete} open={open} />
-    </div>
+    </View>
   )
 }
 

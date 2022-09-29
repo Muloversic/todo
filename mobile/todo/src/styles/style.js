@@ -83,3 +83,30 @@ export const todoFilterStyles = StyleSheet.create({
     color: 'red',
   },
 })
+
+export const todoItemStyles = StyleSheet.create({
+  todosContainer: {
+    padding: 10,
+  },
+  wrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    position: 'relative',
+    padding: 7,
+    backgroundColor: 'rgb(129, 134, 218)',
+    height: 45,
+    borderRadius: 5,
+    marginBottom: 10,
+    marginTop: 10,
+    paddingRight: 20,
+  },
+  itemText: {
+    fontSize: 18,
+    color: '#fff',
+    width: '60%',
+  },
+  actionElem: {
+    fontSize: 20,
+    color: 'white',
+  },
+})

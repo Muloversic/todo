@@ -96,7 +96,6 @@ function* logoutUser() {
 function* checkUserAuth() {
   const userStore = JSON.parse(yield AsyncStorage.getItem('userStore'))
   if (userStore) {
-    console.log(userStore)
     socketClient.emit('auth', userStore.userId)
     yield put({
       type: SET_USER,

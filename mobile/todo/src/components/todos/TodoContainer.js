@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, TouchableOpacity, Text } from 'react-native'
+import { View, ScrollView, TouchableOpacity, Text } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 import { TodoContainerStyles } from '../../styles/style'
 import TodoForm from './Form'
@@ -12,7 +12,7 @@ const TodoContainer = ({ userIdentity, logoutUserAction }) => {
 
   return (
     <SafeAreaView>
-      <View style={TodoContainerStyles.wrapper}>
+      <ScrollView style={TodoContainerStyles.wrapper}>
         <View style={TodoContainerStyles.user}>
           <Text style={TodoContainerStyles.userFonts}>User: {userIdentity.username}</Text>
           <TouchableOpacity onPress={handleLogoutClick}>
@@ -21,7 +21,7 @@ const TodoContainer = ({ userIdentity, logoutUserAction }) => {
         </View>
         <TodoForm />
         <TodoContent />
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
