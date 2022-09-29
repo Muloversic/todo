@@ -3,7 +3,7 @@ import { Link } from 'react-router-native'
 import { View, TouchableHighlight, TouchableOpacity, Text } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 import { Input } from '@rneui/themed'
-import authStyles from '../../styles/auth'
+import { authStyles } from '../../styles/style'
 
 const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
   const defaultUserState = {

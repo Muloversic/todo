@@ -1,7 +1,8 @@
 import React from 'react'
-import { View, TouchableHighlight, TouchableOpacity, Text } from 'react-native'
+import { View, TouchableOpacity, Text } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
-// import TodoForm from './Form'
+import { TodoContainerStyles } from '../../styles/style'
+import TodoForm from './Form'
 // import TodoContent from './TodoContent'
 
 const TodoContainer = ({ userIdentity, logoutUserAction }) => {
@@ -11,13 +12,14 @@ const TodoContainer = ({ userIdentity, logoutUserAction }) => {
 
   return (
     <SafeAreaView>
-      <View className="todo">
-        <View className="todo__user">
-          <Text className="todo__user-name">User: {userIdentity.username}</Text>
+      <View style={TodoContainerStyles.wrapper}>
+        <View style={TodoContainerStyles.user}>
+          <Text style={TodoContainerStyles.userFonts}>User: {userIdentity.username}</Text>
           <TouchableOpacity onPress={handleLogoutClick}>
-            <Text>Logout</Text>
+            <Text style={TodoContainerStyles.userFonts}>Logout</Text>
           </TouchableOpacity>
         </View>
+        <TodoForm />
         {/* <TodoForm />
         <TodoContent /> */}
       </View>

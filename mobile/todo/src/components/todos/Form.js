@@ -1,65 +1,61 @@
 import React, { useCallback, useState } from 'react'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import { useTheme } from '@mui/material/styles'
+import { View, TouchableOpacity, Text } from 'react-native'
+import { Input } from '@rneui/themed'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTodoRequest } from '../../store/actions/todos.js'
+import { todoFormStyles } from '../../styles/style.js'
 
 const TodoForm = () => {
   const dispatch = useDispatch()
-  const theme = useTheme()
   const addTodoAction = (payload) => dispatch(addTodoRequest(payload))
   const user = useSelector((state) => state.user.indentity)
   const [todoName, setTodoName] = useState('')
   const [error, setError] = useState(false)
-  const handleInput = ({ target }) => {
-    setTodoName(target.value)
+  const handleInput = (text) => {
+    setTodoName(text)
     setError(false)
   }
 
-  const handleButton = useCallback(
-    (e) => {
-      e.preventDefault()
-      if (!todoName.trim()) {
-        setError(true)
+  const handleButton = useCallback(() => {
+    if (!todoName.trim()) {
+      setError(true)
+    }
+
+    if (todoName.trim()) {
+      const todoObj = {
+        name: todoName,
+        active: true,
+        userId: user._id,
       }
 
-      if (todoName.trim()) {
-        const todoObj = {
-          name: todoName,
-          active: true,
-          userId: user._id,
-        }
-
-        addTodoAction(todoObj)
-        setTodoName('')
-      }
-    },
-    [todoName],
-  )
+      addTodoAction(todoObj)
+      setTodoName('')
+    }
+  }, [todoName])
 
   return (
-    <div className="todo__form-wrapper">
-      <h1 className="todo__heading">todo list</h1>
-      <form className="todo__form">
-        <TextField
-          id="outlined-basic"
+    <View style={todoFormStyles.wrapper}>
+      <Text className="todo__heading" style={todoFormStyles.title}>
+        todo list
+      </Text>
+      <View style={todoFormStyles.form}>
+        <Input
           label="Add new todo..."
-          variant="outlined"
           value={todoName}
-          error={error}
-          onChange={handleInput}
-          sx={{
-            '& .MuiOutlinedInput-root': {
-              color: theme.palette.common.black,
-            },
+          labelStyle={{
+            color: error ? todoFormStyles.inputError : todoFormStyles.inputCommonColor,
+          }}
+          onChangeText={handleInput}
+          inputContainerStyle={{
+            borderBottomColor: error ? todoFormStyles.inputError : todoFormStyles.inputCommonColor,
+            width: '100%',
           }}
         />
-        <Button type="submit" variant="submit" onClick={handleButton}>
-          submit
-        </Button>
-      </form>
-    </div>
+        <TouchableOpacity onPress={handleButton}>
+          <Text style={todoFormStyles.button}>Submit</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   )
 }
 
