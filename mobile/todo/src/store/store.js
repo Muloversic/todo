@@ -6,7 +6,7 @@ import rootSaga from './rootSaga'
 import initSockets from './sockets/initSockets'
 
 const sagaMiddleware = createSagaMiddleware()
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware))
+const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, logger))
 sagaMiddleware.run(rootSaga)
 initSockets(store)
 

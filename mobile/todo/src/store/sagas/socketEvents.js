@@ -1,4 +1,4 @@
-import { put, takeEvery, select } from 'redux-saga/effects'
+import { put, takeEvery, select } from '@redux-saga/core/effects'
 import {
   ADD_TODO_SUCCESS,
   DELETE_TODO_SUCCESS,

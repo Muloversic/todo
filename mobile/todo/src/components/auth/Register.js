@@ -25,7 +25,6 @@ const Register = ({ createUserAction, registerUserErr, clearUserErrorAction }) =
   }, [])
 
   const handleFromSubmit = useCallback(() => {
-    console.log(userData)
     if (userData.username.trim() === '') {
       setErrorMessage((prevState) => ({
         ...prevState,

@@ -1,4 +1,4 @@
-import { call, put, takeEvery, select } from 'redux-saga/effects'
+import { call, put, takeEvery, select } from '@redux-saga/core/effects'
 import api from '../../api/api'
 import {
   LOAD_TODO_REQUEST,

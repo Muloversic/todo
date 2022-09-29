@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery } from '@redux-saga/core/effects'
 import { AsyncStorage } from 'react-native'
 import api from '../../api/api'
 import socketClient from '../sockets/socketClient'
@@ -44,18 +44,17 @@ function* registerUser({ payload }) {
     //     userId: data._id,
     //   }),
     // )
-
     yield put({
       type: CREATE_USER_SUCCESS,
       payload: data,
     })
   } catch (err) {
+    console.error('Error while registration', err)
     const { data } = err.response.data
     yield put({
       type: CREATE_USER_ERROR,
       payload: data,
     })
-    console.error('Error while registration', err)
   }
 }
 
@@ -117,8 +116,9 @@ function* logoutUser() {
 
 function* checkUserAuth() {
   //   const userStore = JSON.parse(localStorage.getItem('userStore'))
-  const userStore = JSON.parse(AsyncStorage.getItem('userStore'))
+  const userStore = AsyncStorage.getItem('userStore')
   if (userStore) {
+    // console.log(userStore)
     socketClient.emit('auth', userStore.userId)
     yield put({
       type: SET_USER,
@@ -128,10 +128,10 @@ function* checkUserAuth() {
 }
 
 function* user() {
-  //   yield takeEvery(CREATE_USER_REQUEST, registerUser)
-  //   yield takeEvery(LOGIN_USER_REQUEST, loginUser)
-  //   yield takeEvery(LOGOUT_USER, logoutUser)
-  //   yield checkUserAuth()
+  yield takeEvery(CREATE_USER_REQUEST, registerUser)
+  yield takeEvery(LOGIN_USER_REQUEST, loginUser)
+  yield takeEvery(LOGOUT_USER, logoutUser)
+  yield checkUserAuth()
 }
 
 export default user

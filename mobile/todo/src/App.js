@@ -20,8 +20,8 @@ const App = ({ authenticated, setNavigateUserAction }) => {
   return (
     <Routes>
       <Route index element={<Registration />} />
-      <Route path="login" element={authenticated ? <Navigate to="/todos" /> : <Login />} />
-      <Route path="todos" element={authenticated ? null : <Navigate to="/" />} />
+      <Route path="login" element={<Login />} />
+      <Route path="todos" element={<Navigate to="/" />} />
     </Routes>
   )
 }
