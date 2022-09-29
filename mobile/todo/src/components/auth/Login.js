@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-native'
 import { View, TouchableHighlight, TouchableOpacity, Text } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
-import { Input, Button } from '@rneui/themed'
+import { Input } from '@rneui/themed'
 import authStyles from '../../styles/auth'
 
 const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {

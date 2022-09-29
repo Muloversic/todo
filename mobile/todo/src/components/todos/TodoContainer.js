@@ -1,25 +1,27 @@
 import React from 'react'
-import { Button } from '@mui/material'
-import TodoForm from './Form'
-import TodoContent from './TodoContent'
+import { View, TouchableHighlight, TouchableOpacity, Text } from 'react-native'
+import SafeAreaView from 'react-native-safe-area-view'
+// import TodoForm from './Form'
+// import TodoContent from './TodoContent'
 
 const TodoContainer = ({ userIdentity, logoutUserAction }) => {
-  const handleLogoutClick = (e) => {
-    e.preventDefault()
+  const handleLogoutClick = () => {
     logoutUserAction()
   }
 
   return (
-    <div className="todo">
-      <div className="todo__user">
-        <p className="todo__user-name">User: {userIdentity.username}</p>
-        <Button onClick={handleLogoutClick} variant="submit" sx={{ m: 0 }}>
-          Logout
-        </Button>
-      </div>
-      <TodoForm />
-      <TodoContent />
-    </div>
+    <SafeAreaView>
+      <View className="todo">
+        <View className="todo__user">
+          <Text className="todo__user-name">User: {userIdentity.username}</Text>
+          <TouchableOpacity onPress={handleLogoutClick}>
+            <Text>Logout</Text>
+          </TouchableOpacity>
+        </View>
+        {/* <TodoForm />
+        <TodoContent /> */}
+      </View>
+    </SafeAreaView>
   )
 }
 

@@ -34,16 +34,6 @@ function* registerUser({ payload }) {
         userId: data._id,
       }),
     )
-    // localStorage.setItem(
-    //   'userStore',
-    //   JSON.stringify({
-    //     refreshToken,
-    //     token: accessToken,
-    //     authenticated: true,
-    //     username: data.nickname,
-    //     userId: data._id,
-    //   }),
-    // )
     yield put({
       type: CREATE_USER_SUCCESS,
       payload: data,
@@ -78,16 +68,6 @@ function* loginUser({ payload }) {
         userId: data._id,
       }),
     )
-    // localStorage.setItem(
-    //   'userStore',
-    //   JSON.stringify({
-    //     refreshToken,
-    //     token: accessToken,
-    //     authenticated: true,
-    //     username: data.nickname,
-    //     userId: data._id,
-    //   }),
-    // )
 
     yield put({
       type: LOGIN_USER_SUCCESS,
@@ -105,8 +85,7 @@ function* loginUser({ payload }) {
 }
 
 function* logoutUser() {
-  //   const userStore = JSON.parse(localStorage.getItem('userStore'))
-  const userStore = JSON.parse(AsyncStorage.getItem('userStore'))
+  const userStore = JSON.parse(yield AsyncStorage.getItem('userStore'))
   socketClient.emit('logout', userStore.userId)
   yield AsyncStorage.clear()
   yield put({
@@ -115,10 +94,9 @@ function* logoutUser() {
 }
 
 function* checkUserAuth() {
-  //   const userStore = JSON.parse(localStorage.getItem('userStore'))
-  const userStore = AsyncStorage.getItem('userStore')
+  const userStore = JSON.parse(yield AsyncStorage.getItem('userStore'))
   if (userStore) {
-    // console.log(userStore)
+    console.log(userStore)
     socketClient.emit('auth', userStore.userId)
     yield put({
       type: SET_USER,

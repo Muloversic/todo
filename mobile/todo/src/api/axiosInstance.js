@@ -9,7 +9,7 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(async (config) => {
-  const userStore = await AsyncStorage.getItem('userStore')
+  const userStore = JSON.parse(await AsyncStorage.getItem('userStore'))
   console.log(userStore)
   if (!userStore) {
     return config
@@ -23,7 +23,7 @@ instance.interceptors.response.use(
   (confing) => confing,
   async (error) => {
     const originalRequest = error.config
-    const userStore = await AsyncStorage.getItem('userStore')
+    const userStore = JSON.parse(await AsyncStorage.getItem('userStore'))
     if (
       error.response.status === 401 &&
       error.config &&
