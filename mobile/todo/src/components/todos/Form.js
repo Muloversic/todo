@@ -1,14 +1,13 @@
 import React, { useCallback, useState } from 'react'
 import { View, TouchableOpacity, Text } from 'react-native'
 import { Input } from '@rneui/themed'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { addTodoRequest } from '../../store/actions/todos.js'
 import { todoFormStyles } from '../../styles/style.js'
 
 const TodoForm = () => {
   const dispatch = useDispatch()
   const addTodoAction = (payload) => dispatch(addTodoRequest(payload))
-  const user = useSelector((state) => state.user.indentity)
   const [todoName, setTodoName] = useState('')
   const [error, setError] = useState(false)
   const handleInput = (text) => {
@@ -25,7 +24,6 @@ const TodoForm = () => {
       const todoObj = {
         name: todoName,
         active: true,
-        userId: user._id,
       }
 
       addTodoAction(todoObj)

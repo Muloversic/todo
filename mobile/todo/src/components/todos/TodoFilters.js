@@ -1,21 +1,20 @@
 import React, { useCallback, useState } from 'react'
-import Button from '@mui/material/Button'
-import { useTheme } from '@mui/material'
+import { View, TouchableOpacity, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateFilterRequest, deleteAllTodosRequest } from '../../store/actions/todos.js'
-import DeleteAllTodoModal from './DeleteAllTodoModal.js'
+import { todoFilterStyles } from '../../styles/style'
+// import DeleteAllTodoModal from './DeleteAllTodoModal.js'
 
 const TodoFilters = ({ todos }) => {
   const dispatch = useDispatch()
-  const theme = useTheme()
   const updateFiltersAction = (payload) => dispatch(updateFilterRequest(payload))
   const deleteAllTodosAction = () => dispatch(deleteAllTodosRequest())
   const filterType = useSelector((state) => state.filter)
-  const [open, setOpen] = useState(false)
+  //   const [open, setOpen] = useState(false)
 
-  const handleClose = useCallback(() => {
-    setOpen(false)
-  }, [])
+  //   const handleClose = useCallback(() => {
+  //     setOpen(false)
+  //   }, [])
 
   const handleClick = useCallback(
     (filter) => () => {
@@ -25,61 +24,57 @@ const TodoFilters = ({ todos }) => {
   )
 
   const handleDelete = useCallback(() => {
-    setOpen(false)
+    // setOpen(false)
     deleteAllTodosAction()
   }, [])
 
-  const showModal = useCallback(() => {
-    setOpen(true)
-  }, [])
+  //   const showModal = useCallback(() => {
+  //     setOpen(true)
+  //   }, [])
 
   return (
-    <div className="todo__filters">
-      <DeleteAllTodoModal handleClose={handleClose} handleDelete={handleDelete} open={open} />
-      <div className="todo__filters-row todo__filters-row--controls">
-        <Button
-          type="submit"
-          variant="submit"
-          onClick={handleClick('all')}
-          sx={{
-            backgroundColor:
-              filterType === 'all' ? theme.palette.button.active : theme.palette.button.main,
-          }}
-        >
-          All todos
-        </Button>
-        <Button
-          type="submit"
-          variant="submit"
-          onClick={handleClick('active')}
-          sx={{
-            backgroundColor:
-              filterType === 'active' ? theme.palette.button.active : theme.palette.button.main,
-          }}
-        >
-          Active todos
-        </Button>
-        <Button
-          type="submit"
-          variant="submit"
-          onClick={handleClick('done')}
-          sx={{
-            backgroundColor:
-              filterType === 'done' ? theme.palette.button.active : theme.palette.button.main,
-          }}
-        >
-          Done todos
-        </Button>
-      </div>
-      <div className="todo__filters-row">
-        <p className="todo__item-counter">Todos counter: {todos.length}</p>
+    <View style={todoFilterStyles.wrapper}>
+      <View style={todoFilterStyles.filtersRow}>
+        <TouchableOpacity onPress={handleClick('all')}>
+          <Text
+            style={{
+              color: filterType === 'all' ? 'rgb(129, 134, 218)' : 'black',
+              fontSize: 20,
+            }}
+          >
+            All todos
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleClick('active')}>
+          <Text
+            style={{
+              color: filterType === 'active' ? 'rgb(129, 134, 218)' : 'black',
+              fontSize: 20,
+            }}
+          >
+            Active todos
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleClick('done')}>
+          <Text
+            style={{
+              color: filterType === 'done' ? 'rgb(129, 134, 218)' : 'black',
+              fontSize: 20,
+            }}
+          >
+            Done todos
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View style={todoFilterStyles.filtersRow}>
+        <Text style={todoFilterStyles.counter}>Todos counter: {todos.length}</Text>
         {todos.length ? (
-          <button type="submit" className="todo__remove-all" onClick={showModal}>
-            Remove all
-          </button>
+          <TouchableOpacity onPress={handleDelete}>
+            <Text style={todoFilterStyles.removeButton}>Remove all</Text>
+          </TouchableOpacity>
         ) : null}
-      </div>
-    </div>
+      </View>
+    </View>
   )
 }
 

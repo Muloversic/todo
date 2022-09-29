@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 import { TodoContainerStyles } from '../../styles/style'
 import TodoForm from './Form'
-// import TodoContent from './TodoContent'
+import TodoContent from './TodoContent'
 
 const TodoContainer = ({ userIdentity, logoutUserAction }) => {
   const handleLogoutClick = () => {
@@ -20,8 +20,7 @@ const TodoContainer = ({ userIdentity, logoutUserAction }) => {
           </TouchableOpacity>
         </View>
         <TodoForm />
-        {/* <TodoForm />
-        <TodoContent /> */}
+        <TodoContent />
       </View>
     </SafeAreaView>
   )

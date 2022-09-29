@@ -63,3 +63,23 @@ export const todoFormStyles = StyleSheet.create({
     paddingRight: 40,
   },
 })
+
+export const todoFilterStyles = StyleSheet.create({
+  wrapper: {
+    marginTop: 15,
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  filtersRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 25,
+  },
+  counter: {
+    fontSize: 16,
+  },
+  removeButton: {
+    fontSize: 20,
+    color: 'red',
+  },
+})
