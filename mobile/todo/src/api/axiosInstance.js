@@ -4,7 +4,7 @@ import store from '../store/store'
 import { CLEAR_USER_STATE } from '../constants'
 
 const instance = axios.create({
-  baseURL: 'http://10.0.2.2:8080',
+  baseURL: 'http://localhost:8080',
   timeout: 1000,
 })
 
@@ -32,7 +32,7 @@ instance.interceptors.response.use(
     ) {
       try {
         originalRequest._isRetry = true
-        const response = await axios.post('http://10.0.2.2:8080/auth/refresh', {
+        const response = await axios.post('http://localhost:8080/auth/refresh', {
           refreshToken: userStore.refreshToken,
         })
         const { accessToken } = response.data.data
