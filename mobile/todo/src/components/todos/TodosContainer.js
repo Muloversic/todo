@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { View } from 'react-native'
 import { deleteTodoRequest } from '../../store/actions/todos.js'
@@ -8,6 +8,7 @@ import { todoItemStyles } from '../../styles/style.js'
 const TodosContainer = ({ todos }) => {
   const dispatch = useDispatch()
   const deleteTodoAction = (payload) => dispatch(deleteTodoRequest(payload))
+  const [editingTodoId, setEditingTodoId] = useState(null)
   const handleDelete = useCallback((deleteTodoId) => {
     deleteTodoAction(deleteTodoId)
   }, [])
@@ -15,7 +16,13 @@ const TodosContainer = ({ todos }) => {
   return (
     <View style={todoItemStyles.todosContainer}>
       {todos.map((todo) => (
-        <Todo key={todo._id} todo={todo} handleDelete={handleDelete} />
+        <Todo
+          key={todo._id}
+          todo={todo}
+          handleDelete={handleDelete}
+          handleCurrentTodo={setEditingTodoId}
+          editingTodoId={editingTodoId}
+        />
       ))}
     </View>
   )

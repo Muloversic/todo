@@ -100,8 +100,30 @@ export const todoItemStyles = StyleSheet.create({
     marginTop: 10,
     paddingRight: 20,
   },
-  actionElem: {
+  inputStyle: {
+    color: 'white',
+    fontSize: 18,
+    paddingTop: 0,
+    paddingBottom: 15,
+    paddingLeft: 0,
+    borderBottomColor: 'white',
+  },
+  deleteEleme: {
     fontSize: 20,
     color: 'white',
+    position: 'absolute',
   },
+  editElem: {
+    fontSize: 20,
+    color: 'white',
+    position: 'absolute',
+  },
+  submitElem: {
+    fontSize: 20,
+    color: 'white',
+    position: 'absolute',
+    left: -25,
+  },
+  inputError: 'red',
+  inputCommonColor: 'white',
 })
