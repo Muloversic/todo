@@ -77,9 +77,10 @@ const Register = ({ createUserAction, registerUserErr, clearUserErrorAction }) =
           errorStyle={authStyles.inputError}
           labelStyle={{ color: 'black' }}
           inputContainerStyle={{
-            borderBottomColor: errorMessage.nameErr
-              ? authStyles.inputError
-              : authStyles.inputCommonColor,
+            borderBottomColor:
+              errorMessage.nameErr || registerUserErr
+                ? authStyles.inputError
+                : authStyles.inputCommonColor,
           }}
           errorMessage={errorMessage.nameErr || registerUserErr}
           onChangeText={(text) => handleFormChange(text, 'username')}

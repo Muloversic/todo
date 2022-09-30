@@ -66,9 +66,10 @@ const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
           value={userData.username}
           labelStyle={{ color: 'black' }}
           inputContainerStyle={{
-            borderBottomColor: errorMessage.nameErr
-              ? authStyles.inputError
-              : authStyles.inputCommonColor,
+            borderBottomColor:
+              errorMessage.nameErr || loginUserErr
+                ? authStyles.inputError
+                : authStyles.inputCommonColor,
           }}
           errorMessage={errorMessage.nameErr || loginUserErr}
           onChangeText={(text) => handleFormChange(text, 'username')}
@@ -77,9 +78,10 @@ const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
           label="Password"
           labelStyle={{ color: 'black' }}
           inputContainerStyle={{
-            borderBottomColor: errorMessage.passErr
-              ? authStyles.inputError
-              : authStyles.inputCommonColor,
+            borderBottomColor:
+              errorMessage.passErr || loginUserErr
+                ? authStyles.inputError
+                : authStyles.inputCommonColor,
           }}
           errorMessage={errorMessage.passErr || loginUserErr}
           value={userData.pass}
