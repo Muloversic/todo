@@ -35,6 +35,10 @@ export const todo = handleActions(
         return state.filter((todo) => todo._id !== _id)
       }
 
+      if (filterType !== 'all') {
+        return [...state, payload.todo]
+      }
+
       return state.map((todo) => {
         if (todo._id === _id) {
           return {
