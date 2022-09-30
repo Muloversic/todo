@@ -7,7 +7,6 @@ import { todoItemStyles } from '../../styles/style.js'
 
 const Todo = ({ todo, handleDelete, handleCurrentTodo, editingTodoId }) => {
   const dispatch = useDispatch()
-
   const [inputValue, setInputValue] = useState('')
   const [error, setError] = useState(false)
   const updateTodoAction = (payload) => dispatch(updateTodoRequest(payload))
