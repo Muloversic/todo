@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Link } from 'react-router-native'
-import { View, TouchableHighlight, TouchableOpacity, Text } from 'react-native'
+import { useNavigate } from 'react-router-native'
+import { View, TouchableOpacity, Text } from 'react-native'
 import SafeAreaView from 'react-native-safe-area-view'
 import { Input } from '@rneui/themed'
 import { authStyles } from '../../styles/style'
 
 const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
+  const navigate = useNavigate()
   const defaultUserState = {
     username: '',
     pass: '',
@@ -87,11 +88,9 @@ const Login = ({ loginUserAction, loginUserErr, clearUserErrorAction }) => {
         <TouchableOpacity onPress={handleFromSubmit} style={authStyles.submitButton}>
           <Text style={authStyles.submitButtonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableHighlight>
-          <Link to="/" className="auth-link">
-            <Text>{`Don't have an account?`}</Text>
-          </Link>
-        </TouchableHighlight>
+        <TouchableOpacity onPress={() => navigate('/')}>
+          <Text>{`Don't have an account?`}</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   )
